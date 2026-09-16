@@ -13,14 +13,15 @@ The platform is designed to transform traditional, opaque municipal bureaucracy 
 
 ---
 
-### Current Development Stage: Day 5 Completed
+### Current Development Stage: Day 6 Completed
 We are building CivicFix progressively day-by-day while mastering full-stack software development from the ground up:
 
 - **Day 1**: Development environment setup, Antigravity IDE configuration, Git initialization, and directory scaffolding.
 - **Day 2**: Semantic HTML5 layout, accessible document hierarchy, and foundational markup.
 - **Day 3**: CSS3 styling, design system tokens (`:root`), universal box sizing, reusable container system, Flexbox, and CSS Grid.
 - **Day 4**: Advanced responsive CSS, fluid typography (`clamp()`), intrinsic grid layouts (`auto-fit` & `minmax()`), positioning (`sticky`), accessible focus states (`:focus-visible`), and zero horizontal overflow.
-- **Day 5 (Current)**: Git version control mastery, `.gitignore` engineering for Java full-stack stacks, Git branching workflows, and comprehensive project documentation.
+- **Day 5**: Git version control mastery, `.gitignore` engineering for Java full-stack stacks, Git branching workflows, and comprehensive project documentation.
+- **Day 6 (Current)**: JavaScript fundamentals from zero (`console.log`, variables `let`/`const`/`var`, primitive data types, template literals, operators, and type conversion).
 
 ---
 
@@ -29,12 +30,13 @@ We are building CivicFix progressively day-by-day while mastering full-stack sof
 #### Current Working Technologies (Implemented)
 - **Markup**: HTML5 (Semantic elements: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`)
 - **Styling**: Pure CSS3 (No frameworks, CSS variables, Flexbox, CSS Grid, clamp, media queries)
+- **Programming Language**: Vanilla JavaScript (ES6+ fundamentals)
 - **Version Control**: Git & GitHub
 - **Development Environment**: Antigravity IDE
 
 #### Planned Future Technologies (Upcoming Roadmap)
 *Note: The technologies below are part of the learning roadmap and are not yet implemented.*
-- **Frontend Logic**: Vanilla JavaScript (ES6+) & React.js
+- **Frontend Logic & Framework**: Advanced JavaScript (DOM, Events, Async) & React.js
 - **Backend Architecture**: Java 17+ & Spring Boot
 - **Database & Persistence**: MySQL & Spring Data JPA / Hibernate
 - **Security & Auth**: Spring Security & JSON Web Tokens (JWT)
@@ -43,7 +45,7 @@ We are building CivicFix progressively day-by-day while mastering full-stack sof
 ---
 
 ### Current Working Features (Live in Frontend)
-The current frontend (`frontend/index.html` and `frontend/style.css`) includes the following completed features:
+The current frontend (`frontend/index.html`, `frontend/style.css`, `frontend/script.js`) includes the following completed features:
 - **Brand Header & Citizen Portal Badge**: Top civic banner with real-time status indicator.
 - **Sticky Navigation Bar**: Smooth scrolling dark navbar with active state indicators and accessible focus rings.
 - **Responsive Hero Section**: High-impact banner with fluid typography (`clamp()`) and dual call-to-action buttons.
@@ -54,6 +56,7 @@ The current frontend (`frontend/index.html` and `frontend/style.css`) includes t
 - **Citizen Call to Action (CTA)**: High-contrast engagement card encouraging community reports.
 - **Multi-Column Footer**: Responsive footer featuring brand identity, navigation links, and copyright information.
 - **Universal Responsiveness**: Flawless visual scaling across desktop (1440px/1200px), tablet (992px), mobile (768px), and small screens (360px) with zero horizontal overflow.
+- **Connected JavaScript Engine**: Cleanly linked `script.js` demonstrating data types, calculations, and logging.
 
 ---
 
@@ -66,7 +69,8 @@ The current frontend (`frontend/index.html` and `frontend/style.css`) includes t
 | **Phase 1** | **Day 3** | CSS3 & Design System Tokens | ✅ Completed |
 | **Phase 1** | **Day 4** | Advanced Responsive Layouts & Polish | ✅ Completed |
 | **Phase 1** | **Day 5** | Git, GitHub & Version Control Mastery | ✅ Completed |
-| **Phase 2** | **Days 6–12** | Core JavaScript & DOM Interactivity | ⏳ Upcoming |
+| **Phase 2** | **Day 6** | JavaScript Fundamentals From Zero | ✅ Completed |
+| **Phase 2** | **Days 7–12** | Core JavaScript, DOM & Events | ⏳ Upcoming |
 | **Phase 3** | **Days 13–19** | Modern React.js Component Architecture | ⏳ Upcoming |
 | **Phase 4** | **Days 20–25** | Java Fundamentals & OOP Mastery | ⏳ Upcoming |
 | **Phase 5** | **Days 26–29** | Relational Database Design & MySQL | ⏳ Upcoming |
