@@ -231,11 +231,11 @@ let issueSeverity = 5;
 // IMPORTANT NOTE: This is an introductory JavaScript exercise,
 // NOT the final CivicFix Smart Priority Algorithm.
 if (issueSeverity >= 4) {
-    console.log("Priority Level: Urgent attention required!");
+   console.log("Priority Level: Urgent attention required!");
 } else if (issueSeverity >= 2) {
-    console.log("Priority Level: Normal priority complaint.");
+   console.log("Priority Level: Normal priority complaint.");
 } else {
-    console.log("Priority Level: Low priority complaint.");
+   console.log("Priority Level: Low priority complaint.");
 }
 
 
@@ -247,20 +247,20 @@ let isCitizenVerified = true;
 
 // Logical AND (&&): Both conditions must be true
 if (citizenUpvotes > 20 && isCitizenVerified) {
-    console.log("High Community Impact: Complaint has > 20 upvotes AND verified citizen!");
+   console.log("High Community Impact: Complaint has > 20 upvotes AND verified citizen!");
 }
 
 // Logical OR (||): At least one condition must be true
 let isHazardous = false;
 if (isHazardous || issueSeverity >= 4) {
-    console.log("Emergency Dispatch: Issue is hazardous OR severity is critical.");
+   console.log("Emergency Dispatch: Issue is hazardous OR severity is critical.");
 }
 
 // Nested If: A condition placed inside another condition
 if (isCitizenVerified) {
-    if (citizenUpvotes >= 20) {
-        console.log("Nested Check: Citizen is verified, and upvotes exceed threshold.");
-    }
+   if (citizenUpvotes >= 20) {
+      console.log("Nested Check: Citizen is verified, and upvotes exceed threshold.");
+   }
 }
 
 
@@ -296,24 +296,24 @@ console.log(`Resolution Status: ${statusMessage}`);
 let selectedCategory = "Road Damage";
 
 switch (selectedCategory) {
-    case "Road Damage":
-        console.log("Assigned Department: Public Works & Road Department");
-        break;
+   case "Road Damage":
+      console.log("Assigned Department: Public Works & Road Department");
+      break;
 
-    case "Garbage":
-        console.log("Assigned Department: Sanitation & Waste Management");
-        break;
+   case "Garbage":
+      console.log("Assigned Department: Sanitation & Waste Management");
+      break;
 
-    case "Street Light":
-        console.log("Assigned Department: Municipal Electricity Department");
-        break;
+   case "Street Light":
+      console.log("Assigned Department: Municipal Electricity Department");
+      break;
 
-    case "Water Supply":
-        console.log("Assigned Department: Water Supply & Sewerage Board");
-        break;
+   case "Water Supply":
+      console.log("Assigned Department: Water Supply & Sewerage Board");
+      break;
 
-    default:
-        console.log("Assigned Department: General Municipal Grievance Cell");
+   default:
+      console.log("Assigned Department: General Municipal Grievance Cell");
 }
 
 
@@ -328,7 +328,7 @@ switch (selectedCategory) {
 
 console.log("\n--- For Loop Demonstration ---");
 for (let complaintNumber = 1; complaintNumber <= 5; complaintNumber++) {
-    console.log(`Checking complaint #${complaintNumber}`);
+   console.log(`Checking complaint #${complaintNumber}`);
 }
 
 
@@ -343,8 +343,8 @@ console.log("\n--- While Loop Demonstration ---");
 let auditIndex = 1;
 
 while (auditIndex <= 5) {
-    console.log(`Processing audit for record #${auditIndex}`);
-    auditIndex++; // Increment is essential to prevent infinite loop!
+   console.log(`Processing audit for record #${auditIndex}`);
+   auditIndex++; // Increment is essential to prevent infinite loop!
 }
 
 
@@ -360,8 +360,8 @@ console.log("\n--- Do...While Loop Demonstration ---");
 let retryCount = 1;
 
 do {
-    console.log(`Dispatch check attempt #${retryCount}`);
-    retryCount++;
+   console.log(`Dispatch check attempt #${retryCount}`);
+   retryCount++;
 } while (retryCount <= 3);
 
 
@@ -372,11 +372,11 @@ do {
 
 console.log("\n--- Break Statement Demonstration ---");
 for (let id = 1; id <= 10; id++) {
-    if (id === 5) {
-        console.log(`Break triggered at complaint #${id}: Target found! Stopping search.`);
-        break; // Stops the loop immediately!
-    }
-    console.log(`Inspecting complaint #${id}`);
+   if (id === 5) {
+      console.log(`Break triggered at complaint #${id}: Target found! Stopping search.`);
+      break; // Stops the loop immediately!
+   }
+   console.log(`Inspecting complaint #${id}`);
 }
 
 
@@ -387,11 +387,11 @@ for (let id = 1; id <= 10; id++) {
 
 console.log("\n--- Continue Statement Demonstration ---");
 for (let wardNumber = 1; wardNumber <= 5; wardNumber++) {
-    if (wardNumber === 3) {
-        console.log(`Ward #${wardNumber} is under maintenance. Skipping inspection!`);
-        continue; // Skips the rest of ward 3, proceeds to ward 4!
-    }
-    console.log(`Inspecting facilities in Ward #${wardNumber}`);
+   if (wardNumber === 3) {
+      console.log(`Ward #${wardNumber} is under maintenance. Skipping inspection!`);
+      continue; // Skips the rest of ward 3, proceeds to ward 4!
+   }
+   console.log(`Inspecting facilities in Ward #${wardNumber}`);
 }
 
 
@@ -407,25 +407,252 @@ let targetIssueVerified = true;
 
 // 1. Severity Decision
 if (targetIssueSeverity >= 4 && targetIssueVerified) {
-    console.log("Status: High Priority Verified Incident.");
+   console.log("Status: High Priority Verified Incident.");
 } else {
-    console.log("Status: Standard Queue Incident.");
+   console.log("Status: Standard Queue Incident.");
 }
 
 // 2. Department Assignment via Switch
 switch (targetIssueCategory) {
-    case "Street Light":
-        console.log("Routing: Assigned to Electrical Division.");
-        break;
-    default:
-        console.log("Routing: Assigned to General Intake.");
+   case "Street Light":
+      console.log("Routing: Assigned to Electrical Division.");
+      break;
+   default:
+      console.log("Routing: Assigned to General Intake.");
 }
 
 // 3. Batch Notification Simulation using a For Loop
 console.log("Simulating batch notifications for nearby field officers:");
 for (let officer = 1; officer <= 3; officer++) {
-    console.log(`Officer ${officer}: SMS alert dispatched.`);
+   console.log(`Officer ${officer}: SMS alert dispatched.`);
 }
 
 console.log("Day 7 script execution finished cleanly.");
 
+
+// ==============================================================================
+// ==============================================================================
+// DAY 8 — JAVASCRIPT FUNCTIONS
+// ==============================================================================
+// ==============================================================================
+console.log("\n--- Day 8: JavaScript Functions Initialized ---");
+
+
+// ==============================================================================
+// 1. WHAT IS A FUNCTION? (DECLARATION & CALLING)
+// ==============================================================================
+// A function is a reusable block of code designed to perform a specific task.
+// Analogy: Like a vending machine button — once built, you can press it anytime!
+
+// Defining / Declaring a function:
+// Notice: Defining a function does NOT execute it yet!
+function showWelcomeMessage() {
+    console.log("Welcome to CivicFix — Municipal Redressal Portal!");
+}
+
+// Calling / Invoking / Executing the function:
+// Putting () after the function name tells JavaScript: "RUN THIS CODE NOW!"
+showWelcomeMessage();
+showWelcomeMessage(); // Calling it a second time demonstrates reusability!
+
+
+// ==============================================================================
+// 2. FUNCTIONS WITH PARAMETERS AND ARGUMENTS
+// ==============================================================================
+// Parameter: The placeholder variable named inside the function definition ().
+// Argument: The real value passed into the function when you call it.
+
+function greetCitizen(name) {
+    // 'name' is the PARAMETER (placeholder)
+    console.log(`Welcome, ${name}! Thank you for keeping your city clean.`);
+}
+
+// "Om" and "Priya" are the ARGUMENTS (real data)
+greetCitizen("Om");
+greetCitizen("Priya");
+
+
+// ==============================================================================
+// 3. MULTIPLE PARAMETERS & ARGUMENT ORDER
+// ==============================================================================
+// Functions can accept multiple inputs separated by commas.
+// IMPORTANT: Arguments are assigned to parameters in the EXACT order they are passed!
+
+function showComplaintInfo(category, severity) {
+    console.log(`Complaint Category: ${category}`);
+    console.log(`Reported Severity Level: ${severity}/5`);
+}
+
+// Correct Order: (string, number)
+showComplaintInfo("Road Damage", 5);
+
+// If passed in the wrong order:
+// showComplaintInfo(5, "Road Damage");
+// -> Category: 5, Severity: Road Damage/5 (Logically incorrect!)
+
+
+// ==============================================================================
+// 4. THE return STATEMENT
+// ==============================================================================
+// 'return' stops the function and sends a calculated value BACK to where it was called.
+// This allows you to store the result in a variable and use it elsewhere in your app.
+
+function addNumbers(a, b) {
+    return a + b; // Returns the sum back to the caller
+}
+
+// Step-by-step:
+// 1. addNumbers(10, 20) is called.
+// 2. 10 goes into a, 20 goes into b.
+// 3. a + b calculates 30.
+// 4. return 30 sends 30 back.
+// 5. 'sumResult' captures and stores 30.
+const sumResult = addNumbers(10, 20);
+console.log("Returned Sum:", sumResult);
+
+
+// ==============================================================================
+// 5. console.log() VS return (CRITICAL DISTINCTION)
+// ==============================================================================
+// console.log() -> Only displays text on the screen for the developer to read.
+// return        -> Actually produces a data value that other code can store and use!
+
+function logCalculation(a, b) {
+    console.log("Inside logCalculation:", a + b);
+    // Returns undefined implicitly!
+}
+
+function returnCalculation(a, b) {
+    return a + b; // Hands the answer to the caller!
+}
+
+const loggedValue = logCalculation(5, 5);       // Prints 10 to console, but...
+console.log("Stored loggedValue:", loggedValue); // undefined! Cannot use it!
+
+const returnedValue = returnCalculation(5, 5);  // Hands back 10
+console.log("Stored returnedValue:", returnedValue * 2); // 20! Can be used in further math!
+
+
+// ==============================================================================
+// 6. INTRODUCTORY CIVICFIX PRIORITY FUNCTION
+// ==============================================================================
+// INTRODUCTORY PRACTICE ONLY:
+// This is NOT the final CivicFix Smart Priority Algorithm.
+// It is a simple arithmetic function to demonstrate parameter calculation.
+
+function calculatePriority(severity, upvotes) {
+    const baseScore = severity * 10;
+    const finalScore = baseScore + upvotes;
+    return finalScore;
+}
+
+const sampleScore1 = calculatePriority(4, 25); // (4 * 10) + 25 = 65
+const sampleScore2 = calculatePriority(2, 5);  // (2 * 10) + 5  = 25
+console.log(`Priority Score for Issue 1: ${sampleScore1}`);
+console.log(`Priority Score for Issue 2: ${sampleScore2}`);
+
+
+// ==============================================================================
+// 7. FUNCTIONS COMBINED WITH CONDITIONS (if / else if / else)
+// ==============================================================================
+// Functions frequently evaluate logic and return different values.
+
+function checkSeverity(severity) {
+    if (severity >= 4) {
+        return "Urgent";
+    } else if (severity >= 2) {
+        return "Normal";
+    } else {
+        return "Low";
+    }
+}
+
+console.log("Severity 5 is:", checkSeverity(5)); // Urgent
+console.log("Severity 3 is:", checkSeverity(3)); // Normal
+console.log("Severity 1 is:", checkSeverity(1)); // Low
+
+
+// ==============================================================================
+// 8. FUNCTIONS COMBINED WITH LOOPS
+// ==============================================================================
+// Functions can wrap and trigger repetitive tasks whenever needed.
+
+function showComplaintNumbers() {
+    console.log("Listing recent complaint queue sequence:");
+    for (let i = 1; i <= 5; i++) {
+        console.log(`Complaint #${i}`);
+    }
+}
+
+showComplaintNumbers();
+
+
+// ==============================================================================
+// 9. DEFAULT PARAMETERS
+// ==============================================================================
+// Default parameters provide a fallback value if the caller leaves an argument blank.
+
+function reportIssue(category = "General") {
+    console.log(`Issue Category Filed: ${category}`);
+}
+
+reportIssue();             // No argument passed -> Uses default: "General"
+reportIssue("Water Leak"); // Argument passed    -> Overrides default with "Water Leak"
+
+
+// ==============================================================================
+// 10. SCOPE: GLOBAL VS. LOCAL (FUNCTION) SCOPE
+// ==============================================================================
+// Scope determines WHERE a variable can be seen and accessed in your code.
+
+// Global Variable: Declared outside of any function. Visible EVERYWHERE!
+const platformName = "CivicFix";
+
+function showPlatformScope() {
+    // Local Variable: Declared INSIDE this function.
+    // Visible ONLY inside this function!
+    const localMessage = "Smart Civic Platform";
+
+    console.log("Inside function - Global variable:", platformName);
+    console.log("Inside function - Local variable:", localMessage);
+}
+
+showPlatformScope();
+
+// Trying to access 'localMessage' outside its function would throw:
+// ReferenceError: localMessage is not defined!
+
+
+// ==============================================================================
+// 11. FUNCTION EXPRESSIONS
+// ==============================================================================
+// In JavaScript, a function can be created and stored directly inside a variable!
+
+// Function Declaration:
+// function greet() {}
+
+// Function Expression:
+const greetUser = function(name) {
+    console.log(`Hello, ${name}! (From Function Expression)`);
+};
+
+greetUser("Citizen");
+
+
+// ==============================================================================
+// 12. ARROW FUNCTIONS (ES6 MODERN SYNTAX)
+// ==============================================================================
+// Arrow functions provide a shorter, modern way to write functions using '=>'.
+
+// Standard Arrow Function with code block:
+const addArrow = (a, b) => {
+    return a + b;
+};
+console.log("Arrow function sum:", addArrow(5, 10));
+
+// Concise / One-line Arrow Function:
+// If the function only has one return expression, you can OMIT the {} and the 'return' keyword!
+const multiplyArrow = (a, b) => a * b;
+console.log("Concise arrow function multiplication:", multiplyArrow(6, 7));
+
+console.log("Day 8 script execution finished cleanly.");

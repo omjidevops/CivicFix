@@ -13,7 +13,7 @@ The platform is designed to transform traditional, opaque municipal bureaucracy 
 
 ---
 
-### Current Development Stage: Day 7 Completed
+### Current Development Stage: Day 8 Completed
 We are building CivicFix progressively day-by-day while mastering full-stack software development from the ground up:
 
 - **Day 1**: Development environment setup, Antigravity IDE configuration, Git initialization, and directory scaffolding.
@@ -22,7 +22,8 @@ We are building CivicFix progressively day-by-day while mastering full-stack sof
 - **Day 4**: Advanced responsive CSS, fluid typography (`clamp()`), intrinsic grid layouts (`auto-fit` & `minmax()`), positioning (`sticky`), accessible focus states (`:focus-visible`), and zero horizontal overflow.
 - **Day 5**: Git version control mastery, `.gitignore` engineering for Java full-stack stacks, Git branching workflows, and comprehensive project documentation.
 - **Day 6**: JavaScript fundamentals from zero (`console.log`, variables `let`/`const`/`var`, primitive data types, template literals, operators, and type conversion).
-- **Day 7 (Current)**: JavaScript decision making and iteration (conditions `if`/`else`, ternary operator, `switch`, loops `for`/`while`/`do...while`, and control statements `break`/`continue`).
+- **Day 7**: JavaScript decision making and iteration (conditions `if`/`else`, ternary operator, `switch`, loops `for`/`while`/`do...while`, and control statements `break`/`continue`).
+- **Day 8 (Current)**: JavaScript functions, parameters, arguments, `return` values, default parameters, local/global scope, function expressions, and arrow functions.
 
 ---
 
@@ -31,13 +32,13 @@ We are building CivicFix progressively day-by-day while mastering full-stack sof
 #### Current Working Technologies (Implemented)
 - **Markup**: HTML5 (Semantic elements: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`)
 - **Styling**: Pure CSS3 (No frameworks, CSS variables, Flexbox, CSS Grid, clamp, media queries)
-- **Programming Language**: Vanilla JavaScript (ES6+ fundamentals, conditions, and loops)
+- **Programming Language**: Vanilla JavaScript (ES6+ fundamentals, conditions, loops, and functions)
 - **Version Control**: Git & GitHub
 - **Development Environment**: Antigravity IDE
 
 #### Planned Future Technologies (Upcoming Roadmap)
 *Note: The technologies below are part of the learning roadmap and are not yet implemented.*
-- **Frontend Logic & Framework**: Functions, DOM, Events, Async JS & React.js
+- **Frontend Logic & Framework**: Arrays, Objects, DOM, Events, Async JS & React.js
 - **Backend Architecture**: Java 17+ & Spring Boot
 - **Database & Persistence**: MySQL & Spring Data JPA / Hibernate
 - **Security & Auth**: Spring Security & JSON Web Tokens (JWT)
@@ -57,7 +58,7 @@ The current frontend (`frontend/index.html`, `frontend/style.css`, `frontend/scr
 - **Citizen Call to Action (CTA)**: High-contrast engagement card encouraging community reports.
 - **Multi-Column Footer**: Responsive footer featuring brand identity, navigation links, and copyright information.
 - **Universal Responsiveness**: Flawless visual scaling across desktop (1440px/1200px), tablet (992px), mobile (768px), and small screens (360px) with zero horizontal overflow.
-- **Connected JavaScript Engine**: Cleanly linked `script.js` demonstrating data types, calculations, conditions, switch, and loop execution.
+- **Connected JavaScript Engine**: Cleanly linked `script.js` demonstrating data types, calculations, conditions, switch, loops, and modular functions.
 
 ---
 
@@ -72,7 +73,8 @@ The current frontend (`frontend/index.html`, `frontend/style.css`, `frontend/scr
 | **Phase 1** | **Day 5** | Git, GitHub & Version Control Mastery | ✅ Completed |
 | **Phase 2** | **Day 6** | JavaScript Fundamentals From Zero | ✅ Completed |
 | **Phase 2** | **Day 7** | Conditions, Switch & Loops Mastery | ✅ Completed |
-| **Phase 2** | **Days 8–12** | Functions, Scope, DOM & Events | ⏳ Upcoming |
+| **Phase 2** | **Day 8** | JavaScript Functions & Scope Mastery | ✅ Completed |
+| **Phase 2** | **Days 9–12** | Arrays, Objects, DOM & Events | ⏳ Upcoming |
 | **Phase 3** | **Days 13–19** | Modern React.js Component Architecture | ⏳ Upcoming |
 | **Phase 4** | **Days 20–25** | Java Fundamentals & OOP Mastery | ⏳ Upcoming |
 | **Phase 5** | **Days 26–29** | Relational Database Design & MySQL | ⏳ Upcoming |
