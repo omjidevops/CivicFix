@@ -447,7 +447,7 @@ console.log("\n--- Day 8: JavaScript Functions Initialized ---");
 // Defining / Declaring a function:
 // Notice: Defining a function does NOT execute it yet!
 function showWelcomeMessage() {
-    console.log("Welcome to CivicFix — Municipal Redressal Portal!");
+   console.log("Welcome to CivicFix — Municipal Redressal Portal!");
 }
 
 // Calling / Invoking / Executing the function:
@@ -463,8 +463,8 @@ showWelcomeMessage(); // Calling it a second time demonstrates reusability!
 // Argument: The real value passed into the function when you call it.
 
 function greetCitizen(name) {
-    // 'name' is the PARAMETER (placeholder)
-    console.log(`Welcome, ${name}! Thank you for keeping your city clean.`);
+   // 'name' is the PARAMETER (placeholder)
+   console.log(`Welcome, ${name}! Thank you for keeping your city clean.`);
 }
 
 // "Om" and "Priya" are the ARGUMENTS (real data)
@@ -479,8 +479,8 @@ greetCitizen("Priya");
 // IMPORTANT: Arguments are assigned to parameters in the EXACT order they are passed!
 
 function showComplaintInfo(category, severity) {
-    console.log(`Complaint Category: ${category}`);
-    console.log(`Reported Severity Level: ${severity}/5`);
+   console.log(`Complaint Category: ${category}`);
+   console.log(`Reported Severity Level: ${severity}/5`);
 }
 
 // Correct Order: (string, number)
@@ -498,7 +498,7 @@ showComplaintInfo("Road Damage", 5);
 // This allows you to store the result in a variable and use it elsewhere in your app.
 
 function addNumbers(a, b) {
-    return a + b; // Returns the sum back to the caller
+   return a + b; // Returns the sum back to the caller
 }
 
 // Step-by-step:
@@ -518,12 +518,12 @@ console.log("Returned Sum:", sumResult);
 // return        -> Actually produces a data value that other code can store and use!
 
 function logCalculation(a, b) {
-    console.log("Inside logCalculation:", a + b);
-    // Returns undefined implicitly!
+   console.log("Inside logCalculation:", a + b);
+   // Returns undefined implicitly!
 }
 
 function returnCalculation(a, b) {
-    return a + b; // Hands the answer to the caller!
+   return a + b; // Hands the answer to the caller!
 }
 
 const loggedValue = logCalculation(5, 5);       // Prints 10 to console, but...
@@ -541,9 +541,9 @@ console.log("Stored returnedValue:", returnedValue * 2); // 20! Can be used in f
 // It is a simple arithmetic function to demonstrate parameter calculation.
 
 function calculatePriority(severity, upvotes) {
-    const baseScore = severity * 10;
-    const finalScore = baseScore + upvotes;
-    return finalScore;
+   const baseScore = severity * 10;
+   const finalScore = baseScore + upvotes;
+   return finalScore;
 }
 
 const sampleScore1 = calculatePriority(4, 25); // (4 * 10) + 25 = 65
@@ -558,13 +558,13 @@ console.log(`Priority Score for Issue 2: ${sampleScore2}`);
 // Functions frequently evaluate logic and return different values.
 
 function checkSeverity(severity) {
-    if (severity >= 4) {
-        return "Urgent";
-    } else if (severity >= 2) {
-        return "Normal";
-    } else {
-        return "Low";
-    }
+   if (severity >= 4) {
+      return "Urgent";
+   } else if (severity >= 2) {
+      return "Normal";
+   } else {
+      return "Low";
+   }
 }
 
 console.log("Severity 5 is:", checkSeverity(5)); // Urgent
@@ -578,10 +578,10 @@ console.log("Severity 1 is:", checkSeverity(1)); // Low
 // Functions can wrap and trigger repetitive tasks whenever needed.
 
 function showComplaintNumbers() {
-    console.log("Listing recent complaint queue sequence:");
-    for (let i = 1; i <= 5; i++) {
-        console.log(`Complaint #${i}`);
-    }
+   console.log("Listing recent complaint queue sequence:");
+   for (let i = 1; i <= 5; i++) {
+      console.log(`Complaint #${i}`);
+   }
 }
 
 showComplaintNumbers();
@@ -593,7 +593,7 @@ showComplaintNumbers();
 // Default parameters provide a fallback value if the caller leaves an argument blank.
 
 function reportIssue(category = "General") {
-    console.log(`Issue Category Filed: ${category}`);
+   console.log(`Issue Category Filed: ${category}`);
 }
 
 reportIssue();             // No argument passed -> Uses default: "General"
@@ -609,12 +609,12 @@ reportIssue("Water Leak"); // Argument passed    -> Overrides default with "Wate
 const platformName = "CivicFix";
 
 function showPlatformScope() {
-    // Local Variable: Declared INSIDE this function.
-    // Visible ONLY inside this function!
-    const localMessage = "Smart Civic Platform";
+   // Local Variable: Declared INSIDE this function.
+   // Visible ONLY inside this function!
+   const localMessage = "Smart Civic Platform";
 
-    console.log("Inside function - Global variable:", platformName);
-    console.log("Inside function - Local variable:", localMessage);
+   console.log("Inside function - Global variable:", platformName);
+   console.log("Inside function - Local variable:", localMessage);
 }
 
 showPlatformScope();
@@ -632,8 +632,8 @@ showPlatformScope();
 // function greet() {}
 
 // Function Expression:
-const greetUser = function(name) {
-    console.log(`Hello, ${name}! (From Function Expression)`);
+const greetUser = function (name) {
+   console.log(`Hello, ${name}! (From Function Expression)`);
 };
 
 greetUser("Citizen");
@@ -646,7 +646,7 @@ greetUser("Citizen");
 
 // Standard Arrow Function with code block:
 const addArrow = (a, b) => {
-    return a + b;
+   return a + b;
 };
 console.log("Arrow function sum:", addArrow(5, 10));
 
@@ -656,3 +656,227 @@ const multiplyArrow = (a, b) => a * b;
 console.log("Concise arrow function multiplication:", multiplyArrow(6, 7));
 
 console.log("Day 8 script execution finished cleanly.");
+
+
+// ==============================================================================
+// ==============================================================================
+// DAY 9 — JAVASCRIPT ARRAYS
+// ==============================================================================
+// ==============================================================================
+console.log("\n--- Day 9: JavaScript Arrays Initialized ---");
+
+
+// ==============================================================================
+// 1. WHAT IS AN ARRAY?
+// ==============================================================================
+// An array is an ordered collection that allows storing multiple values inside a SINGLE variable.
+// Analogy: Like an egg carton or a row of numbered lockers where each compartment holds an item.
+
+// Creating an array using square brackets []:
+const categories = [
+   "Road Damage",
+   "Garbage",
+   "Street Light"
+];
+console.log("All Categories:", categories);
+
+
+// ==============================================================================
+// 2 & 3. 0-BASED INDEXING & READING VALUES
+// ==============================================================================
+// In JavaScript, array positions (indexes) ALWAYS start at 0!
+// First element  -> index 0
+// Second element -> index 1
+// Third element  -> index 2
+
+console.log("First Category (index 0):", categories[0]);  // "Road Damage"
+console.log("Second Category (index 1):", categories[1]); // "Garbage"
+console.log("Third Category (index 2):", categories[2]);  // "Street Light"
+
+// Accessing an invalid or out-of-range index returns 'undefined':
+console.log("Non-existent index 99:", categories[99]);    // undefined
+
+
+// ==============================================================================
+// 4. UPDATING ARRAY VALUES (ARRAYS ARE MUTABLE)
+// ==============================================================================
+// Even when declared with 'const', the elements INSIDE an array can be updated/reassigned.
+
+console.log("Before update:", categories[1]); // "Garbage"
+categories[1] = "Water Supply";               // Replacing index 1
+console.log("After update:", categories[1]);  // "Water Supply"
+
+
+// ==============================================================================
+// 5. ARRAY LENGTH (.length PROPERTY)
+// ==============================================================================
+// .length tells you the total count of elements inside the array.
+
+console.log("Total count of categories:", categories.length); // 3
+
+// Quick tip: The last element is always at index: array.length - 1
+console.log("Last item via length - 1:", categories[categories.length - 1]);
+
+
+// ==============================================================================
+// 6. ADDING & REMOVING FROM THE END: push() AND pop()
+// ==============================================================================
+const complaintCategories = ["Road Damage", "Garbage"];
+console.log("Initial categories:", complaintCategories);
+
+// push() adds one or more items to the END of the array:
+complaintCategories.push("Street Light");
+console.log("After push('Street Light'):", complaintCategories);
+
+// pop() removes the LAST item from the array and returns it:
+const removedLast = complaintCategories.pop();
+console.log("Removed item with pop():", removedLast);
+console.log("After pop():", complaintCategories);
+
+
+// ==============================================================================
+// 7. ADDING & REMOVING FROM THE BEGINNING: unshift() AND shift()
+// ==============================================================================
+// Visual Summary:
+// [ unshift() ──▶ [ item 0 , item 1 , item 2 ] ──▶ push() ]
+// [ ◀── shift()   [ item 0 , item 1 , item 2 ] ◀── pop()  ]
+
+const dispatchQueue = ["Complaint #101", "Complaint #102"];
+
+// unshift() adds an item to the VERY FRONT (index 0), shifting existing items right:
+dispatchQueue.unshift("Urgent Complaint #100");
+console.log("After unshift (added to front):", dispatchQueue);
+
+// shift() removes the FIRST item (index 0) and shifts all remaining items left:
+const processedItem = dispatchQueue.shift();
+console.log("Processed item with shift():", processedItem);
+console.log("After shift():", dispatchQueue);
+
+
+// ==============================================================================
+// 8. COMBINING LOOPS WITH ARRAYS
+// ==============================================================================
+// We can use a 'for' loop to visit every single item in an array automatically.
+// Notice: We start at let i = 0, and stop when i < array.length.
+
+const activeIssuesList = [
+   "Road Damage",
+   "Garbage",
+   "Street Light",
+   "Water Supply"
+];
+
+console.log("\n--- Looping Through Categories ---");
+for (let i = 0; i < activeIssuesList.length; i++) {
+   // In each round, i is 0, 1, 2, 3...
+   // activeIssuesList[i] gives the item at that position!
+   console.log(`Category #${i + 1}: ${activeIssuesList[i]}`);
+}
+
+
+// ==============================================================================
+// 9. SEARCHING: includes()
+// ==============================================================================
+// includes() checks if an element exists in the array and returns true or false.
+
+console.log("Does array include 'Garbage'?", activeIssuesList.includes("Garbage")); // true
+console.log("Does array include 'Flooding'?", activeIssuesList.includes("Flooding")); // false
+
+
+// ==============================================================================
+// 10. SEARCHING: indexOf()
+// ==============================================================================
+// indexOf() returns the INDEX where the item is located.
+// If the item does NOT exist, it returns -1!
+
+const garbageIndex = activeIssuesList.indexOf("Garbage");
+console.log("Index of 'Garbage':", garbageIndex); // 1
+
+const missingIndex = activeIssuesList.indexOf("Flooding");
+console.log("Index of 'Flooding' (not found):", missingIndex); // -1
+
+
+// ==============================================================================
+// 11. SUBSETS: slice(startIndex, endIndex)
+// ==============================================================================
+// slice() extracts a portion of an array and returns a NEW array.
+// IMPORTANT:
+// 1. The ending index is EXCLUDED (not included in the result).
+// 2. The original array is NOT modified (non-destructive).
+
+const allIssueTypes = [
+   "Road Damage",   // index 0
+   "Garbage",       // index 1
+   "Street Light",  // index 2
+   "Water Supply",  // index 3
+   "Drainage"       // index 4
+];
+
+// Takes elements from index 1 up to (but not including) index 3:
+const slicedSubset = allIssueTypes.slice(1, 3); // grabs index 1 and 2
+console.log("Sliced portion (index 1 to 3):", slicedSubset); // ["Garbage", "Street Light"]
+console.log("Original array remains unchanged:", allIssueTypes.length); // 5
+
+
+// ==============================================================================
+// 12. MODIFYING: splice(startIndex, deleteCount)
+// ==============================================================================
+// splice() alters the ORIGINAL array directly by removing, adding, or replacing items.
+
+const mutableIssues = ["Road Damage", "Garbage", "Street Light", "Drainage"];
+console.log("Before splice:", mutableIssues);
+
+// splice(1, 1) -> Starting at index 1, delete 1 item ("Garbage")
+const deletedItems = mutableIssues.splice(1, 1);
+console.log("Deleted items from splice:", deletedItems);
+console.log("After splice (original modified!):", mutableIssues);
+
+
+// ==============================================================================
+// 13. slice() VS splice() — THE GOLDEN RULE
+// ==============================================================================
+// slice()  -> NON-DESTRUCTIVE: Leaves original array alone, returns a clean copy.
+// splice() -> DESTRUCTIVE: Modifies and mutates the original array in place!
+
+
+// ==============================================================================
+// 14. CIVICFIX ARRAY PRACTICE (CIVIC DATA LISTS)
+// ==============================================================================
+// Modeling civic platform lists without objects:
+
+// 1. Complaint Statuses
+const complaintStatuses = ["Pending", "In Progress", "Resolved", "Verified"];
+console.log("Available CivicFix Statuses:", complaintStatuses);
+
+// 2. Municipal Department Names
+const municipalDepartments = [
+   "Road Department",
+   "Sanitation Department",
+   "Electricity Department",
+   "Water Department"
+];
+console.log("Municipal Departments count:", municipalDepartments.length);
+
+// 3. Upvote Counts
+const upvoteCounts = [15, 34, 8, 42, 19];
+console.log("First issue upvotes:", upvoteCounts[0]);
+console.log("Last issue upvotes:", upvoteCounts[upvoteCounts.length - 1]);
+
+
+// ==============================================================================
+// 15. FUNCTIONS + ARRAYS INTEGRATION
+// ==============================================================================
+// Arrays can be passed directly into functions as arguments!
+
+function showCategories(categoriesList) {
+   console.log(`--- Displaying ${categoriesList.length} Categories via Function ---`);
+   for (let i = 0; i < categoriesList.length; i++) {
+      console.log(`- ${categoriesList[i]}`);
+   }
+}
+
+// Calling the function with our array:
+showCategories(municipalDepartments);
+
+console.log("Day 9 script execution finished cleanly.");
+
