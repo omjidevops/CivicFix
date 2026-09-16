@@ -880,3 +880,216 @@ showCategories(municipalDepartments);
 
 console.log("Day 9 script execution finished cleanly.");
 
+
+// ==============================================================================
+// DAY 10 — JAVASCRIPT OBJECTS
+// ==============================================================================
+// In Day 9, we learned that an array is an ordered list of items (e.g. ["Road", "Garbage"]).
+// An OBJECT, however, represents a SINGLE entity by describing it with named properties!
+// Real-world analogy: A citizen ID card or a municipal complaint file folder has labeled
+// fields: Name, Category, Severity, Status, etc.
+
+console.log("\n--- Day 10: JavaScript Objects Initialized ---");
+
+// ==============================================================================
+// 1 & 2. CREATING AN OBJECT & KEY-VALUE PAIRS
+// ==============================================================================
+// Syntax: { key: value, key: value }
+// 'key' is the label/property name, 'value' is the data stored inside.
+
+const complaint = {
+   category: "Road Damage",  // key: "category", value: "Road Damage" (string)
+   severity: 5,              // key: "severity", value: 5 (number)
+   upvotes: 25,              // key: "upvotes",  value: 25 (number)
+   verified: true            // key: "verified", value: true (boolean)
+};
+
+console.log("Full Complaint Object:", complaint);
+
+
+// ==============================================================================
+// 3. ACCESSING PROPERTIES WITH DOT NOTATION
+// ==============================================================================
+// Dot notation (object.property) is the standard and most readable way to access values:
+
+console.log("Category (dot notation):", complaint.category);
+console.log("Severity (dot notation):", complaint.severity);
+console.log("Upvotes (dot notation):", complaint.upvotes);
+console.log("Verified (dot notation):", complaint.verified);
+
+
+// ==============================================================================
+// 4. ACCESSING PROPERTIES WITH BRACKET NOTATION
+// ==============================================================================
+// Bracket notation (object["property"]) uses a string inside square brackets.
+// Useful when property names contain spaces, special characters, or come from variables.
+
+console.log("Category (bracket notation):", complaint["category"]);
+console.log("Severity (bracket notation):", complaint["severity"]);
+
+
+// ==============================================================================
+// 5. UPDATING PROPERTIES (OBJECTS ARE MUTABLE)
+// ==============================================================================
+// Even when declared with 'const', you can change the properties INSIDE the object:
+
+complaint.severity = 4;
+complaint.upvotes = 30;
+
+console.log("Updated Severity:", complaint.severity); // 4
+console.log("Updated Upvotes:", complaint.upvotes);   // 30
+
+
+// ==============================================================================
+// 6. ADDING NEW PROPERTIES
+// ==============================================================================
+// If a property does not exist yet, assigning a value creates it on the fly:
+
+complaint.status = "Pending";
+complaint.department = "Road Department";
+
+console.log("Added Status:", complaint.status);
+console.log("Added Department:", complaint.department);
+
+
+// ==============================================================================
+// 7. DELETING PROPERTIES
+// ==============================================================================
+// The 'delete' keyword removes a property entirely from an object:
+
+delete complaint.department;
+console.log("After deleting department:", complaint.department); // undefined
+
+
+// ==============================================================================
+// 8. DIFFERENT DATA TYPES INSIDE AN OBJECT
+// ==============================================================================
+// An object can hold any data type: strings, numbers, booleans, and null:
+
+const diverseComplaint = {
+   category: "Street Light",  // String
+   severity: 3,               // Number
+   verified: true,            // Boolean
+   resolutionPhoto: null      // Null (represents intentional absence of a photo yet)
+};
+
+console.log("Diverse Complaint Object:", diverseComplaint);
+
+
+// ==============================================================================
+// 9. OBJECTS WITH CONDITIONS (DAY 7 INTEGRATION)
+// ==============================================================================
+// We can inspect object properties to make intelligent decisions:
+
+if (complaint.verified) {
+   console.log("Status: Complaint is verified by community members.");
+}
+
+if (complaint.severity >= 4) {
+   console.log("Priority Alert: Urgent complaint requires immediate field dispatch!");
+} else {
+   console.log("Standard Priority: Scheduled for routine municipal inspection.");
+}
+
+
+// ==============================================================================
+// 10. OBJECTS WITH FUNCTIONS (DAY 8 INTEGRATION)
+// ==============================================================================
+// An entire object can be passed into a function as an argument:
+
+function showComplaint(complaintObj) {
+   console.log(`[Summary] Category: ${complaintObj.category} | Severity: ${complaintObj.severity}/5 | Status: ${complaintObj.status}`);
+}
+
+showComplaint(complaint);
+
+
+// ==============================================================================
+// 11. BASIC OBJECT METHOD CONCEPT (FUNCTION INSIDE AN OBJECT)
+// ==============================================================================
+// When a function is stored as a property value of an object, it is called a METHOD.
+// (Note: We keep this simple and do NOT introduce the 'this' keyword yet.)
+// We use 'citizenUser' to avoid variable collision with the Day 6 'citizen' string:
+const citizenUser = {
+   name: "Citizen Om",
+   introduce: function() {
+      console.log("Hello from CivicFix citizen portal.");
+   }
+};
+
+citizenUser.introduce(); // Calling the method on the object
+
+
+// ==============================================================================
+// 12. NESTED OBJECTS (OBJECTS INSIDE OBJECTS)
+// ==============================================================================
+// An object property can hold another object to group related sub-data together:
+
+const nestedComplaint = {
+   category: "Road Damage",
+   location: {
+      city: "Kanpur",
+      area: "Main Road"
+   }
+};
+
+// Accessing nested properties using chained dot notation:
+console.log("Complaint City (nested):", nestedComplaint.location.city);
+console.log("Complaint Area (nested):", nestedComplaint.location.area);
+
+
+// ==============================================================================
+// 13. ARRAY OF OBJECTS (CRITICAL CIVICFIX PATTERN)
+// ==============================================================================
+// In CivicFix, we have MULTIPLE complaints. Each complaint is an object,
+// and all complaints are stored together in an ARRAY!
+
+const complaintsList = [
+   {
+      category: "Road Damage",
+      severity: 5
+   },
+   {
+      category: "Garbage",
+      severity: 3
+   },
+   {
+      category: "Street Light",
+      severity: 4
+   }
+];
+
+console.log("\n--- Looping Through Array of Complaint Objects ---");
+for (let i = 0; i < complaintsList.length; i++) {
+   // complaintsList[i] is ONE complaint object!
+   console.log(`Complaint #${i + 1} -> Category: ${complaintsList[i].category}, Severity: ${complaintsList[i].severity}`);
+}
+
+
+// ==============================================================================
+// 14. CIVICFIX COMPLAINT OBJECT (LEARNING MODEL)
+// ==============================================================================
+// A realistic model of a complete CivicFix report (JavaScript learning model):
+
+const civicFixComplaint = {
+   id: 101,
+   category: "Road Damage",
+   description: "Large pothole near main road",
+   severity: 5,
+   upvotes: 25,
+   verified: true,
+   status: "Pending"
+};
+
+console.log("\n--- CivicFix Official Complaint Learning Model ---");
+console.log("Issue ID:", civicFixComplaint.id);
+console.log("Category:", civicFixComplaint.category);
+console.log("Description:", civicFixComplaint.description);
+console.log("Severity:", civicFixComplaint.severity);
+console.log("Upvotes:", civicFixComplaint.upvotes);
+console.log("Verified:", civicFixComplaint.verified);
+console.log("Status:", civicFixComplaint.status);
+
+console.log("Day 10 script execution finished cleanly.");
+
+
