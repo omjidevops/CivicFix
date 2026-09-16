@@ -13,7 +13,7 @@ The platform is designed to transform traditional, opaque municipal bureaucracy 
 
 ---
 
-### Current Development Stage: Day 10 Completed
+### Current Development Stage: Day 11 Completed
 We are building CivicFix progressively day-by-day while mastering full-stack software development from the ground up:
 
 - **Day 1**: Development environment setup, Antigravity IDE configuration, Git initialization, and directory scaffolding.
@@ -25,7 +25,8 @@ We are building CivicFix progressively day-by-day while mastering full-stack sof
 - **Day 7**: JavaScript decision making and iteration (conditions `if`/`else`, ternary operator, `switch`, loops `for`/`while`/`do...while`, and control statements `break`/`continue`).
 - **Day 8**: JavaScript functions, parameters, arguments, `return` values, default parameters, local/global scope, function expressions, and arrow functions.
 - **Day 9**: JavaScript arrays from zero (array creation, 0-indexing, element reading and mutation, length property, stack/queue operations `push`/`pop`/`shift`/`unshift`, `for` loop traversal, searching with `includes`/`indexOf`, slicing vs splicing, and passing arrays to functions).
-- **Day 10 (Current)**: JavaScript objects from zero (entity modeling, key-value pairs, property data types, dot notation vs bracket notation, property mutation, adding/deleting properties, conditions with properties, passing objects to functions, introductory methods, nested objects, array of objects iteration with loops, and the CivicFix complaint object model).
+- **Day 10**: JavaScript objects from zero (entity modeling, key-value pairs, property data types, dot notation vs bracket notation, property mutation, adding/deleting properties, conditions with properties, passing objects to functions, introductory methods, nested objects, array of objects iteration with loops, and the CivicFix complaint object model).
+- **Day 11 (Current)**: JavaScript DOM and Events (DOM tree concept, `document` object, `getElementById`, `querySelector`, `querySelectorAll`, `textContent` vs `innerHTML` security, input `.value`, `style` and `classList`, dynamic `createElement`/`appendChild`/`remove`, and event listeners for `click`, `input`, `change`, and `submit` with `event.preventDefault()`).
 
 ---
 
@@ -34,13 +35,13 @@ We are building CivicFix progressively day-by-day while mastering full-stack sof
 #### Current Working Technologies (Implemented)
 - **Markup**: HTML5 (Semantic elements: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`)
 - **Styling**: Pure CSS3 (No frameworks, CSS variables, Flexbox, CSS Grid, clamp, media queries)
-- **Programming Language**: Vanilla JavaScript (ES6+ fundamentals, conditions, loops, functions, arrays, and objects)
+- **Programming Language**: Vanilla JavaScript (ES6+ fundamentals, conditions, loops, functions, arrays, objects, DOM manipulation & events)
 - **Version Control**: Git & GitHub
 - **Development Environment**: Antigravity IDE
 
 #### Planned Future Technologies (Upcoming Roadmap)
 *Note: The technologies below are part of the learning roadmap and are not yet implemented.*
-- **Frontend Logic & Framework**: DOM Manipulation, Events, Async JS & React.js
+- **Frontend Logic & Framework**: Async JS, JSON, Fetch/APIs & React.js
 - **Backend Architecture**: Java 17+ & Spring Boot
 - **Database & Persistence**: MySQL & Spring Data JPA / Hibernate
 - **Security & Auth**: Spring Security & JSON Web Tokens (JWT)
@@ -58,9 +59,10 @@ The current frontend (`frontend/index.html`, `frontend/style.css`, `frontend/scr
 - **Workflow Section (How CivicFix Works)**: 4-step transparent resolution journey (Report → Verify → Resolve → Confirm).
 - **Key Advantages (Why CivicFix)**: Distinct feature highlight cards with top-border accents.
 - **Citizen Call to Action (CTA)**: High-contrast engagement card encouraging community reports.
+- **Interactive Demo Reporting Module**: Live DOM-powered interactive form featuring real-time greeting preview on input, dynamic category indicator on change, quick button click counter, and submit event interception with `preventDefault()` displaying safe instant confirmation.
 - **Multi-Column Footer**: Responsive footer featuring brand identity, navigation links, and copyright information.
 - **Universal Responsiveness**: Flawless visual scaling across desktop (1440px/1200px), tablet (992px), mobile (768px), and small screens (360px) with zero horizontal overflow.
-- **Connected JavaScript Engine**: Cleanly linked `script.js` demonstrating data types, calculations, conditions, switch, loops, modular functions, array operations, and object data modeling.
+- **Connected JavaScript Engine**: Cleanly linked `script.js` demonstrating data types, calculations, conditions, switch, loops, modular functions, array operations, object data modeling, and live browser DOM events.
 
 ---
 
@@ -78,7 +80,8 @@ The current frontend (`frontend/index.html`, `frontend/style.css`, `frontend/scr
 | **Phase 2** | **Day 8** | JavaScript Functions & Scope Mastery | ✅ Completed |
 | **Phase 2** | **Day 9** | JavaScript Arrays & Operations | ✅ Completed |
 | **Phase 2** | **Day 10** | JavaScript Objects & Entity Modeling | ✅ Completed |
-| **Phase 2** | **Days 11–12** | DOM Manipulation & Events | ⏳ Upcoming |
+| **Phase 2** | **Day 11** | JavaScript DOM & Events Interaction | ✅ Completed |
+| **Phase 2** | **Day 12** | Async JavaScript, JSON & HTTP Concepts | ⏳ Upcoming |
 | **Phase 3** | **Days 13–19** | Modern React.js Component Architecture | ⏳ Upcoming |
 | **Phase 4** | **Days 20–25** | Java Fundamentals & OOP Mastery | ⏳ Upcoming |
 | **Phase 5** | **Days 26–29** | Relational Database Design & MySQL | ⏳ Upcoming |

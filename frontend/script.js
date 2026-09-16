@@ -1012,7 +1012,7 @@ showComplaint(complaint);
 // We use 'citizenUser' to avoid variable collision with the Day 6 'citizen' string:
 const citizenUser = {
    name: "Citizen Om",
-   introduce: function() {
+   introduce: function () {
       console.log("Hello from CivicFix citizen portal.");
    }
 };
@@ -1091,5 +1091,179 @@ console.log("Verified:", civicFixComplaint.verified);
 console.log("Status:", civicFixComplaint.status);
 
 console.log("Day 10 script execution finished cleanly.");
+
+
+// ==============================================================================
+// DAY 11 — JAVASCRIPT DOM AND EVENTS
+// ==============================================================================
+// The DOM (Document Object Model) is a tree-like representation of our HTML page
+// created by the browser. Through the DOM, JavaScript can:
+// 1. Find elements on the page (select).
+// 2. Read and change text, attributes, and styles (modify).
+// 3. Listen to user actions like clicks and typing (events).
+// 4. Create and add new elements on the fly (dynamic UI).
+
+console.log("\n--- Day 11: JavaScript DOM & Events Initialized ---");
+
+// Check if running in a browser environment with a DOM:
+if (typeof document !== "undefined") {
+
+   // 1 & 2. THE document OBJECT
+   // 'document' is the root object provided by the browser that represents the entire webpage.
+   console.log("Document Object:", document);
+
+   // 3. SELECTING BY ID: getElementById()
+   // Finds a unique element matching the exact id (without any '#' symbol):
+   const pageTitleEl = document.getElementById("pageTitle");
+   console.log("getElementById('pageTitle'):", pageTitleEl);
+
+   // 4. SELECTING BY CSS SELECTOR: querySelector()
+   // Uses CSS selectors: '#' for IDs, '.' for classes, or tag names:
+   const brandTitleQuery = document.querySelector("#pageTitle");
+   const heroSectionQuery = document.querySelector(".hero-section");
+   const firstHeading = document.querySelector("h1");
+   console.log("querySelector('#pageTitle'):", brandTitleQuery);
+
+   // 5. SELECTING MULTIPLE ELEMENTS: querySelectorAll()
+   // Returns a collection of all matching elements (like an array of elements):
+   const allIssueCards = document.querySelectorAll(".issue-card");
+   console.log(`Found ${allIssueCards.length} issue cards on the page with querySelectorAll('.issue-card').`);
+
+   // 6. READING & CHANGING TEXT: textContent
+   // .textContent reads or writes pure, unformatted plain text safely:
+   const greetingPreview = document.querySelector("#greetingPreview");
+   if (greetingPreview) {
+      console.log("Initial greeting textContent:", greetingPreview.textContent);
+   }
+
+   // 7. HTML MODIFICATION: innerHTML & SECURITY WARNING
+   // .innerHTML parses and injects HTML markup tags (e.g. <strong>):
+   // IMPORTANT SECURITY RULE: Never inject untrusted user input directly into innerHTML!
+   // (Untrusted input inside innerHTML can lead to Cross-Site Scripting / XSS).
+   // Always use .textContent when displaying user-entered strings!
+
+   // 8. FORM INPUT VALUE: .value
+   // .value reads the current text typed by the user inside an <input>, <select>, or <textarea>.
+   const citizenNameInput = document.querySelector("#citizenName");
+   const issueCategorySelect = document.querySelector("#issueCategory");
+   const descriptionInput = document.querySelector("#description");
+
+   // 9. INLINE STYLES: element.style
+   // JavaScript can inspect or modify inline CSS properties (in camelCase):
+   const previewBox = document.querySelector("#previewBox");
+   if (previewBox) {
+      previewBox.style.transition = "all 0.3s ease";
+   }
+
+   // 10. MANAGING CLASSES: classList (add, remove, toggle)
+   // Much cleaner and more maintainable than modifying multiple inline styles:
+   // element.classList.add("active");
+   // element.classList.remove("active");
+   // element.classList.toggle("active");
+
+   // 11, 12 & 13. CREATING, APPENDING & REMOVING ELEMENTS
+   // createElement() creates a detached element in memory.
+   // appendChild() attaches it to the visible DOM tree.
+   // remove() deletes it from the DOM.
+   const demoNotification = document.createElement("p");
+   demoNotification.textContent = "CivicFix Live Notification System Initialized.";
+   demoNotification.style.fontSize = "0.85rem";
+   demoNotification.style.color = "#0f766e";
+   // Attach to preview box:
+   if (previewBox) {
+      previewBox.appendChild(demoNotification);
+      // Remove it after demonstration so it doesn't clutter:
+      setTimeout(function () {
+         demoNotification.remove();
+      }, 4000);
+   }
+
+   // 14 & 15. EVENTS & addEventListener()
+   // An EVENT is a signal that something occurred (e.g. click, key press, submit).
+   // addEventListener(eventType, callbackFunction) listens for that signal and triggers code!
+
+   // 16. CLICK EVENT DEMONSTRATION
+   const quickTestBtn = document.querySelector("#quickTestBtn");
+   if (quickTestBtn) {
+      let clickCount = 0;
+      quickTestBtn.addEventListener("click", function () {
+         clickCount++;
+         console.log(`Quick Test Button clicked ${clickCount} time(s)!`);
+         quickTestBtn.textContent = `Clicked (${clickCount})`;
+         quickTestBtn.classList.toggle("btn-primary");
+      });
+   }
+
+   // 17. INPUT EVENT DEMONSTRATION (REAL-TIME AS USER TYPES)
+   if (citizenNameInput && greetingPreview) {
+      citizenNameInput.addEventListener("input", function () {
+         const enteredName = citizenNameInput.value.trim();
+         if (enteredName === "") {
+            greetingPreview.textContent = "Welcome, Citizen! Type your name below.";
+         } else {
+            // Using textContent for 100% safe rendering of user input:
+            greetingPreview.textContent = `Welcome, Citizen ${enteredName}! Thank you for participating.`;
+         }
+      });
+   }
+
+   // 18. CHANGE EVENT DEMONSTRATION (SELECT DROPDOWN)
+   const categoryPreview = document.querySelector("#categoryPreview");
+   if (issueCategorySelect && categoryPreview) {
+      issueCategorySelect.addEventListener("change", function () {
+         const selectedCategory = issueCategorySelect.value;
+         if (selectedCategory === "") {
+            categoryPreview.textContent = "Selected Category: None";
+         } else {
+            categoryPreview.textContent = `Selected Category: ${selectedCategory}`;
+         }
+      });
+   }
+
+   // 19 & 20. SUBMIT EVENT & event.preventDefault()
+   // By default, submitting an HTML form sends an HTTP GET/POST and reloads the webpage.
+   // event.preventDefault() stops the reload so JavaScript can handle the interaction seamlessly!
+   const reportForm = document.querySelector("#reportForm");
+   const demoFeedback = document.querySelector("#demoFeedback");
+
+   if (reportForm) {
+      reportForm.addEventListener("submit", function (event) {
+         // Stop page from reloading/navigating:
+         event.preventDefault();
+
+         // Read values from form inputs:
+         const nameVal = citizenNameInput ? citizenNameInput.value.trim() : "Citizen";
+         const categoryVal = issueCategorySelect ? issueCategorySelect.value : "General";
+         const descVal = descriptionInput ? descriptionInput.value.trim() : "No description provided.";
+
+         console.log("--- Demo Report Submitted ---");
+         console.log("Name:", nameVal);
+         console.log("Category:", categoryVal);
+         console.log("Description:", descVal);
+
+         // Display feedback safely on the webpage:
+         if (demoFeedback) {
+            demoFeedback.style.display = "block";
+            // Set textContent to avoid XSS:
+            demoFeedback.textContent = `Thank you, ${nameVal}. Your "${categoryVal}" report has been received as a demo.`;
+         }
+
+         // Reset form fields:
+         reportForm.reset();
+         if (greetingPreview) {
+            greetingPreview.textContent = "Welcome, Citizen! Type your name below.";
+         }
+         if (categoryPreview) {
+            categoryPreview.textContent = "Selected Category: None";
+         }
+      });
+   }
+
+} else {
+   console.log("Note: DOM and event listeners require a web browser environment (frontend/index.html).");
+}
+
+console.log("Day 11 script execution finished cleanly.");
+
 
 

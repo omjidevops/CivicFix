@@ -28,7 +28,7 @@
             <div class="brand-logo-wrap">
                 <span class="brand-icon" aria-hidden="true">🏛️</span>
                 <div class="brand-text">
-                    <h1 class="brand-title">CivicFix</h1>
+                    <h1 id="pageTitle" class="brand-title">CivicFix</h1>
                     <p class="brand-tagline">Smart Civic Issue Reporting &amp; Resolution Platform</p>
                 </div>
             </div>
@@ -310,6 +310,67 @@
                         Your report can help make your community cleaner, safer and better.
                     </p>
                     <a href="#issues" class="btn btn-cta">Report an Issue</a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             8.5. DEMO REPORT ISSUE (DAY 11: DOM + EVENTS)
+             ========================================== -->
+        <section id="demo-report" class="demo-section" aria-label="Demo Issue Reporting Practice">
+            <div class="container section-container">
+                <div class="section-header">
+                    <span class="section-subtitle">Interactive JavaScript Practice</span>
+                    <h2 class="section-title">Demo Issue Reporting</h2>
+                    <p class="section-description">
+                        Practice interacting with the page in real-time. This interactive module demonstrates DOM
+                        selection, live input events, category selection, and form submission.
+                    </p>
+                </div>
+
+                <div class="demo-card">
+                    <!-- Live Dynamic Preview -->
+                    <div class="demo-preview-box" id="previewBox">
+                        <span class="demo-preview-label">Live Preview:</span>
+                        <p id="greetingPreview" class="greeting-preview">Welcome, Citizen! Type your name below.</p>
+                        <p id="categoryPreview" class="category-preview">Selected Category: None</p>
+                    </div>
+
+                    <!-- Simple Interactive Form -->
+                    <form id="reportForm" class="demo-form">
+                        <div class="form-group">
+                            <label for="citizenName" class="form-label">Citizen Name</label>
+                            <input id="citizenName" type="text" class="form-input"
+                                placeholder="Enter your name (e.g. Om)" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issueCategory" class="form-label">Civic Issue Category</label>
+                            <select id="issueCategory" class="form-select" required>
+                                <option value="">Select Category</option>
+                                <option value="Road Damage">Road Damage</option>
+                                <option value="Garbage">Garbage</option>
+                                <option value="Street Light">Street Light</option>
+                                <option value="Water Supply">Water Supply</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description" class="form-label">Issue Description</label>
+                            <textarea id="description" class="form-textarea" rows="3"
+                                placeholder="Briefly describe the civic issue..." required></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="quickTestBtn" class="btn btn-secondary">Quick Click Test</button>
+                            <button type="submit" id="submitReportBtn" class="btn btn-primary">Submit Demo
+                                Report</button>
+                        </div>
+                    </form>
+
+                    <!-- Feedback / Confirmation Container -->
+                    <div id="demoFeedback" class="demo-feedback" style="display: none;"></div>
                 </div>
             </div>
         </section>
