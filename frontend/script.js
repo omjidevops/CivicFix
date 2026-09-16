@@ -211,3 +211,221 @@ const baseWeight = sampleSeverity * 10;
 const totalPriorityScore = baseWeight + sampleUpvotes;
 console.log(`Initial Priority Score Calculation: ${totalPriorityScore}`);
 console.log("Day 6 script execution finished cleanly.");
+
+
+// ==============================================================================
+// ==============================================================================
+// DAY 7 — CONDITIONS AND LOOPS
+// ==============================================================================
+// ==============================================================================
+console.log("\n--- Day 7: Conditions and Loops Initialized ---");
+
+
+// ==============================================================================
+// 1. IF, ELSE IF, AND ELSE STATEMENTS
+// ==============================================================================
+// Conditions allow our code to make decisions: "IF this is true, do X, ELSE do Y".
+
+let issueSeverity = 5;
+
+// IMPORTANT NOTE: This is an introductory JavaScript exercise,
+// NOT the final CivicFix Smart Priority Algorithm.
+if (issueSeverity >= 4) {
+    console.log("Priority Level: Urgent attention required!");
+} else if (issueSeverity >= 2) {
+    console.log("Priority Level: Normal priority complaint.");
+} else {
+    console.log("Priority Level: Low priority complaint.");
+}
+
+
+// ==============================================================================
+// 2. LOGICAL OPERATORS IN CONDITIONS (&&, ||, !)
+// ==============================================================================
+let citizenUpvotes = 25;
+let isCitizenVerified = true;
+
+// Logical AND (&&): Both conditions must be true
+if (citizenUpvotes > 20 && isCitizenVerified) {
+    console.log("High Community Impact: Complaint has > 20 upvotes AND verified citizen!");
+}
+
+// Logical OR (||): At least one condition must be true
+let isHazardous = false;
+if (isHazardous || issueSeverity >= 4) {
+    console.log("Emergency Dispatch: Issue is hazardous OR severity is critical.");
+}
+
+// Nested If: A condition placed inside another condition
+if (isCitizenVerified) {
+    if (citizenUpvotes >= 20) {
+        console.log("Nested Check: Citizen is verified, and upvotes exceed threshold.");
+    }
+}
+
+
+// ==============================================================================
+// 3. TERNARY OPERATOR (condition ? valueIfTrue : valueIfFalse)
+// ==============================================================================
+// A clean, one-line shortcut for simple if/else decisions.
+
+// Example 1: Verification Badge Text
+let userVerified = true;
+let verificationBadge = userVerified ? "Verified Citizen" : "Unverified Citizen";
+console.log(`Citizen Status: ${verificationBadge}`);
+
+// Example 2: Access Check
+let hasAdminRole = false;
+let portalAccess = hasAdminRole ? "Access Granted to Municipal Portal" : "Access Denied";
+console.log(`Portal Access: ${portalAccess}`);
+
+// Example 3: Complaint State
+let isResolved = false;
+let statusMessage = isResolved ? "Resolved" : "Pending Investigation";
+console.log(`Resolution Status: ${statusMessage}`);
+
+
+// ==============================================================================
+// 4. SWITCH STATEMENT
+// ==============================================================================
+// Use switch when comparing a single variable against multiple specific values.
+// - 'case': Matches a specific value.
+// - 'break': Stops code from falling through to the next case.
+// - 'default': Runs if none of the cases match (like the final 'else').
+
+let selectedCategory = "Road Damage";
+
+switch (selectedCategory) {
+    case "Road Damage":
+        console.log("Assigned Department: Public Works & Road Department");
+        break;
+
+    case "Garbage":
+        console.log("Assigned Department: Sanitation & Waste Management");
+        break;
+
+    case "Street Light":
+        console.log("Assigned Department: Municipal Electricity Department");
+        break;
+
+    case "Water Supply":
+        console.log("Assigned Department: Water Supply & Sewerage Board");
+        break;
+
+    default:
+        console.log("Assigned Department: General Municipal Grievance Cell");
+}
+
+
+// ==============================================================================
+// 5. FOR LOOP (Repetition with Known Count)
+// ==============================================================================
+// A loop repeats a block of code until a condition becomes false.
+// Structure: for (initialization; condition; increment) { ... }
+// 1. let i = 1      -> Starts counter at 1 (runs once at start).
+// 2. i <= 5         -> Before each loop, checks if i is still <= 5.
+// 3. i++            -> After each loop, adds 1 to i.
+
+console.log("\n--- For Loop Demonstration ---");
+for (let complaintNumber = 1; complaintNumber <= 5; complaintNumber++) {
+    console.log(`Checking complaint #${complaintNumber}`);
+}
+
+
+// ==============================================================================
+// 6. WHILE LOOP (Repetition While Condition Remains True)
+// ==============================================================================
+// Checks condition FIRST before executing the loop block.
+// If the condition is false initially, the block will never run!
+// IMPORTANT: You must increment the counter manually, or you get an infinite loop!
+
+console.log("\n--- While Loop Demonstration ---");
+let auditIndex = 1;
+
+while (auditIndex <= 5) {
+    console.log(`Processing audit for record #${auditIndex}`);
+    auditIndex++; // Increment is essential to prevent infinite loop!
+}
+
+
+// ==============================================================================
+// 7. DO...WHILE LOOP (Executes At Least Once)
+// ==============================================================================
+// Key Difference:
+// 'while' checks the condition at the top (may run 0 times).
+// 'do...while' runs the code block FIRST, then checks the condition at the bottom.
+// Therefore, do...while is GUARANTEED to execute at least once!
+
+console.log("\n--- Do...While Loop Demonstration ---");
+let retryCount = 1;
+
+do {
+    console.log(`Dispatch check attempt #${retryCount}`);
+    retryCount++;
+} while (retryCount <= 3);
+
+
+// ==============================================================================
+// 8. LOOP CONTROL: break STATEMENT
+// ==============================================================================
+// 'break' immediately EXITS the loop entirely, ignoring any remaining iterations.
+
+console.log("\n--- Break Statement Demonstration ---");
+for (let id = 1; id <= 10; id++) {
+    if (id === 5) {
+        console.log(`Break triggered at complaint #${id}: Target found! Stopping search.`);
+        break; // Stops the loop immediately!
+    }
+    console.log(`Inspecting complaint #${id}`);
+}
+
+
+// ==============================================================================
+// 9. LOOP CONTROL: continue STATEMENT
+// ==============================================================================
+// 'continue' SKIPS the rest of the CURRENT iteration and jumps straight to the next one.
+
+console.log("\n--- Continue Statement Demonstration ---");
+for (let wardNumber = 1; wardNumber <= 5; wardNumber++) {
+    if (wardNumber === 3) {
+        console.log(`Ward #${wardNumber} is under maintenance. Skipping inspection!`);
+        continue; // Skips the rest of ward 3, proceeds to ward 4!
+    }
+    console.log(`Inspecting facilities in Ward #${wardNumber}`);
+}
+
+
+// ==============================================================================
+// 10. MINI CIVICFIX INTEGRATED PRACTICE
+// ==============================================================================
+// Putting it all together using variables, conditions, switch, and loops:
+console.log("\n--- Mini CivicFix Integrated Practice ---");
+
+let targetIssueSeverity = 4;
+let targetIssueCategory = "Street Light";
+let targetIssueVerified = true;
+
+// 1. Severity Decision
+if (targetIssueSeverity >= 4 && targetIssueVerified) {
+    console.log("Status: High Priority Verified Incident.");
+} else {
+    console.log("Status: Standard Queue Incident.");
+}
+
+// 2. Department Assignment via Switch
+switch (targetIssueCategory) {
+    case "Street Light":
+        console.log("Routing: Assigned to Electrical Division.");
+        break;
+    default:
+        console.log("Routing: Assigned to General Intake.");
+}
+
+// 3. Batch Notification Simulation using a For Loop
+console.log("Simulating batch notifications for nearby field officers:");
+for (let officer = 1; officer <= 3; officer++) {
+    console.log(`Officer ${officer}: SMS alert dispatched.`);
+}
+
+console.log("Day 7 script execution finished cleanly.");
+
