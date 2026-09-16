@@ -1266,4 +1266,340 @@ if (typeof document !== "undefined") {
 console.log("Day 11 script execution finished cleanly.");
 
 
+// ==============================================================================
+// DAY 12 — ASYNC JS, JSON & APIs
+// ==============================================================================
+// In Days 1–11, our code executed synchronously (line-by-line) and interacted only
+// with the local browser DOM. In real production applications like CivicFix,
+// frontend web apps need to communicate with remote backend servers (APIs)
+// over the internet using asynchronous HTTP requests and JSON data formats!
+
+console.log("\n--- Day 12: Async JavaScript, JSON & APIs Initialized ---");
+
+// ==============================================================================
+// STEP 1 — SYNCHRONOUS JAVASCRIPT
+// ==============================================================================
+// Synchronous code runs strictly line-by-line, in sequential order.
+// Each line must finish before the next line can start:
+
+console.log("\n[Step 1: Synchronous Execution]");
+console.log("Synchronous Step 1: Initializing civic configuration");
+console.log("Synchronous Step 2: Validating citizen session");
+console.log("Synchronous Step 3: Interface rendered successfully");
+
+
+// ==============================================================================
+// STEP 2 — ASYNCHRONOUS JAVASCRIPT & setTimeout()
+// ==============================================================================
+// Why is asynchronous code needed?
+// If a network request takes 3 seconds to get data from a server, synchronous code
+// would FREEZE the entire browser (buttons couldn't be clicked, scrolling would stop!).
+// Asynchronous code allows slow tasks to run in the background while the rest of
+// the webpage continues running smoothly:
+
+console.log("\n[Step 2: Asynchronous Execution with setTimeout]");
+console.log("Async Demo: Start");
+
+// setTimeout schedules a task to run after a specified delay (in milliseconds):
+setTimeout(() => {
+   console.log("Async Demo: Data received from remote server (after 2000ms delay)");
+}, 2000);
+
+console.log("Async Demo: End (Executed immediately without waiting for the 2s timer!)");
+
+
+// ==============================================================================
+// STEP 3 — CALLBACK FUNCTIONS
+// ==============================================================================
+// A callback is simply a function passed as an argument to another function,
+// which is invoked once the background task finishes:
+
+function fetchSimulatedIssue(callback) {
+   setTimeout(() => {
+      const sampleData = { id: 101, category: "Road Damage", status: "Pending" };
+      callback(sampleData);
+   }, 300);
+}
+
+fetchSimulatedIssue((data) => {
+   console.log("[Step 3: Callback Received]:", data.category, `(Status: ${data.status})`);
+});
+
+
+// ==============================================================================
+// STEP 4 — PROMISES (.then, .catch, .finally)
+// ==============================================================================
+// A Promise represents an eventual completion (or failure) of an asynchronous operation.
+// A Promise has 3 states:
+// 1. Pending: Initial state, operation still in progress.
+// 2. Fulfilled (Resolved): Operation completed successfully.
+// 3. Rejected: Operation failed with an error.
+
+function checkWardInspection(wardId) {
+   return new Promise((resolve, reject) => {
+      setTimeout(() => {
+         if (wardId > 0) {
+            resolve(`Ward #${wardId} inspection report verified.`);
+         } else {
+            reject("Invalid Ward ID provided: must be greater than 0.");
+         }
+      }, 400);
+   });
+}
+
+// Consuming the promise using .then(), .catch(), and .finally():
+checkWardInspection(104)
+   .then((message) => {
+      console.log("[Step 4: Promise Fulfilled]:", message);
+   })
+   .catch((error) => {
+      console.error("[Step 4: Promise Rejected]:", error);
+   })
+   .finally(() => {
+      console.log("[Step 4: Promise Finally]: Ward inspection promise settled.");
+   });
+
+
+// ==============================================================================
+// STEP 5 — ASYNC / AWAIT & TRY...CATCH
+// ==============================================================================
+// 'async/await' is modern syntactic sugar built on top of Promises.
+// It allows asynchronous code to be written and read just like synchronous code:
+
+async function inspectWardAsync(wardId) {
+   try {
+      console.log(`[Step 5: async/await]: Awaiting inspection for Ward #${wardId}...`);
+      const result = await checkWardInspection(wardId);
+      console.log("[Step 5: async/await Success]:", result);
+   } catch (err) {
+      console.error("[Step 5: async/await Error caught]:", err);
+   }
+}
+
+inspectWardAsync(105);
+
+
+// ==============================================================================
+// STEP 6 — JSON (JavaScript Object Notation)
+// ==============================================================================
+// JSON is a lightweight text-based data format used for exchanging data between
+// frontend clients and backend servers.
+// - JSON.stringify(): Converts a JavaScript Object -> JSON String (for sending over HTTP)
+// - JSON.parse(): Converts a JSON String -> JavaScript Object (for reading in JavaScript)
+
+const sampleComplaintObject = {
+   id: 101,
+   category: "Road Damage",
+   severity: 5,
+   status: "Pending"
+};
+
+// 1. Convert Object to JSON String:
+const complaintJsonString = JSON.stringify(sampleComplaintObject);
+console.log("\n[Step 6: JSON Serialization]");
+console.log("Original JS Object:", sampleComplaintObject);
+console.log("JSON.stringify() String:", complaintJsonString);
+
+// 2. Convert JSON String back to Object:
+const parsedBackObject = JSON.parse(complaintJsonString);
+console.log("JSON.parse() Object Category:", parsedBackObject.category);
+
+
+// ==============================================================================
+// STEP 7 & 8 — HTTP BASICS, METHODS & STATUS CODES
+// ==============================================================================
+// HTTP (Hypertext Transfer Protocol) governs request-response communication:
+//
+// 1. Standard HTTP Methods (CRUD operations):
+// - GET:    Retrieve data from the server (e.g. GET /api/complaints)
+// - POST:   Create new data on the server (e.g. POST /api/complaints)
+// - PUT:    Replace/update an entire record (e.g. PUT /api/complaints/101)
+// - PATCH:  Partially update a record (e.g. PATCH /api/complaints/101/status)
+// - DELETE: Remove a record from the server (e.g. DELETE /api/complaints/101)
+//
+// 2. Standard HTTP Status Codes:
+// - 200 OK: Request succeeded (e.g. complaint list loaded).
+// - 201 Created: New resource successfully created (e.g. new complaint filed).
+// - 400 Bad Request: Invalid input data sent by the client.
+// - 401 Unauthorized: User is not authenticated/logged in.
+// - 403 Forbidden: User is logged in but lacks permissions (e.g. citizen accessing admin tools).
+// - 404 Not Found: Requested resource does not exist (e.g. complaint #999 not found).
+// - 500 Internal Server Error: Server crashed or encountered an unexpected backend failure.
+
+
+// ==============================================================================
+// STEP 9 — ARCHITECTURAL BRIDGE: CIVICFIX FRONTEND TO FUTURE SPRING BOOT BACKEND
+// ==============================================================================
+// How CivicFix will communicate in future full-stack stages:
+//
+// Citizen Browser (HTML/JS/React)
+//       │  1. Sends HTTP Request (fetch with JSON body)
+//       ▼
+// Spring Boot REST Controller (@RestController @PostMapping("/api/complaints"))
+//       │  2. Validates business logic
+//       ▼
+// Service Layer (@Service ComplaintService)
+//       │  3. Processes database operations
+//       ▼
+// Data Repository (@Repository ComplaintRepository / Spring Data JPA)
+//       │  4. Runs SQL queries
+//       ▼
+// MySQL Database (Stores complaints permanently)
+//       │  5. Returns query results
+//       ▼
+// Spring Boot sends HTTP Response (201 Created + JSON payload)
+//       │  6. Browser receives response
+//       ▼
+// JavaScript updates UI dynamically on the screen!
+
+
+// ==============================================================================
+// STEP 10, 11, 12 & 13 — LIVE BROWSER DOM FETCH INTEGRATION (GET & POST)
+// ==============================================================================
+// Only runs in browser environments where 'document' exists:
+if (typeof document !== "undefined") {
+
+   // ---------------------------------------------------------------------------
+   // Part A: GET Request Demonstration (Loading Sample Data)
+   // ---------------------------------------------------------------------------
+   const loadSampleBtn = document.querySelector("#loadSampleBtn");
+   const apiLoadingIndicator = document.querySelector("#apiLoadingIndicator");
+   const apiResultDisplay = document.querySelector("#apiResultDisplay");
+   const apiResultId = document.querySelector("#apiResultId");
+   const apiResultTitle = document.querySelector("#apiResultTitle");
+   const apiResultBody = document.querySelector("#apiResultBody");
+   const apiErrorDisplay = document.querySelector("#apiErrorDisplay");
+
+   if (loadSampleBtn) {
+      loadSampleBtn.addEventListener("click", async function() {
+         console.log("Initiating GET request to practice API...");
+
+         // 1. Set Loading State:
+         if (apiLoadingIndicator) apiLoadingIndicator.style.display = "block";
+         if (apiResultDisplay) apiResultDisplay.style.display = "none";
+         if (apiErrorDisplay) apiErrorDisplay.style.display = "none";
+         loadSampleBtn.disabled = true;
+         loadSampleBtn.textContent = "Loading...";
+
+         try {
+            // 2. Perform GET fetch request using public practice API:
+            const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+
+            // Check if HTTP response status is OK (200-299):
+            if (!response.ok) {
+               throw new Error(`Server returned HTTP status ${response.status}: ${response.statusText}`);
+            }
+
+            // 3. Parse JSON response:
+            const postData = await response.json();
+            console.log("GET API Response received:", postData);
+
+            // 4. Update UI with Success State (using safe textContent):
+            if (apiResultId) apiResultId.textContent = `ID: #${postData.id}`;
+            if (apiResultTitle) apiResultTitle.textContent = postData.title;
+            if (apiResultBody) apiResultBody.textContent = postData.body;
+            if (apiResultDisplay) apiResultDisplay.style.display = "block";
+
+         } catch (error) {
+            console.error("GET API Error caught:", error);
+            // 5. Update UI with Error State:
+            if (apiErrorDisplay) {
+               apiErrorDisplay.style.display = "block";
+               apiErrorDisplay.textContent = `Failed to load sample complaint: ${error.message}. Please check your connection and try again.`;
+            }
+         } finally {
+            // 6. Reset Loading State:
+            if (apiLoadingIndicator) apiLoadingIndicator.style.display = "none";
+            loadSampleBtn.disabled = false;
+            loadSampleBtn.textContent = "Load Sample Complaint";
+         }
+      });
+   }
+
+   // ---------------------------------------------------------------------------
+   // Part B: POST Request Demonstration (Submitting Practice Issue)
+   // ---------------------------------------------------------------------------
+   const apiPostForm = document.querySelector("#apiPostForm");
+   const postTitleInput = document.querySelector("#postTitleInput");
+   const postBodyInput = document.querySelector("#postBodyInput");
+   const submitPostBtn = document.querySelector("#submitPostBtn");
+   const postFeedback = document.querySelector("#postFeedback");
+
+   if (apiPostForm) {
+      apiPostForm.addEventListener("submit", async function(event) {
+         // Stop native form reload:
+         event.preventDefault();
+
+         const titleVal = postTitleInput ? postTitleInput.value.trim() : "";
+         const bodyVal = postBodyInput ? postBodyInput.value.trim() : "";
+
+         if (!titleVal || !bodyVal) return;
+
+         // Set Loading state on submit button:
+         if (submitPostBtn) {
+            submitPostBtn.disabled = true;
+            submitPostBtn.textContent = "Sending POST...";
+         }
+         if (postFeedback) postFeedback.style.display = "none";
+
+         // Create JavaScript Object representing the issue:
+         const newIssuePayload = {
+            title: titleVal,
+            body: bodyVal,
+            userId: 1 // Practice API user identifier
+         };
+
+         try {
+            console.log("Sending POST request with JSON payload:", newIssuePayload);
+
+            // Send POST request via fetch():
+            const postResponse = await fetch("https://jsonplaceholder.typicode.com/posts", {
+               method: "POST",
+               headers: {
+                  "Content-Type": "application/json; charset=UTF-8"
+               },
+               body: JSON.stringify(newIssuePayload) // Convert JS Object -> JSON String
+            });
+
+            if (!postResponse.ok) {
+               throw new Error(`HTTP Error ${postResponse.status}: ${postResponse.statusText}`);
+            }
+
+            const createdRecord = await postResponse.json();
+            console.log("POST Response received from server:", createdRecord);
+
+            // Display Success Feedback safely:
+            if (postFeedback) {
+               postFeedback.style.display = "block";
+               postFeedback.className = "api-status-box api-success";
+               postFeedback.textContent = `Success! Practice issue registered on server with simulated ID: #${createdRecord.id}. Title: "${createdRecord.title}"`;
+            }
+
+            // Reset form fields:
+            apiPostForm.reset();
+
+         } catch (error) {
+            console.error("POST API Error caught:", error);
+            if (postFeedback) {
+               postFeedback.style.display = "block";
+               postFeedback.className = "api-status-box api-error";
+               postFeedback.textContent = `Error submitting issue: ${error.message}`;
+            }
+         } finally {
+            if (submitPostBtn) {
+               submitPostBtn.disabled = false;
+               submitPostBtn.textContent = "Send POST Request";
+            }
+         }
+      });
+   }
+
+} else {
+   console.log("Note: Browser DOM fetch elements require a web browser environment (frontend/index.html).");
+}
+
+console.log("Day 12 script execution finished cleanly.");
+
+
+
 
