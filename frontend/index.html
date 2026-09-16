@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicFix — Smart Civic Issue Reporting &amp; Resolution Platform</title>
+
+    <!-- Force Browser to Render in True Light Mode (Prevents Auto-Dark Inversion) -->
+    <meta name="color-scheme" content="light">
+
+    <!-- Google Fonts for Modern, Professional Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <!-- ==========================================
+         1. HEADER / BRAND AREA
+         ========================================== -->
+    <header id="home" class="brand-header">
+        <div class="container header-container">
+            <div class="brand-logo-wrap">
+                <span class="brand-icon" aria-hidden="true">🏛️</span>
+                <div class="brand-text">
+                    <h1 class="brand-title">CivicFix</h1>
+                    <p class="brand-tagline">Smart Civic Issue Reporting &amp; Resolution Platform</p>
+                </div>
+            </div>
+            <div class="header-badge">
+                <span class="badge-dot"></span>
+                <span>Citizen Portal 2026</span>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- ==========================================
+         2. NAVBAR
+         ========================================== -->
+    <nav class="navbar" aria-label="Main Navigation">
+        <div class="container nav-container">
+            <a href="#home" class="nav-brand-mini">
+                <span>CivicFix</span>
+            </a>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#issues" class="nav-link">Report Issue</a>
+                <a href="#how-it-works" class="nav-link">Track Complaint</a>
+                <a href="#login" class="nav-link nav-btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ==========================================
+         MAIN CONTENT CONTAINER
+         ========================================== -->
+    <main>
+
+        <!-- ==========================================
+             3. HERO SECTION
+             ========================================== -->
+        <section class="hero-section">
+            <div class="container hero-container">
+                <div class="hero-badge">
+                    <span class="hero-badge-icon" aria-hidden="true">📢</span>
+                    <span>Empowering Citizens • Enhancing Governance</span>
+                </div>
+
+                <h2 class="hero-heading">Make Your City Better</h2>
+
+                <p class="hero-description">
+                    Report civic problems in your area and help authorities resolve them faster.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#issues" class="btn btn-primary">Report an Issue</a>
+                    <a href="#how-it-works" class="btn btn-secondary">Track Complaint</a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             4. QUICK STATS SECTION
+             ========================================== -->
+        <section class="stats-section" aria-label="Platform Statistics">
+            <div class="container section-container">
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-number">1,250+</div>
+                        <div class="stat-label">Issues Reported</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">850+</div>
+                        <div class="stat-label">Issues Resolved</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Departments</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">92%</div>
+                        <div class="stat-label">Resolution Rate</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             5. COMMON CIVIC ISSUES SECTION
+             ========================================== -->
+        <section id="issues" class="issues-section">
+            <div class="container section-container">
+                <div class="section-header">
+                    <span class="section-subtitle">Categories</span>
+                    <h2 class="section-title">Common Civic Issues</h2>
+                    <p class="section-description">
+                        Select a category below to quickly file and report an issue in your locality.
+                    </p>
+                </div>
+
+                <div class="issues-grid">
+
+                    <!-- Issue Card 1: Road Damage -->
+                    <article class="issue-card">
+                        <div class="issue-icon-wrapper" aria-hidden="true">🚧</div>
+                        <h3 class="issue-title">Road Damage</h3>
+                        <p class="issue-description">
+                            Report potholes, broken roads and damaged streets.
+                        </p>
+                        <a href="#report" class="btn btn-card">Report Issue</a>
+                    </article>
+
+                    <!-- Issue Card 2: Garbage & Waste -->
+                    <article class="issue-card">
+                        <div class="issue-icon-wrapper" aria-hidden="true">🗑️</div>
+                        <h3 class="issue-title">Garbage &amp; Waste</h3>
+                        <p class="issue-description">
+                            Report garbage dumping and waste management problems.
+                        </p>
+                        <a href="#report" class="btn btn-card">Report Issue</a>
+                    </article>
+
+                    <!-- Issue Card 3: Street Light Problems -->
+                    <article class="issue-card">
+                        <div class="issue-icon-wrapper" aria-hidden="true">💡</div>
+                        <h3 class="issue-title">Street Light Problems</h3>
+                        <p class="issue-description">
+                            Report broken or non-working street lights.
+                        </p>
+                        <a href="#report" class="btn btn-card">Report Issue</a>
+                    </article>
+
+                    <!-- Issue Card 4: Water Supply -->
+                    <article class="issue-card">
+                        <div class="issue-icon-wrapper" aria-hidden="true">💧</div>
+                        <h3 class="issue-title">Water Supply</h3>
+                        <p class="issue-description">
+                            Report water leakage and water supply problems.
+                        </p>
+                        <a href="#report" class="btn btn-card">Report Issue</a>
+                    </article>
+
+                    <!-- Issue Card 5: Drainage Problems -->
+                    <article class="issue-card">
+                        <div class="issue-icon-wrapper" aria-hidden="true">🌊</div>
+                        <h3 class="issue-title">Drainage Problems</h3>
+                        <p class="issue-description">
+                            Report blocked drains and drainage issues.
+                        </p>
+                        <a href="#report" class="btn btn-card">Report Issue</a>
+                    </article>
+
+                    <!-- Issue Card 6: Public Safety -->
+                    <article class="issue-card">
+                        <div class="issue-icon-wrapper" aria-hidden="true">🛡️</div>
+                        <h3 class="issue-title">Public Safety</h3>
+                        <p class="issue-description">
+                            Report civic infrastructure and public safety concerns.
+                        </p>
+                        <a href="#report" class="btn btn-card">Report Issue</a>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             6. HOW CIVICFIX WORKS
+             ========================================== -->
+        <section id="how-it-works" class="workflow-section">
+            <div class="container section-container">
+                <div class="section-header">
+                    <span class="section-subtitle">Workflow</span>
+                    <h2 class="section-title">How CivicFix Works</h2>
+                    <p class="section-description">
+                        A seamless, transparent four-step journey from civic complaint to verified resolution.
+                    </p>
+                </div>
+
+                <div class="steps-grid">
+
+                    <!-- Step 01 -->
+                    <div class="step-card">
+                        <div class="step-badge">01</div>
+                        <h3 class="step-title">Report</h3>
+                        <p class="step-description">Citizen reports a civic problem.</p>
+                    </div>
+
+                    <!-- Step 02 -->
+                    <div class="step-card">
+                        <div class="step-badge">02</div>
+                        <h3 class="step-title">Verify</h3>
+                        <p class="step-description">Authorities verify the complaint.</p>
+                    </div>
+
+                    <!-- Step 03 -->
+                    <div class="step-card">
+                        <div class="step-badge">03</div>
+                        <h3 class="step-title">Resolve</h3>
+                        <p class="step-description">The responsible department works on the issue.</p>
+                    </div>
+
+                    <!-- Step 04 -->
+                    <div class="step-card">
+                        <div class="step-badge">04</div>
+                        <h3 class="step-title">Confirm</h3>
+                        <p class="step-description">Citizen confirms that the issue has been resolved.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             7. WHY CIVICFIX (FEATURES)
+             ========================================== -->
+        <section class="features-section">
+            <div class="container section-container">
+                <div class="section-header">
+                    <span class="section-subtitle">Key Advantages</span>
+                    <h2 class="section-title">Why CivicFix</h2>
+                    <p class="section-description">
+                        Designed to bridge the gap between residents and local municipal bodies effectively.
+                    </p>
+                </div>
+
+                <div class="features-grid">
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">⚡</div>
+                        <h3 class="feature-title">Easy Reporting</h3>
+                        <p class="feature-description">
+                            Submit complaints in seconds with an intuitive, clutter-free reporting interface.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">📍</div>
+                        <h3 class="feature-title">Location-Based Complaints</h3>
+                        <p class="feature-description">
+                            Pinpoint exact incident locations to help field teams arrive without delay.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🎯</div>
+                        <h3 class="feature-title">Smart Priority</h3>
+                        <p class="feature-description">
+                            Urgent hazards are automatically prioritized to ensure prompt civic intervention.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🔍</div>
+                        <h3 class="feature-title">Transparent Tracking</h3>
+                        <p class="feature-description">
+                            Track status milestones in real-time with full visibility across departments.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             8. CALL TO ACTION (CTA)
+             ========================================== -->
+        <section class="cta-section">
+            <div class="container section-container">
+                <div class="cta-card">
+                    <h2 class="cta-heading">See a Problem? Report It.</h2>
+                    <p class="cta-description">
+                        Your report can help make your community cleaner, safer and better.
+                    </p>
+                    <a href="#issues" class="btn btn-cta">Report an Issue</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         9. FOOTER
+         ========================================== -->
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <h2 class="footer-title">CivicFix</h2>
+                    <p class="footer-tagline">Smart Civic Issue Reporting &amp; Resolution Platform</p>
+                </div>
+                <div class="footer-nav">
+                    <span class="footer-nav-title">Quick Links</span>
+                    <ul class="footer-links-list">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#issues">Report Issue</a></li>
+                        <li><a href="#how-it-works">Track Complaint</a></li>
+                        <li><a href="#login">Login</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright-text">CivicFix &copy; 2026</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

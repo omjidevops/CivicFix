@@ -1,0 +1,1106 @@
+/* ==========================================================================
+   CivicFix — Smart Civic Issue Reporting & Resolution Platform
+   Stylesheet: frontend/style.css
+   Architecture: Pure Vanilla CSS3
+   Day 4: Advanced Responsive CSS, Layout Mastery & UI Polish
+   Beginner-friendly, modular, responsive, and interview-ready.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. CSS VARIABLES (DESIGN SYSTEM TOKENS)
+   ==========================================================================
+   Why CSS Variables (:root)?
+   - Centralizes the entire visual system in one place.
+   - Prevents hardcoding color hex values, radiuses, or shadows across the stylesheet.
+   - Allows instant site-wide theme updates from a single declaration block.
+   ========================================================================== */
+
+:root {
+    /* Color Scheme Configuration */
+    color-scheme: light;
+
+    /* Primary Brand Colors (Civic / Public-Service Palette) */
+    --primary-color: #0f766e;
+    /* Deep Civic Teal: Authoritative, clean, trustworthy */
+    --primary-hover: #0d655e;
+    /* Darker Teal for hover states */
+    --primary-active: #0a4f49;
+    /* Deepest Teal for tactile active/click states */
+    --primary-light: #e6f4f2;
+    /* Soft Teal tint for icon badges and subtle tags */
+
+    /* Neutral & Dark Colors */
+    --dark-color: #111827;
+    /* Deep Slate for navbar, headings, and footer */
+    --dark-hover: #1f2937;
+    /* Lighter slate for dark surface hover states */
+    --background-color: #f4f7f9;
+    /* Soft municipal light-gray page background */
+    --white: #ffffff;
+    /* Pure white for card surfaces and high contrast */
+
+    /* Typography Colors */
+    --text-color: #222222;
+    /* Primary text for optimal reading contrast */
+    --muted-color: #6b7280;
+    /* Secondary gray for supporting descriptions */
+    --border-color: #e5e7eb;
+    /* Subtle border line for structured separation */
+
+    /* Typography Family */
+    --font-main: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* Sizing & Layout Tokens */
+    --container-width: 1200px;
+    /* Max container width for modern wide displays */
+    --gutter-space: 20px;
+    /* Standard gutter padding on left and right */
+
+    /* Radius Tokens */
+    --radius-sm: 6px;
+    /* Small radius for buttons and badges */
+    --radius: 10px;
+    /* Standard border radius for cards */
+    --radius-lg: 16px;
+    /* Large radius for prominent feature cards & CTA */
+
+    /* Elevation / Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+
+    /* Transitions */
+    --transition: 0.2s ease;
+    /* Standard smooth transition for micro-interactions */
+
+    /* Z-Index Hierarchy Tokens */
+    --z-base: 1;
+    /* Default positioned elements */
+    --z-card: 10;
+    /* Card overlays / floating badges */
+    --z-navbar: 100;
+    /* Sticky navbar stays above page content */
+}
+
+
+/* ==========================================================================
+   2. RESET, UNIVERSAL BOX SIZING & MEDIA SAFETY
+   ==========================================================================
+   Why box-sizing: border-box?
+   - In default CSS ('content-box'), adding padding or borders expands the element
+     OUTSIDE the defined width, causing unexpected overflow and horizontal scrolling.
+   - With 'border-box', an element's total width and height include padding and borders.
+     This makes responsive layouts completely predictable.
+
+   Why Media Safety (max-width: 100%)?
+   - Prevents images, SVGs, and videos from exceeding their parent containers on small screens.
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    width: 100%;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    overflow-x: hidden;
+    /* Prevents accidental horizontal scrolling */
+}
+
+/* Image & Media Safety: Responsive by default */
+img,
+svg,
+video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+/* ==========================================================================
+   3. RESPONSIVE TYPOGRAPHY & FLUID SIZES (clamp())
+   ==========================================================================
+   What is clamp(MIN, PREFERRED, MAX)?
+   - A CSS math function that sets a fluid value between an allowable minimum
+     and maximum bound.
+   - Minimum: Floor on mobile devices (e.g. 2rem).
+   - Preferred: Responsive viewport unit (e.g. 5vw) that scales with screen width.
+   - Maximum: Ceiling on large desktop monitors (e.g. 2.85rem).
+   - Benefit: Eliminates jarring font jumps between device breakpoints!
+   ========================================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--dark-color);
+    line-height: 1.25;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    font-size: clamp(1.65rem, 3.5vw, 2.1rem);
+    letter-spacing: -0.4px;
+}
+
+h3 {
+    font-size: 1.25rem;
+    letter-spacing: -0.2px;
+}
+
+p {
+    font-size: 1rem;
+    color: var(--muted-color);
+    line-height: 1.6;
+}
+
+/* Section Header Typography */
+.section-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto clamp(32px, 5vw, 44px) auto;
+    position: relative;
+    /* Anchor for decorative elements */
+}
+
+.section-subtitle {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+    padding: 4px 14px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-size: clamp(1.65rem, 3.5vw, 2.1rem);
+    font-weight: 800;
+    color: var(--dark-color);
+    margin-bottom: 12px;
+    position: relative;
+}
+
+/* Pseudo-element Accent: A subtle decorative line under section titles */
+/* Note: Pseudo-elements (::after) are purely cosmetic; text remains in HTML */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 44px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 12px auto 0 auto;
+    border-radius: 2px;
+}
+
+.section-description {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    color: var(--muted-color);
+    line-height: 1.55;
+    margin-top: 10px;
+}
+
+
+/* ==========================================================================
+   4. LAYOUT / CONTAINER SYSTEM (calc() & Responsive Widths)
+   ==========================================================================
+   Why a Reusable .container Class?
+   - Enforces a maximum content width (1200px) so lines of text don't stretch
+     uncomfortably wide on large monitors.
+   - Automatically centers content via 'margin-left: auto; margin-right: auto'.
+   - Provides consistent 20px side padding preventing content from touching edges.
+
+   Why calc()?
+   - calc() allows arithmetic mixing different units (e.g., percentages and pixels).
+   - In container layout: ensures full responsive flexibility.
+   ========================================================================== */
+
+.container,
+.section-container,
+.header-container,
+.nav-container,
+.footer-container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--gutter-space);
+    padding-right: var(--gutter-space);
+}
+
+
+/* ==========================================================================
+   5. HEADER / BRAND AREA (CSS Positioning)
+   ==========================================================================
+   Top-level Civic Branding strip.
+   Uses position: relative to establish a clean stacking context.
+   Uses Flexbox for horizontal alignment between logo and citizen badge.
+   ========================================================================== */
+
+.brand-header {
+    position: relative;
+    /* Establishes positioning context for child elements */
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: clamp(16px, 3vw, 22px) 0;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.12);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.brand-logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+}
+
+.brand-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--white);
+    line-height: 1.1;
+}
+
+.brand-tagline {
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.92);
+    margin-top: 3px;
+    font-weight: 400;
+}
+
+.header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--white);
+    background-color: rgba(0, 0, 0, 0.18);
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.badge-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    /* Emerald live status indicator */
+    border-radius: 50%;
+    display: inline-block;
+}
+
+
+/* ==========================================================================
+   6. NAVBAR (Sticky Positioning, Z-Index & Focus Accessibility)
+   ==========================================================================
+   Why position: sticky?
+   - A hybrid between relative and fixed positioning.
+   - The navbar scrolls naturally until it reaches top: 0, then stays pinned.
+   - Unlike position: fixed, it preserves its natural space in the document flow!
+
+   Why z-index: 100?
+   - z-index controls stacking order along the 3D Z-axis (towards the viewer).
+   - Only works on positioned elements (relative, absolute, fixed, sticky).
+   - We avoid huge arbitrary values like 999999 and use structured layers.
+   ========================================================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-navbar);
+    background-color: var(--dark-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 58px;
+}
+
+.nav-brand-mini {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    transition: var(--transition);
+}
+
+.nav-brand-mini:hover {
+    color: var(--primary-light);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    /* CSS-only responsive wrapping on smaller widths */
+}
+
+.nav-link {
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    /* Touch-friendly target */
+    transition: var(--transition);
+}
+
+/* Pseudo-classes: Hover, Active, and Focus */
+.nav-link:hover {
+    color: var(--white);
+    background-color: var(--dark-hover);
+}
+
+.nav-link:active {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.nav-link.active {
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+}
+
+.nav-btn-login {
+    background-color: var(--primary-color);
+    color: var(--white) !important;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: var(--radius-sm);
+}
+
+.nav-btn-login:hover {
+    background-color: var(--primary-hover) !important;
+}
+
+.nav-btn-login:active {
+    background-color: var(--primary-active) !important;
+}
+
+/* Accessibility: Visible Focus Ring for Keyboard Users (Tab Navigation) */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+
+/* ==========================================================================
+   7. HERO SECTION (Fluid Typography & Responsive Spacing)
+   ==========================================================================
+   Visual centerpiece of CivicFix.
+   Uses clamp() for responsive padding and headline scaling without media jumps.
+   ========================================================================== */
+
+.hero-section {
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, var(--background-color) 100%);
+    padding: clamp(48px, 8vw, 76px) 0 clamp(40px, 6vw, 64px) 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hero-container {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+    border: 1px solid rgba(15, 118, 110, 0.2);
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+}
+
+.hero-badge-icon {
+    font-size: 0.95rem;
+}
+
+.hero-heading {
+    font-size: clamp(2.1rem, 5vw, 2.85rem);
+    font-weight: 800;
+    line-height: 1.18;
+    color: var(--dark-color);
+    letter-spacing: -0.8px;
+    margin-bottom: 18px;
+}
+
+.hero-description {
+    font-size: clamp(1.05rem, 2vw, 1.18rem);
+    color: var(--muted-color);
+    line-height: 1.6;
+    max-width: 650px;
+    margin: 0 auto 32px auto;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    /* Wraps buttons smoothly on small displays */
+}
+
+
+/* ==========================================================================
+   8. BUTTON SYSTEM (Pseudo-Classes: :hover, :active, :focus-visible)
+   ==========================================================================
+   Reusable, accessible button components across the platform.
+   Includes touch-friendly sizing (min-height: 44px) for mobile ergonomics.
+   ========================================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 24px;
+    min-height: 44px;
+    /* Touch target guideline */
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: var(--transition);
+    user-select: none;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-primary:active {
+    background-color: var(--primary-active);
+    transform: translateY(0);
+    /* Tactile press feedback */
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background-color: var(--white);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+    background-color: rgba(15, 118, 110, 0.15);
+    transform: translateY(0);
+}
+
+/* Card Action Button */
+.btn-card {
+    background-color: var(--primary-color);
+    color: var(--white);
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 0.92rem;
+    border-radius: var(--radius-sm);
+    margin-top: auto;
+}
+
+.btn-card:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-card:active {
+    background-color: var(--primary-active);
+}
+
+/* CTA Button */
+.btn-cta {
+    background-color: var(--white);
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 12px 30px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-cta:hover {
+    background-color: var(--dark-color);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-cta:active {
+    background-color: #000000;
+    transform: translateY(0);
+}
+
+
+/* ==========================================================================
+   9. STATISTICS (Advanced CSS Grid: auto-fit & minmax())
+   ==========================================================================
+   Why repeat(auto-fit, minmax(220px, 1fr))?
+   - auto-fit: Automatically fills the row with as many columns as will fit,
+     then expands them equally (1fr) to consume any leftover space.
+   - minmax(220px, 1fr): Each card is at least 220px wide, but will expand
+     freely on wider screens.
+   - Result: Responsive grid without needing hundreds of media queries!
+   ========================================================================== */
+
+.stats-section {
+    position: relative;
+    padding: 38px 0;
+    margin-top: -30px;
+    /* Floating stat strip over hero bottom */
+    z-index: var(--z-card);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.stat-card {
+    position: relative;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow);
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.stat-number {
+    font-size: 2.15rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    line-height: 1.1;
+    margin-bottom: 6px;
+}
+
+.stat-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--muted-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+/* ==========================================================================
+   10. RESPONSIVE CARD SYSTEM
+   ==========================================================================
+   Unified card system for Issues, Workflow Steps, and Features.
+   - Uses position: relative for positioning contexts.
+   - Flexbox inside cards guarantees uniform bottom button alignment.
+   - Subtle hover lift gives clear interactive feedback.
+   ========================================================================== */
+
+/* Issue Cards */
+.issue-card {
+    position: relative;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: clamp(20px, 3vw, 28px);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: var(--transition);
+}
+
+.issue-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.issue-icon-wrapper {
+    font-size: 1.9rem;
+    width: 52px;
+    height: 52px;
+    background-color: var(--primary-light);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.issue-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+.issue-description {
+    font-size: 0.95rem;
+    color: var(--muted-color);
+    line-height: 1.5;
+    margin-bottom: 22px;
+    flex-grow: 1;
+    /* Stretches to push .btn-card to bottom */
+}
+
+/* Workflow Step Cards */
+.step-card {
+    position: relative;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: clamp(20px, 3vw, 28px);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.step-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-color);
+}
+
+.step-badge {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+    border: 1px solid rgba(15, 118, 110, 0.2);
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+}
+
+.step-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 8px;
+}
+
+.step-description {
+    font-size: 0.92rem;
+    color: var(--muted-color);
+    line-height: 1.5;
+}
+
+/* Feature Cards */
+.feature-card {
+    position: relative;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: var(--radius);
+    padding: clamp(20px, 3vw, 26px);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.feature-icon {
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+}
+
+.feature-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 8px;
+}
+
+.feature-description {
+    font-size: 0.92rem;
+    color: var(--muted-color);
+    line-height: 1.5;
+}
+
+
+/* ==========================================================================
+   11. SECTIONS & ADVANCED GRID LAYOUTS
+   ==========================================================================
+   Visual distinction using alternating light (#ffffff) and soft gray (#f4f7f9).
+   CSS Grid handles multi-column layouts with minmax() and auto-fit.
+   ========================================================================== */
+
+/* Section 1: Common Civic Issues */
+.issues-section {
+    padding: clamp(48px, 6vw, 68px) 0;
+    background-color: var(--white);
+}
+
+.issues-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+/* Section 2: How CivicFix Works (Workflow) */
+.workflow-section {
+    padding: clamp(48px, 6vw, 68px) 0;
+    background-color: var(--background-color);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* Section 3: Why CivicFix (Features) */
+.features-section {
+    padding: clamp(48px, 6vw, 68px) 0;
+    background-color: var(--white);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+
+/* ==========================================================================
+   12. CALL TO ACTION (CTA)
+   ==========================================================================
+   Prominent municipal call-to-action banner.
+   Uses clamp() for responsive internal padding and headline scaling.
+   ========================================================================== */
+
+.cta-section {
+    padding: 32px 0 clamp(48px, 7vw, 76px) 0;
+    background-color: var(--white);
+}
+
+.cta-card {
+    position: relative;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: clamp(38px, 6vw, 54px) 24px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.cta-heading {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.cta-description {
+    font-size: clamp(1rem, 2vw, 1.12rem);
+    color: rgba(255, 255, 255, 0.92);
+    max-width: 600px;
+    margin: 0 auto 28px auto;
+}
+
+
+/* ==========================================================================
+   13. FOOTER
+   ==========================================================================
+   Clean, dark-themed footer with responsive multi-column Flexbox layout.
+   ========================================================================== */
+
+.site-footer {
+    background-color: var(--dark-color);
+    color: var(--white);
+    padding: clamp(42px, 6vw, 56px) 0 32px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 36px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+}
+
+.footer-brand {
+    max-width: 440px;
+}
+
+.footer-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 8px;
+}
+
+.footer-tagline {
+    font-size: 0.95rem;
+    color: #9ca3af;
+    line-height: 1.5;
+}
+
+.footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-nav-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--white);
+}
+
+.footer-links-list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links-list a {
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 0.92rem;
+    transition: var(--transition);
+}
+
+.footer-links-list a:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    padding-top: 24px;
+    text-align: center;
+}
+
+.copyright-text {
+    font-size: 0.88rem;
+    color: #6b7280;
+}
+
+
+/* ==========================================================================
+   14. RESPONSIVE MEDIA QUERIES (BREAKPOINT STRATEGY)
+   ==========================================================================
+   Breakpoints:
+   - Tablet Screens (<= 992px)
+   - Mobile Screens (<= 768px)
+   - Small Mobile Phones (<= 480px)
+   ========================================================================== */
+
+/* Tablet Screens (<= 992px) */
+@media (max-width: 992px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .issues-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile Screens (<= 768px) */
+@media (max-width: 768px) {
+
+    /* Header Stacking */
+    .header-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 14px;
+    }
+
+    .brand-logo-wrap {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Navbar Mobile Flow: Natural document flow */
+    .navbar {
+        position: static;
+        /* Lets page flow smoothly without covering hero content */
+    }
+
+    .nav-container {
+        height: auto;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    /* Hero Buttons: Full width for easy thumb tapping */
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+        max-width: 380px;
+        /* Avoids buttons looking excessively stretched */
+    }
+
+    /* Grid single column fallback */
+    .issues-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Footer Center Alignment */
+    .footer-top {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+    }
+
+    .footer-brand {
+        max-width: 100%;
+    }
+
+    .footer-links-list {
+        justify-content: center;
+    }
+}
+
+/* Small Mobile Screens (<= 480px) */
+@media (max-width: 480px) {
+    :root {
+        --gutter-space: 16px;
+        /* Slightly tighter gutter for small phones */
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-number {
+        font-size: 1.85rem;
+    }
+
+    .nav-links {
+        gap: 6px;
+    }
+
+    .nav-link {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+    .hero-actions .btn {
+        max-width: 100%;
+        /* Full width on phone screens */
+    }
+
+    .section-title::after {
+        width: 36px;
+    }
+}

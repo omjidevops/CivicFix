@@ -1,0 +1,95 @@
+# ==============================================================================
+# CivicFix — .gitignore
+# Version Control Exclusion Rules for Full-Stack Development
+# Stack: HTML5, CSS3, JavaScript/React, Java/Spring Boot/Maven, MySQL
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Java & Spring Boot / Maven Build Outputs
+# ------------------------------------------------------------------------------
+# Compiled bytecode (re-generated on every build)
+*.class
+
+# Runtime logs
+*.log
+
+# Packaged binaries (JAR / WAR files should be built by CI/CD, not in Git)
+*.jar
+*.war
+*.ear
+
+# Maven build directory containing all compiled binaries
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle build directory (if used)
+.gradle/
+build/
+
+# ------------------------------------------------------------------------------
+# 2. Node.js & Frontend Dependencies (Future React Integration)
+# ------------------------------------------------------------------------------
+# Heavy third-party packages (restorable anytime via 'npm install')
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Production build artifacts
+dist/
+
+# ------------------------------------------------------------------------------
+# 3. Environment Variables & Sensitive Credentials (CRITICAL)
+# ------------------------------------------------------------------------------
+# Never commit database passwords, API secrets, or JWT private keys!
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ------------------------------------------------------------------------------
+# 4. IDE & Editor Specific Metadata
+# ------------------------------------------------------------------------------
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code workspace settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+
+# ------------------------------------------------------------------------------
+# 5. Operating System Generated Clutter
+# ------------------------------------------------------------------------------
+# Windows thumbnail caches and desktop metadata
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS directory attributes
+.DS_Store
+.AppleDouble
+.LSOverride
