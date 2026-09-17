@@ -1,15 +1,24 @@
 // ============================================================================
-// STEP 2: Root Application Component (App.jsx)
-// Assembles all modular CivicFix components into a cohesive single-page view.
+// PART 14 — APP COMPONENT (App.jsx)
+// The root application component combining all modular CivicFix building blocks.
+//
+// Component Hierarchy:
+// App
+// ├── Navbar
+// ├── Hero
+// ├── Stats
+// ├── IssueCard (Reusable issue showcase)
+// ├── Features
+// └── Footer
 // ============================================================================
 
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
 import Stats from './components/Stats.jsx';
 import IssueCard from './components/IssueCard.jsx';
-import IssueCardGarbage from './components/IssueCardGarbage.jsx';
-import Workflow from './components/Workflow.jsx';
+import Features from './components/Features.jsx';
 import Footer from './components/Footer.jsx';
+import './styles/App.css';
 
 function App() {
   return (
@@ -17,39 +26,39 @@ function App() {
       {/* 1. Header & Sticky Navigation */}
       <Navbar />
 
-      {/* 2. Main Civic Content Container */}
+      {/* 2. Main Civic Content */}
       <main>
-        {/* Hero Banner with Call-to-Action */}
+        {/* Hero Section with Call to Action */}
         <Hero />
 
-        {/* Civic Redressal Performance Metrics */}
+        {/* Public Statistics Bar */}
         <Stats />
 
-        {/* Live Grievances / Issue Cards Showcase */}
+        {/* Reusable Issue Card Section */}
         <section className="issues-section" id="issues">
           <div className="container">
             <div className="section-header">
-              <span className="section-tag">Community Reports</span>
-              <h2 className="section-heading">Recent Grievances in Your City</h2>
+              <span className="section-tag">Grievance Showcase</span>
+              <h2 className="section-heading">Recent Civic Issues</h2>
               <p className="section-description">
-                Browse localized public infrastructure complaints submitted by citizens.
+                Explore infrastructure issues reported by citizens in real time.
               </p>
             </div>
 
             <div className="issues-grid">
-              {/* Component Reusability in Action: Multiple cards rendered */}
+              {/* Reusable IssueCard Component rendered multiple times */}
               <IssueCard />
-              <IssueCardGarbage />
+              <IssueCard />
               <IssueCard />
             </div>
           </div>
         </section>
 
-        {/* Resolution Lifecycle Guide */}
-        <Workflow />
+        {/* Platform Features Section */}
+        <Features />
       </main>
 
-      {/* 3. Global Civic Portal Footer */}
+      {/* 3. Municipal Footer */}
       <Footer />
     </div>
   );

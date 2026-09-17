@@ -1,36 +1,37 @@
 // ============================================================================
-// STEP 5: Stats Component (Stats.jsx)
+// PART 10 — STATS COMPONENT (Stats.jsx)
 // A 4-column metric bar displaying public resolution statistics.
+// Demo numbers only — no API, no backend, no database.
 // ============================================================================
 
 function Stats() {
-  const resolvedCount = "1,280+";
-  const activeCount = "45";
-  const avgResponse = "48 hrs";
-  const satisfactionRate = "96%";
+  const reportedCount = "1,250+";
+  const resolvedCount = "850+";
+  const departmentsCount = "24";
+  const resolutionRate = "92%";
 
   return (
     <section className="stats-section">
       <div className="container">
         <div className="stats-grid">
           <div className="stat-card">
+            <div className="stat-number">{reportedCount}</div>
+            <div className="stat-label">Issues Reported</div>
+          </div>
+
+          <div className="stat-card">
             <div className="stat-number">{resolvedCount}</div>
             <div className="stat-label">Issues Resolved</div>
           </div>
 
           <div className="stat-card">
-            <div className="stat-number">{activeCount}</div>
-            <div className="stat-label">Active Grievances</div>
+            <div className="stat-number">{departmentsCount}</div>
+            <div className="stat-label">Active Departments</div>
           </div>
 
           <div className="stat-card">
-            <div className="stat-number">{avgResponse}</div>
-            <div className="stat-label">Avg. Response Time</div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-number">{satisfactionRate}</div>
-            <div className="stat-label">Citizen Satisfaction</div>
+            <div className="stat-number">{resolutionRate}</div>
+            <div className="stat-label">Resolution Rate</div>
           </div>
         </div>
       </div>

@@ -1,31 +1,32 @@
 // ============================================================================
-// STEP 8: Footer Component (Footer.jsx)
-// A responsive multi-column municipal footer component.
+// PART 13 — FOOTER COMPONENT (Footer.jsx)
+// Clean municipal footer component for CivicFix.
 // ============================================================================
 
 function Footer() {
-  const currentYear = 2026;
-  const platformTagline = "Smart Civic Issue Reporting & Resolution Platform";
+  const brandName = "CivicFix";
+  const copyrightYear = 2026;
+  const platformSubtitle = "Smart Civic Issue Reporting & Resolution Platform";
 
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer-inner">
           <div>
-            <div className="footer-brand">CivicFix</div>
-            <p style={{ marginTop: '6px', fontSize: '0.85rem' }}>{platformTagline}</p>
+            <div className="footer-brand">{brandName}</div>
+            <p className="footer-tagline">{platformSubtitle}</p>
           </div>
 
           <ul className="footer-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#issues">Grievances</a></li>
-            <li><a href="#workflow">Workflow</a></li>
-            <li><a href="#privacy">Privacy</a></li>
+            <li><a href="#issues">Issues</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#login">Login</a></li>
           </ul>
         </div>
 
         <div className="footer-bottom">
-          <p>© {currentYear} CivicFix Municipal Initiative. Built for responsive civic transparency.</p>
+          <p>{brandName} © {copyrightYear} — {platformSubtitle}</p>
         </div>
       </div>
     </footer>
