@@ -59,9 +59,9 @@ function CitizenDashboard() {
       <div className="dash-header">
         <div className="dash-header-text">
           <span className="section-tag">Citizen Portal</span>
-          <h1 className="dash-title">Grievance Redressal Dashboard</h1>
+          <h1 className="dash-title">Welcome to CivicFix</h1>
           <p className="dash-subtitle">
-            Track, monitor, and manage your localized infrastructure reports in real time.
+            Track and manage your civic complaints.
           </p>
         </div>
 
@@ -70,13 +70,16 @@ function CitizenDashboard() {
           <Link to="/report" className="btn btn-primary">
             + Report New Issue
           </Link>
+          <Link to="/track" className="btn btn-secondary">
+            🔍 Track Complaint
+          </Link>
           <button
             type="button"
             className="btn btn-secondary"
             onClick={fetchComplaintsData}
             title="Reload from API"
           >
-            🔄 Refresh Data
+            🔄 Refresh
           </button>
         </div>
       </div>
@@ -84,13 +87,13 @@ function CitizenDashboard() {
       {/* 2. Summary Metric Cards */}
       <div className="dash-stats-grid">
         <DashboardStatCard
-          label="Total Filed"
+          label="Total Complaints"
           count={loading ? "..." : totalCount}
           statusType="total"
           icon="📋"
         />
         <DashboardStatCard
-          label="Pending Review"
+          label="Pending"
           count={loading ? "..." : pendingCount}
           statusType="pending"
           icon="⏳"
