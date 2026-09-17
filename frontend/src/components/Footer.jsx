@@ -1,7 +1,9 @@
 // ============================================================================
-// PART 13 — FOOTER COMPONENT (Footer.jsx)
-// Clean municipal footer component for CivicFix.
+// FOOTER COMPONENT (Footer.jsx)
+// Clean municipal footer component with React Router internal links.
 // ============================================================================
+
+import { Link } from 'react-router-dom';
 
 function Footer() {
   const brandName = "CivicFix";
@@ -18,10 +20,11 @@ function Footer() {
           </div>
 
           <ul className="footer-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#issues">Issues</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#login">Login</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/report">Report Issue</Link></li>
+            <li><Link to="/track">Track</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/login">Login</Link></li>
           </ul>
         </div>
 

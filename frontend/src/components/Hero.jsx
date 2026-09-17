@@ -1,8 +1,9 @@
 // ============================================================================
-// PART 9 — HERO COMPONENT (Hero.jsx)
-// A high-impact banner communicating CivicFix's civic mission and primary actions.
-// Visual buttons only — static, no routing.
+// HERO COMPONENT (Hero.jsx)
+// Uses React Router Link for fast internal navigation without page reload.
 // ============================================================================
+
+import { Link } from 'react-router-dom';
 
 function Hero() {
   const heading = "Make Your City Better";
@@ -26,12 +27,12 @@ function Hero() {
         </p>
 
         <div className="hero-actions">
-          <button type="button" className="btn btn-primary">
+          <Link to="/report" className="btn btn-primary">
             Report an Issue
-          </button>
-          <button type="button" className="btn btn-secondary">
+          </Link>
+          <Link to="/track" className="btn btn-secondary">
             Track Complaint
-          </button>
+          </Link>
         </div>
       </div>
     </section>

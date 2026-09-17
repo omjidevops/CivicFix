@@ -1,8 +1,10 @@
 // ============================================================================
-// PART 8 — NAVBAR COMPONENT (Navbar.jsx)
-// A functional component representing the top navigation bar of CivicFix.
-// Static links only — no routing.
+// DAY 17 — NAVBAR COMPONENT WITH REACT ROUTER (Navbar.jsx)
+// Uses NavLink for client-side routing without full page reload.
+// Applies active CSS indicator automatically when route matches.
 // ============================================================================
+
+import { NavLink, Link } from 'react-router-dom';
 
 function Navbar() {
   const brandName = "CivicFix";
@@ -11,17 +13,54 @@ function Navbar() {
     <header className="navbar">
       <div className="container">
         <div className="navbar-inner">
-          <a href="#home" className="brand-badge">
+          <Link to="/" className="brand-badge">
             <div className="brand-icon">CF</div>
             <span className="brand-text">{brandName}</span>
-          </a>
+          </Link>
 
           <nav>
             <ul className="nav-links">
-              <li><a href="#home" className="nav-link">Home</a></li>
-              <li><a href="#report" className="nav-link">Report Issue</a></li>
-              <li><a href="#track" className="nav-link">Track Complaint</a></li>
-              <li><a href="#login" className="btn btn-secondary nav-btn">Login</a></li>
+              <li>
+                <NavLink
+                  to="/"
+                  end
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/report"
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                >
+                  Report Issue
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/track"
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                >
+                  Track Complaint
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                >
+                  About
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/login"
+                  className="btn btn-secondary nav-btn"
+                >
+                  Login
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </div>
