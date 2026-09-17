@@ -17,6 +17,7 @@ import Footer from './components/Footer.jsx';
 
 // Pages
 import Home from './pages/Home.jsx';
+import CitizenDashboard from './pages/CitizenDashboard.jsx';
 import ReportIssue from './pages/ReportIssue.jsx';
 import TrackComplaint from './pages/TrackComplaint.jsx';
 import Login from './pages/Login.jsx';
@@ -36,6 +37,9 @@ function App() {
         <Routes>
           {/* Home Route */}
           <Route path="/" element={<Home />} />
+
+          {/* Day 19: Citizen Dashboard Route */}
+          <Route path="/dashboard" element={<CitizenDashboard />} />
 
           {/* Day 16: Report Issue Form Route */}
           <Route path="/report" element={<ReportIssue />} />
