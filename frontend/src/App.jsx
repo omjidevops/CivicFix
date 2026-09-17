@@ -1,19 +1,23 @@
 // ============================================================================
-// DAY 16 & 17 — ROOT APPLICATION COMPONENT (App.jsx)
+// CIVICFIX — DAY 40: ROOT APPLICATION WITH AUTHENTICATION & ROUTE GUARDS (App.jsx)
 // Configures client-side Single Page Application (SPA) routing with React Router.
 //
 // Routing Architecture:
-// /        → Home page (Hero, Stats, Grievance Feed, Features)
-// /report  → ReportIssue page (Day 16 Controlled Form + Validation)
-// /track   → TrackComplaint page (Grievance Status lookup)
-// /about   → About page (Civic mission & transparency principles)
-// /login   → Login page (Portal access)
-// *        → NotFound (404 wildcard fallback)
+// /          → Home page (Public)
+// /dashboard → CitizenDashboard (Protected: requires authentication)
+// /report    → ReportIssue form (Protected: requires authentication)
+// /track     → TrackComplaint (Public status lookup)
+// /login     → Login page (Public credentials submission)
+// /register  → Register page (Public citizen sign-up)
+// /about     → About platform (Public)
+// *          → NotFound (404 wildcard fallback)
 // ============================================================================
 
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 
 // Pages
 import Home from './pages/Home.jsx';
@@ -21,6 +25,7 @@ import CitizenDashboard from './pages/CitizenDashboard.jsx';
 import ReportIssue from './pages/ReportIssue.jsx';
 import TrackComplaint from './pages/TrackComplaint.jsx';
 import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx';
 import About from './pages/About.jsx';
 import NotFound from './pages/NotFound.jsx';
 
@@ -28,39 +33,48 @@ import './styles/App.css';
 
 function App() {
   return (
-    <div className="app-root">
-      {/* 1. Global Navigation Bar (Sticky across all routes) */}
-      <Navbar />
+    <AuthProvider>
+      <div className="app-root">
+        {/* 1. Global Navigation Bar */}
+        <Navbar />
 
-      {/* 2. Dynamic Route View Switcher */}
-      <main className="main-content">
-        <Routes>
-          {/* Home Route */}
-          <Route path="/" element={<Home />} />
+        {/* 2. Dynamic Route View Switcher */}
+        <main className="main-content">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/track" element={<TrackComplaint />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-          {/* Day 19: Citizen Dashboard Route */}
-          <Route path="/dashboard" element={<CitizenDashboard />} />
+            {/* Protected Routes (Require Valid Authentication) */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <CitizenDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/report"
+              element={
+                <ProtectedRoute>
+                  <ReportIssue />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Day 16: Report Issue Form Route */}
-          <Route path="/report" element={<ReportIssue />} />
+            {/* 404 Wildcard Catch-All Route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
 
-          {/* Grievance Tracking Route */}
-          <Route path="/track" element={<TrackComplaint />} />
-
-          {/* Portal Access Route */}
-          <Route path="/login" element={<Login />} />
-
-          {/* About Platform Route */}
-          <Route path="/about" element={<About />} />
-
-          {/* 404 Wildcard Catch-All Route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-
-      {/* 3. Global Municipal Footer */}
-      <Footer />
-    </div>
+        {/* 3. Global Municipal Footer */}
+        <Footer />
+      </div>
+    </AuthProvider>
   );
 }
 

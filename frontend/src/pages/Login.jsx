@@ -1,61 +1,74 @@
 // ============================================================================
 // PAGE: Login.jsx (Route: "/login")
-// UI learning page for citizen and municipal officer authentication.
-// Note: Authentication backend and JWT will be built in later phases.
+// Real authentication page connected to Spring Boot POST /api/auth/login
+// Receives JWT and redirects to Dashboard
 // ============================================================================
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function Login() {
-  const [role, setRole] = useState("citizen");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    alert(`[Demo Mode] Login attempted as ${role}: ${email}`);
+    setError('');
+    setLoading(true);
+
+    try {
+      await login(email, password);
+      // Navigate to protected citizen dashboard upon successful authentication
+      navigate('/dashboard');
+    } catch (err) {
+      if (err.response && err.response.data) {
+        setError(err.response.data.message || 'Invalid email or password.');
+      } else {
+        setError('Cannot connect to backend server (http://localhost:8081).');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="page-container">
       <div className="form-wrapper" style={{ maxWidth: '460px' }}>
         <div className="form-header">
-          <h1 className="form-title">Portal Access</h1>
+          <h1 className="form-title">Portal Sign In</h1>
           <p className="form-subtitle">
-            Sign in to manage and track municipal grievances.
+            Sign in with your verified credentials to report grievances and track resolutions.
           </p>
         </div>
 
-        {/* Role Switcher */}
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-          <button
-            type="button"
-            className={`btn ${role === 'citizen' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ flex: 1, padding: '8px' }}
-            onClick={() => setRole('citizen')}
-          >
-            Citizen
-          </button>
-          <button
-            type="button"
-            className={`btn ${role === 'officer' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ flex: 1, padding: '8px' }}
-            onClick={() => setRole('officer')}
-          >
-            Ward Officer
-          </button>
-        </div>
+        {error && (
+          <div style={{
+            background: '#fee2e2',
+            color: '#b91c1c',
+            padding: '12px 16px',
+            borderRadius: '8px',
+            marginBottom: '16px',
+            fontSize: '0.9rem'
+          }}>
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <label className="form-label">Email or Phone Number</label>
+            <label className="form-label">Email Address</label>
             <input
-              type="text"
+              type="email"
               className="form-control"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@example.com"
+              placeholder="citizen@example.com"
               required
             />
           </div>
@@ -72,15 +85,20 @@ function Login() {
             />
           </div>
 
-          <div className="form-actions" style={{ marginTop: '20px' }}>
-            <button type="submit" className="btn btn-primary btn-submit">
-              Sign In as {role === 'citizen' ? 'Citizen' : 'Officer'}
+          <div className="form-actions" style={{ marginTop: '24px' }}>
+            <button
+              type="submit"
+              className="btn btn-primary btn-submit"
+              disabled={loading}
+              style={{ width: '100%' }}
+            >
+              {loading ? 'Authenticating...' : 'Sign In with JWT'}
             </button>
           </div>
         </form>
 
         <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-          Don't have an account? <Link to="/" style={{ color: 'var(--primary)', fontWeight: 600 }}>Return Home</Link>
+          Don't have an account? <Link to="/register" style={{ color: 'var(--primary)', fontWeight: 600 }}>Create an account</Link>
         </p>
       </div>
     </div>

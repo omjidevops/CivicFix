@@ -1,25 +1,49 @@
 // ============================================================================
-// DAY 18 — API SERVICE LAYER (api.js)
-// Creates a centralized Axios instance configured with base settings.
+// CIVICFIX — DAYS 38 & 40: CENTRALIZED AXIOS INSTANCE (api.js)
+// Package: services/api.js
 //
-// Why a service layer?
-// 1. Centralizes baseURL, headers, and timeouts in one file.
-// 2. Separates HTTP networking logic from React UI components.
-// 3. When we connect Spring Boot on Day 30+, we ONLY change baseURL here,
-//    and every component in CivicFix automatically communicates with the new backend!
+// Features:
+// 1. Configures Spring Boot backend target (http://localhost:8081)
+// 2. Request Interceptor: Automatically inspects localStorage for 'civicfix_token'
+//    and attaches "Authorization: Bearer <token>" to every outgoing HTTP request.
+// 3. Response Interceptor: Catches 401 Unauthorized responses to handle expired tokens.
 // ============================================================================
 
 import axios from 'axios';
 
-// Base Axios instance
-// Currently configured with safe defaults for learning.
-// In Phase 6 (Spring Boot integration), baseURL will switch to: "http://localhost:8080/api/v1"
 const api = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com', // Safe public REST practice endpoint
+  baseURL: 'http://localhost:8081',
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 8000 // Timeout after 8 seconds if server doesn't respond
+  timeout: 10000
 });
+
+// Request Interceptor: Injects Bearer Token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('civicfix_token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response Interceptor: Catches 401 token expiry
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // If token expired, clear invalid auth state
+      if (localStorage.getItem('civicfix_token')) {
+        localStorage.removeItem('civicfix_token');
+        localStorage.removeItem('civicfix_user');
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;
