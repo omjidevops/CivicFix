@@ -1,14 +1,17 @@
 // ============================================================================
-// PART 6 & 9 — REUSABLE ISSUE CARD COMPONENT (IssueCard.jsx)
-// Receives all complaint data via Props (destructured).
-// Props:
-// - title (String)
-// - category (String)
-// - description (String)
-// - status (String)
-// - upvotes (Number)
-// - isVerified (Boolean — optional)
+// PART 14 & 15 — INTERACTIVE ISSUE CARD COMPONENT (IssueCard.jsx)
+// Combines PROPS (received from Parent) with LOCAL STATE (managed inside Child).
+//
+// Props (from Parent):
+// - title, category, description, status, upvotes, isVerified
+//
+// Local State (managed here):
+// - supportCount (Number): tracks interactive citizen support
+// - supported (Boolean): prevents double voting
+// - showDetails (Boolean): toggles extra complaint details
 // ============================================================================
+
+import { useState } from 'react';
 
 function IssueCard({
   title,
@@ -18,7 +21,29 @@ function IssueCard({
   upvotes,
   isVerified
 }) {
-  // Determine badge color class based on status prop
+  // State 1: Local support count initialized from parent prop 'upvotes'
+  const [supportCount, setSupportCount] = useState(upvotes);
+
+  // State 2: Boolean state to track whether this user has supported
+  const [supported, setSupported] = useState(false);
+
+  // State 3: Boolean state to toggle expanded complaint details
+  const [showDetails, setShowDetails] = useState(false);
+
+  // Event Handler 1: Support grievance
+  const handleSupportClick = () => {
+    if (!supported) {
+      setSupportCount(supportCount + 1);
+      setSupported(true);
+    }
+  };
+
+  // Event Handler 2: Toggle details visibility
+  const handleToggleDetails = () => {
+    setShowDetails(!showDetails);
+  };
+
+  // Helper for dynamic status badge styling
   const getStatusClass = () => {
     if (status === "In Progress") return "status-progress";
     if (status === "Verified" || status === "Resolved") return "status-verified";
@@ -36,19 +61,47 @@ function IssueCard({
 
       <h3 className="card-title">
         {title}
-        {/* Part 9: Boolean Prop in action — renders only if isVerified is true */}
         {isVerified && <span className="badge-verified">✓ Verified</span>}
       </h3>
 
       <p className="card-description">{description}</p>
 
+      {/* Conditional Rendering: Only renders when showDetails is true */}
+      {showDetails && (
+        <div className="card-details-box">
+          <p><strong>Municipal ID:</strong> CF-2026-{category.substring(0, 3).toUpperCase()}-409</p>
+          <p><strong>Ward:</strong> Central Ward 12 • Zone 4</p>
+          <p><strong>Assigned To:</strong> Department of Public Works</p>
+          <p><strong>Verification:</strong> GPS Geotagged on submission</p>
+        </div>
+      )}
+
       <div className="card-footer-bar">
         <span className="issue-category-label">
           Category: <strong>{category}</strong>
         </span>
+        <button
+          type="button"
+          className="btn-toggle-details"
+          onClick={handleToggleDetails}
+        >
+          {showDetails ? "▲ Hide Details" : "▼ Show Details"}
+        </button>
+      </div>
+
+      {/* Interactive Action Bar */}
+      <div className="card-actions-bar">
         <span className="issue-upvotes-badge">
-          ▲ {upvotes} Upvotes
+          ▲ {supportCount} Upvotes
         </span>
+
+        <button
+          type="button"
+          className={`btn-support ${supported ? 'btn-supported' : ''}`}
+          onClick={handleSupportClick}
+        >
+          {supported ? "✓ Supported" : "▲ Support Issue"}
+        </button>
       </div>
     </article>
   );

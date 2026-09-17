@@ -573,6 +573,157 @@ body {
 }
 
 /* --------------------------------------------------------------------------
+   DAY 15 — REACT STATE & EVENTS STYLES
+   -------------------------------------------------------------------------- */
+.btn-support {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid rgba(15, 118, 110, 0.3);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.btn-support:hover {
+  background-color: var(--primary);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-supported {
+  background-color: var(--status-resolved-bg) !important;
+  color: var(--status-resolved) !important;
+  border-color: rgba(22, 163, 74, 0.4) !important;
+  cursor: default;
+}
+
+.btn-toggle-details {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 4px 0;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.btn-toggle-details:hover {
+  color: var(--dark);
+}
+
+.card-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.card-details-box {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background-color: var(--bg-page);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary);
+  font-size: 0.85rem;
+  color: var(--dark);
+  line-height: 1.5;
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Interactive Demo Section (Day 15 Learning Lab) */
+.interactive-demo-section {
+  padding: 50px 0 60px;
+  background-color: #f8fafc;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.interactive-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.demo-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.demo-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.demo-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.demo-counter-display {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-align: center;
+  margin: 14px 0 20px;
+}
+
+.demo-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.demo-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--dark);
+  outline: none;
+  transition: var(--transition);
+}
+
+.demo-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+}
+
+.demo-greeting-box {
+  margin-top: 14px;
+  padding: 12px;
+  background-color: var(--primary-light);
+  border-radius: var(--radius-sm);
+  color: var(--primary-dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
    PART 16 — RESPONSIVE DESIGN BREAKPOINTS
    Checked at: 1440px, 1200px, 992px, 768px, 480px, 360px
    -------------------------------------------------------------------------- */
