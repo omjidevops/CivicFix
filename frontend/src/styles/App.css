@@ -352,11 +352,59 @@ body {
   color: var(--status-pending);
 }
 
+.status-progress {
+  background-color: var(--status-progress-bg);
+  color: var(--status-progress);
+}
+
+.status-verified {
+  background-color: var(--status-resolved-bg);
+  color: var(--status-resolved);
+}
+
+.badge-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--status-resolved-bg);
+  color: var(--status-resolved);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.issue-upvotes-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #f3f4f6;
+  color: var(--dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.issue-upvotes-badge:hover {
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
 .card-title {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--dark);
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .card-description {
@@ -379,6 +427,43 @@ body {
 
 .card-footer-bar strong {
   color: var(--dark);
+}
+
+.categories-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  margin-bottom: 30px;
+}
+
+.categories-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.category-pill {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: var(--bg-page);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+  transition: var(--transition);
+}
+
+.category-pill:hover {
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-color: rgba(15, 118, 110, 0.4);
 }
 
 /* --------------------------------------------------------------------------

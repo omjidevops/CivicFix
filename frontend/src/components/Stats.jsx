@@ -1,38 +1,19 @@
 // ============================================================================
-// PART 10 — STATS COMPONENT (Stats.jsx)
-// A 4-column metric bar displaying public resolution statistics.
-// Demo numbers only — no API, no backend, no database.
+// PART 8 — STATS COMPONENT (Stats.jsx)
+// Parent component that renders reusable StatsCard children with distinct Props.
 // ============================================================================
 
-function Stats() {
-  const reportedCount = "1,250+";
-  const resolvedCount = "850+";
-  const departmentsCount = "24";
-  const resolutionRate = "92%";
+import StatsCard from './StatsCard.jsx';
 
+function Stats() {
   return (
     <section className="stats-section">
       <div className="container">
         <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-number">{reportedCount}</div>
-            <div className="stat-label">Issues Reported</div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-number">{resolvedCount}</div>
-            <div className="stat-label">Issues Resolved</div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-number">{departmentsCount}</div>
-            <div className="stat-label">Active Departments</div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-number">{resolutionRate}</div>
-            <div className="stat-label">Resolution Rate</div>
-          </div>
+          <StatsCard number="1,250+" label="Issues Reported" />
+          <StatsCard number="850+" label="Issues Resolved" />
+          <StatsCard number="24" label="Active Departments" />
+          <StatsCard number="92%" label="Resolution Rate" />
         </div>
       </div>
     </section>
