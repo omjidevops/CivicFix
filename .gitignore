@@ -43,6 +43,9 @@ pnpm-debug.log*
 # Production build artifacts
 dist/
 
+# Vite temporary config dumps
+*.timestamp-*.mjs
+
 # ------------------------------------------------------------------------------
 # 3. Environment Variables & Sensitive Credentials (CRITICAL)
 # ------------------------------------------------------------------------------
