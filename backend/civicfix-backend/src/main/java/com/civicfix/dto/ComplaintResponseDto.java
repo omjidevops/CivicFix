@@ -29,6 +29,11 @@ public class ComplaintResponseDto {
     private BigDecimal longitude;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String resolutionNotes;
+    private LocalDateTime resolvedAt;
+    private Long assignedOfficerId;
+    private Boolean resolutionConfirmed;
+    private LocalDateTime resolutionConfirmedAt;
 
     public ComplaintResponseDto() {}
 
@@ -74,4 +79,19 @@ public class ComplaintResponseDto {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public String getResolutionNotes() { return resolutionNotes; }
+    public void setResolutionNotes(String resolutionNotes) { this.resolutionNotes = resolutionNotes; }
+
+    public LocalDateTime getResolvedAt() { return resolvedAt; }
+    public void setResolvedAt(LocalDateTime resolvedAt) { this.resolvedAt = resolvedAt; }
+
+    public Long getAssignedOfficerId() { return assignedOfficerId; }
+    public void setAssignedOfficerId(Long assignedOfficerId) { this.assignedOfficerId = assignedOfficerId; }
+
+    public Boolean getResolutionConfirmed() { return resolutionConfirmed != null && resolutionConfirmed; }
+    public void setResolutionConfirmed(Boolean resolutionConfirmed) { this.resolutionConfirmed = resolutionConfirmed; }
+
+    public LocalDateTime getResolutionConfirmedAt() { return resolutionConfirmedAt; }
+    public void setResolutionConfirmedAt(LocalDateTime resolutionConfirmedAt) { this.resolutionConfirmedAt = resolutionConfirmedAt; }
 }

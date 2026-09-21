@@ -24,6 +24,8 @@ import Home from './pages/Home.jsx';
 import CitizenDashboard from './pages/CitizenDashboard.jsx';
 import ReportIssue from './pages/ReportIssue.jsx';
 import TrackComplaint from './pages/TrackComplaint.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
+import EmployeeDashboard from './pages/EmployeeDashboard.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import About from './pages/About.jsx';
@@ -62,6 +64,38 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ReportIssue />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute allowedRoles={['ADMIN']}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['ADMIN']}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/employee"
+              element={
+                <ProtectedRoute allowedRoles={['EMPLOYEE', 'ADMIN']}>
+                  <EmployeeDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/employee/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['EMPLOYEE', 'ADMIN']}>
+                  <EmployeeDashboard />
                 </ProtectedRoute>
               }
             />

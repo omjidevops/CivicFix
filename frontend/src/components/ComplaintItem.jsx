@@ -6,6 +6,7 @@
 // ============================================================================
 
 import { Link } from 'react-router-dom';
+import ComplaintUpvote from './ComplaintUpvote';
 
 function ComplaintItem({ complaint }) {
   const {
@@ -33,6 +34,8 @@ function ComplaintItem({ complaint }) {
     return "priority-badge-low";
   };
 
+  const complaintIdKey = complaint.numericId || id;
+
   return (
     <article className="dash-complaint-item">
       <div className="dash-item-header">
@@ -55,12 +58,18 @@ function ComplaintItem({ complaint }) {
         <div className="dash-item-info">
           <span>📍 {location}</span>
           <span>📅 {submittedDate}</span>
-          <span>▲ {upvotes} Upvotes</span>
         </div>
 
-        <Link to="/track" className="btn-dash-track">
-          Track Progress →
-        </Link>
+        <div className="dash-item-actions">
+          <ComplaintUpvote
+            complaintId={complaintIdKey}
+            initialVotes={upvotes}
+            compact={true}
+          />
+          <Link to={`/track?id=${complaintIdKey}`} className="btn-dash-track">
+            Track & Discuss →
+          </Link>
+        </div>
       </div>
     </article>
   );

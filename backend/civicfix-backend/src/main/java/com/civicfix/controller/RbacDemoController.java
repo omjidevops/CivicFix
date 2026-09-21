@@ -1,5 +1,6 @@
 package com.civicfix.controller;
 
+import com.civicfix.repository.ComplaintRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,18 +12,49 @@ import java.util.Map;
 
 /**
  * ============================================================================
- * CIVICFIX — DAY 40: ROLE-BASED ACCESS CONTROL (RBAC) DEMO CONTROLLER
+ * CIVICFIX — DAYS 40 & 45: ROLE-BASED ACCESS CONTROL (RBAC) & ADMIN CONTROLLER
  * Package: com.civicfix.controller
  * Class: RbacDemoController
  *
  * Exposes role-restricted endpoints to test and verify RBAC enforcement:
  * - GET /api/admin/dashboard     -> Requires ROLE_ADMIN
+ * - GET /api/admin/metrics       -> Requires ROLE_EMPLOYEE or ROLE_ADMIN
  * - GET /api/employee/complaints -> Requires ROLE_EMPLOYEE or ROLE_ADMIN
  * ============================================================================
  */
 @RestController
 @RequestMapping("/api")
 public class RbacDemoController {
+
+    private final ComplaintRepository complaintRepository;
+
+    public RbacDemoController(ComplaintRepository complaintRepository) {
+        this.complaintRepository = complaintRepository;
+    }
+
+    /**
+     * DAY 45: Real Aggregated Grievance Metrics
+     * Accessible by users with ROLE_EMPLOYEE or ROLE_ADMIN
+     */
+    @GetMapping("/admin/metrics")
+    @PreAuthorize("hasAnyRole('EMPLOYEE', 'ADMIN')")
+    public ResponseEntity<Map<String, Object>> getAdminMetrics() {
+        long total = complaintRepository.count();
+        long submitted = complaintRepository.findByStatus("SUBMITTED").size();
+        long inProgress = complaintRepository.findByStatus("IN_PROGRESS").size();
+        long resolved = complaintRepository.findByStatus("RESOLVED").size();
+        long rejected = complaintRepository.findByStatus("REJECTED").size();
+
+        Map<String, Object> metrics = new HashMap<>();
+        metrics.put("total", total);
+        metrics.put("submitted", submitted);
+        metrics.put("inProgress", inProgress);
+        metrics.put("resolved", resolved);
+        metrics.put("rejected", rejected);
+        metrics.put("resolutionRate", total > 0 ? String.format("%.1f%%", (double) resolved / total * 100.0) : "0.0%");
+
+        return ResponseEntity.ok(metrics);
+    }
 
     /**
      * Admin Dashboard Endpoint

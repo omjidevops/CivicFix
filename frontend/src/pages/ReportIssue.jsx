@@ -8,29 +8,92 @@
 // 5. Success state feedback and programmatic navigation using useNavigate()
 // ============================================================================
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
+import { createComplaint, uploadComplaintMedia, checkDuplicateComplaint } from '../services/complaintService.js';
+import LocationPicker from '../components/LocationPicker.jsx';
 
 function ReportIssue() {
-  // Day 17: Hook for programmatic navigation
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   // 1. Single form state object managing all inputs
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: user?.name || "",
+    email: user?.email || "",
     category: "",
     title: "",
+    severity: 3,
     description: "",
-    location: ""
+    location: "",
+    latitude: null,
+    longitude: null
   });
+
+  // Day 43: Callback when citizen selects or drags marker on interactive Leaflet map
+  const handleLocationSelect = ({ latitude, longitude }) => {
+    setFormData((prev) => ({
+      ...prev,
+      latitude,
+      longitude
+    }));
+  };
+
+  // Automatically sync logged-in user credentials if available
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || user.name || "",
+        email: prev.email || user.email || ""
+      }));
+    }
+  }, [user]);
 
   // 2. State to hold validation error messages for each field
   const [errors, setErrors] = useState({});
 
-  // 3. State to track successful submission
+  // 3. States for API submission lifecycle
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
+
+  // 4. Day 42: Media Upload States
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
+  const [fileError, setFileError] = useState(null);
+  const [uploadingMedia, setUploadingMedia] = useState(false);
+
+  // Day 49: Smart Duplicate Detection State
+  const [duplicateWarning, setDuplicateWarning] = useState(null);
+
+  useEffect(() => {
+    if (!formData.category || !formData.latitude || !formData.longitude) {
+      setDuplicateWarning(null);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const res = await checkDuplicateComplaint({
+          category: formData.category,
+          latitude: formData.latitude,
+          longitude: formData.longitude,
+          title: formData.title || ""
+        });
+        if (res && res.duplicateFound) {
+          setDuplicateWarning(res);
+        } else {
+          setDuplicateWarning(null);
+        }
+      } catch (err) {
+        // Silently skip check error
+      }
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [formData.category, formData.latitude, formData.longitude, formData.title]);
 
   // Reusable change handler for all form fields
   const handleChange = (event) => {
@@ -90,10 +153,52 @@ function ReportIssue() {
     return newErrors;
   };
 
+  // Day 42: File selection handler with size and type validation
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFileError(null);
+
+    if (!file) {
+      setSelectedFile(null);
+      setFilePreview(null);
+      return;
+    }
+
+    // 1. Enforce 5MB limit
+    const maxBytes = 5 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      setFileError("File exceeds 5MB limit. Please choose an optimized photo.");
+      event.target.value = "";
+      setSelectedFile(null);
+      setFilePreview(null);
+      return;
+    }
+
+    // 2. Enforce MIME type allowlist
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      setFileError("Invalid file type. Only JPG, PNG, and WebP images are permitted.");
+      event.target.value = "";
+      setSelectedFile(null);
+      setFilePreview(null);
+      return;
+    }
+
+    setSelectedFile(file);
+    setFilePreview(URL.createObjectURL(file));
+  };
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setFilePreview(null);
+    setFileError(null);
+  };
+
   // Submit handler intercepting form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     // 1. Prevent default browser page reload
     event.preventDefault();
+    setSubmitError(null);
 
     // 2. Validate input fields
     const validationErrors = validate();
@@ -104,26 +209,89 @@ function ReportIssue() {
       return;
     }
 
-    // 3. Success: save submitted data for feedback display
-    setSubmittedData(formData);
-    setIsSubmitted(true);
-    setErrors({});
+    setIsSubmitting(true);
+    try {
+      // 3. Send payload to Spring Boot backend via Axios
+      const created = await createComplaint({
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        category: formData.category,
+        severity: Number(formData.severity) || 3,
+        location: formData.location.trim(),
+        latitude: formData.latitude,
+        longitude: formData.longitude
+      });
 
-    // 4. Reset form fields
-    setFormData({
-      name: "",
-      email: "",
-      category: "",
-      title: "",
-      description: "",
-      location: ""
-    });
+      // 4. Day 42: Upload media evidence if attached
+      let uploadedMediaUrl = null;
+      if (selectedFile) {
+        setUploadingMedia(true);
+        try {
+          const mediaRes = await uploadComplaintMedia(created.rawId || created.numericId, selectedFile);
+          uploadedMediaUrl = mediaRes.fileUrl;
+        } catch (mediaErr) {
+          console.warn("Media attachment warning:", mediaErr);
+        } finally {
+          setUploadingMedia(false);
+        }
+      }
+
+      // 5. Success: store real backend response with server-generated ID
+      setSubmittedData({
+        ...formData,
+        id: created.id,
+        rawId: created.numericId,
+        status: created.status || "SUBMITTED",
+        priorityLevel: created.priorityLevel || created.priority,
+        mediaUrl: uploadedMediaUrl || filePreview,
+        latitude: created.latitude !== undefined && created.latitude !== null ? created.latitude : formData.latitude,
+        longitude: created.longitude !== undefined && created.longitude !== null ? created.longitude : formData.longitude
+      });
+      setIsSubmitted(true);
+      setErrors({});
+
+      // 6. Reset form fields
+      setFormData({
+        name: user?.name || "",
+        email: user?.email || "",
+        category: "",
+        title: "",
+        severity: 3,
+        description: "",
+        location: "",
+        latitude: null,
+        longitude: null
+      });
+      setSelectedFile(null);
+      setFilePreview(null);
+    } catch (err) {
+      console.error("Complaint Submission Failed:", err);
+      const serverMessage = err.response?.data?.message || err.message || "Failed to submit grievance to municipal portal.";
+      setSubmitError(serverMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Reset to submit another report
   const handleReportAnother = () => {
     setIsSubmitted(false);
     setSubmittedData(null);
+    setSubmitError(null);
+    setSelectedFile(null);
+    setFilePreview(null);
+    setFileError(null);
+    setFormData({
+      name: user?.name || "",
+      email: user?.email || "",
+      category: "",
+      title: "",
+      severity: 3,
+      description: "",
+      location: "",
+      latitude: null,
+      longitude: null
+    });
   };
 
   return (
@@ -134,10 +302,22 @@ function ReportIssue() {
           <div className="success-icon">✓</div>
           <h2 className="success-title">Grievance Filed Successfully!</h2>
           <p className="success-desc">
-            Your complaint has been logged and assigned a tracking ID: <strong>CF-2026-REG-982</strong>.
+            Your complaint has been logged and assigned a tracking ID: <strong>{submittedData.id}</strong>.
           </p>
 
           <div className="submitted-summary-box">
+            <div className="summary-row">
+              <span className="summary-label">Tracking ID:</span>
+              <span className="summary-val" style={{ fontWeight: 700, color: '#2563eb' }}>{submittedData.id}</span>
+            </div>
+            <div className="summary-row">
+              <span className="summary-label">Initial Status:</span>
+              <span className="summary-val" style={{ fontWeight: 600, color: '#059669' }}>{submittedData.status}</span>
+            </div>
+            <div className="summary-row">
+              <span className="summary-label">Priority Level:</span>
+              <span className="summary-val" style={{ fontWeight: 600, color: '#d97706' }}>{submittedData.priorityLevel}</span>
+            </div>
             <div className="summary-row">
               <span className="summary-label">Reporting Citizen:</span>
               <span className="summary-val">{submittedData.name} ({submittedData.email})</span>
@@ -154,10 +334,30 @@ function ReportIssue() {
               <span className="summary-label">Location:</span>
               <span className="summary-val">{submittedData.location}</span>
             </div>
+            {submittedData.latitude && submittedData.longitude && (
+              <div className="summary-row">
+                <span className="summary-label">Map Coordinates:</span>
+                <span className="summary-val" style={{ fontFamily: 'monospace', color: '#0f766e', fontWeight: 600 }}>
+                  📍 {submittedData.latitude}° N, {submittedData.longitude}° E
+                </span>
+              </div>
+            )}
             <div className="summary-row">
               <span className="summary-label">Description:</span>
               <span className="summary-val">{submittedData.description}</span>
             </div>
+            {submittedData.mediaUrl && (
+              <div className="summary-row" style={{ alignItems: 'flex-start' }}>
+                <span className="summary-label">Attached Evidence:</span>
+                <div className="summary-val">
+                  <img
+                    src={submittedData.mediaUrl.startsWith('blob:') ? submittedData.mediaUrl : `http://localhost:8081${submittedData.mediaUrl}`}
+                    alt="Uploaded Evidence"
+                    style={{ width: '120px', height: '80px', objectFit: 'cover', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="form-actions">
@@ -186,6 +386,12 @@ function ReportIssue() {
               Submit your localized infrastructure grievance directly to municipal officers.
             </p>
           </div>
+
+          {submitError && (
+            <div className="dash-error-box" style={{ marginBottom: '20px', padding: '12px 16px', background: '#fef2f2', border: '1px solid #f87171', borderRadius: '8px', color: '#b91c1c' }}>
+              <strong>⚠️ Submission Failed:</strong> {submitError}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} noValidate>
             {/* Field 1: Citizen Name */}
@@ -245,6 +451,29 @@ function ReportIssue() {
               {errors.category && <span className="error-message">⚠️ {errors.category}</span>}
             </div>
 
+            {/* Field 3b: Severity Level */}
+            <div className="form-group">
+              <label htmlFor="severity" className="form-label">
+                Urgency / Severity Level <span className="required-star">*</span>
+              </label>
+              <select
+                id="severity"
+                name="severity"
+                className="form-control"
+                value={formData.severity}
+                onChange={handleChange}
+              >
+                <option value={1}>1 - Low (Minor cosmetic defect or minor nuisance)</option>
+                <option value={2}>2 - Minor (Non-urgent maintenance)</option>
+                <option value={3}>3 - Medium (Standard public disruption)</option>
+                <option value={4}>4 - High (Safety hazard or major road/utility disruption)</option>
+                <option value={5}>5 - Critical (Immediate emergency / life threatening hazard)</option>
+              </select>
+              <small style={{ display: 'block', marginTop: '4px', color: '#64748b', fontSize: '0.85rem' }}>
+                Helps municipal officers prioritize emergency dispatch.
+              </small>
+            </div>
+
             {/* Field 4: Issue Title */}
             <div className="form-group">
               <label htmlFor="title" className="form-label">
@@ -277,6 +506,13 @@ function ReportIssue() {
                 placeholder="e.g. Ward 12, Near Metro Pillar 140"
               />
               {errors.location && <span className="error-message">⚠️ {errors.location}</span>}
+
+              {/* Day 43: Interactive Map Location Picker (Leaflet + OpenStreetMap) */}
+              <LocationPicker
+                latitude={formData.latitude}
+                longitude={formData.longitude}
+                onLocationSelect={handleLocationSelect}
+              />
             </div>
 
             {/* Field 6: Issue Description */}
@@ -296,10 +532,89 @@ function ReportIssue() {
               {errors.description && <span className="error-message">⚠️ {errors.description}</span>}
             </div>
 
+            {/* Field 7: Day 42 Photo Proof Evidence (Multipart Upload) */}
+            <div className="form-group">
+              <label htmlFor="mediaFile" className="form-label">
+                Upload Photo Proof <span style={{ color: '#64748b', fontWeight: 'normal' }}>(Optional)</span>
+              </label>
+              <input
+                type="file"
+                id="mediaFile"
+                name="mediaFile"
+                accept="image/jpeg,image/png,image/webp"
+                className="form-control"
+                onChange={handleFileChange}
+                style={{ padding: '8px' }}
+              />
+              <small style={{ display: 'block', marginTop: '4px', color: '#64748b', fontSize: '0.85rem' }}>
+                Supports JPG, PNG, or WebP. Maximum file size: 5MB.
+              </small>
+
+              {fileError && (
+                <span className="error-message" style={{ display: 'block', marginTop: '6px' }}>
+                  ⚠️ {fileError}
+                </span>
+              )}
+
+              {/* Live Image Preview */}
+              {filePreview && (
+                <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '12px', padding: '10px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '8px' }}>
+                  <img
+                    src={filePreview}
+                    alt="Preview"
+                    style={{ width: '64px', height: '64px', objectFit: 'cover', borderRadius: '6px', border: '1px solid #94a3b8' }}
+                  />
+                  <div style={{ flex: 1, fontSize: '0.9rem' }}>
+                    <strong style={{ color: '#0f172a' }}>{selectedFile?.name}</strong>
+                    <div style={{ color: '#64748b', fontSize: '0.8rem', marginTop: '2px' }}>
+                      {(selectedFile?.size / 1024).toFixed(1)} KB
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleRemoveFile}
+                    style={{ background: '#fee2e2', color: '#b91c1c', border: 'none', borderRadius: '4px', padding: '6px 10px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
+                  >
+                    ✕ Remove
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Day 49: Smart Duplicate Detection Warning Banner */}
+            {duplicateWarning && (
+              <div style={{
+                marginBottom: '18px',
+                padding: '14px 16px',
+                background: '#fffbeb',
+                border: '1px solid #fde68a',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '12px'
+              }}>
+                <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>⚠️</span>
+                <div style={{ flex: 1, fontSize: '0.88rem', color: '#92400e' }}>
+                  <strong style={{ display: 'block', marginBottom: '3px', color: '#78350f' }}>
+                    Potential Duplicate Issue Detected Nearby
+                  </strong>
+                  {duplicateWarning.advisoryMessage}
+                  <div style={{ marginTop: '5px', fontSize: '0.8rem', color: '#b45309' }}>
+                    If this is the same problem, you can upvote Grievance #{duplicateWarning.matchedComplaintId} instead. If this is a separate incident, feel free to proceed with your submission.
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Submit Action */}
             <div className="form-actions">
-              <button type="submit" className="btn btn-primary btn-submit">
-                Submit Civic Grievance
+              <button
+                type="submit"
+                className="btn btn-primary btn-submit"
+                disabled={isSubmitting}
+                style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+              >
+                {uploadingMedia ? "Uploading Photo Evidence..." : isSubmitting ? "Submitting to Municipal Portal..." : "Submit Civic Grievance"}
               </button>
             </div>
           </form>

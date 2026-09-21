@@ -88,49 +88,165 @@ const initialComplaints = [
 let practiceComplaints = [...initialComplaints];
 
 /**
+ * Helper to adapt Spring Boot ComplaintResponseDto to CivicFix UI views
+ */
+const adaptComplaint = (item) => {
+  if (!item) return null;
+  return {
+    ...item,
+    id: `CF-${item.id}`,
+    numericId: item.id,
+    location: item.address || "Unspecified Location",
+    priority: item.priorityLevel || (item.severity >= 4 ? "High" : item.severity === 3 ? "Medium" : "Low"),
+    submittedDate: item.createdAt ? item.createdAt.substring(0, 10) : new Date().toISOString().substring(0, 10),
+    upvotes: item.upvotes || 0,
+    verified: item.status !== "SUBMITTED",
+    resolutionNotes: item.resolutionNotes || null,
+    resolvedAt: item.resolvedAt || null
+  };
+};
+
+/**
  * 1. GET ALL COMPLAINTS
- * Uses Axios to test HTTP connectivity to public practice endpoint,
- * then returns the structured CivicFix complaint records.
+ * Real HTTP GET /api/complaints via Axios
  */
 export const getComplaints = async () => {
-  // Test real HTTP GET communication with Axios
-  // (In Spring Boot Phase: const response = await api.get('/complaints'); return response.data;)
-  await api.get('/posts/1'); // Real network request verifying Axios HTTP cycle
-
-  // Return realistic CivicFix complaints data
-  return [...practiceComplaints];
+  const response = await api.get('/api/complaints');
+  return Array.isArray(response.data) ? response.data.map(adaptComplaint) : [];
 };
 
 /**
  * 2. GET COMPLAINT BY ID
+ * Real HTTP GET /api/complaints/{id}
  */
 export const getComplaintById = async (id) => {
-  await api.get('/posts/1');
-  const complaint = practiceComplaints.find((c) => c.id === id);
-  if (!complaint) {
-    throw new Error(`Grievance with ID ${id} not found.`);
-  }
-  return complaint;
+  const numericId = String(id).replace(/^CF-?/i, '');
+  const response = await api.get(`/api/complaints/${numericId || id}`);
+  return adaptComplaint(response.data);
 };
 
 /**
  * 3. CREATE NEW COMPLAINT (POST)
+ * Real HTTP POST /api/complaints with DTO validation and JWT bearer authorization
  */
 export const createComplaint = async (complaintData) => {
-  // Real Axios HTTP POST call to practice endpoint
-  const response = await api.post('/posts', complaintData);
-
-  // Generate ID and prepend to practice store
-  const newComplaint = {
-    id: `CF-${1000 + practiceComplaints.length + 1}`,
-    ...complaintData,
-    status: "Pending",
-    priority: complaintData.priority || "Medium",
-    submittedDate: new Date().toISOString().split('T')[0],
-    upvotes: 1,
-    verified: false
+  const payload = {
+    title: complaintData.title,
+    description: complaintData.description,
+    category: complaintData.category,
+    severity: Number(complaintData.severity) || 3,
+    address: complaintData.location || complaintData.address,
+    latitude: complaintData.latitude || null,
+    longitude: complaintData.longitude || null
   };
 
-  practiceComplaints = [newComplaint, ...practiceComplaints];
-  return newComplaint;
+  const response = await api.post('/api/complaints', payload);
+  return adaptComplaint(response.data);
 };
+
+/**
+ * 4. UPLOAD COMPLAINT MEDIA (POST multipart/form-data)
+ */
+export const uploadComplaintMedia = async (complaintId, file) => {
+  const numericId = String(complaintId).replace(/^CF-?/i, '');
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await api.post(`/api/complaints/${numericId}/media`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+  return response.data;
+};
+
+/**
+ * 5. GET COMPLAINT MEDIA
+ */
+export const getComplaintMedia = async (complaintId) => {
+  const numericId = String(complaintId).replace(/^CF-?/i, '');
+  const response = await api.get(`/api/complaints/${numericId}/media`);
+  return response.data;
+};
+
+/**
+ * 6. GET COMPLAINT COMMENTS
+ */
+export const getComplaintComments = async (complaintId) => {
+  const numericId = String(complaintId).replace(/^CF-?/i, '');
+  const response = await api.get(`/api/complaints/${numericId}/comments`);
+  return Array.isArray(response.data) ? response.data : [];
+};
+
+/**
+ * 7. ADD COMPLAINT COMMENT
+ */
+export const addComplaintComment = async (complaintId, commentText) => {
+  const numericId = String(complaintId).replace(/^CF-?/i, '');
+  const response = await api.post(`/api/complaints/${numericId}/comments`, { commentText });
+  return response.data;
+};
+
+/**
+ * 8. GET COMPLAINT VOTES & USER VOTE STATUS
+ */
+export const getComplaintVotes = async (complaintId) => {
+  const numericId = String(complaintId).replace(/^CF-?/i, '');
+  const response = await api.get(`/api/complaints/${numericId}/votes`);
+  return response.data;
+};
+
+/**
+ * 9. CAST UPVOTE (POST /api/complaints/{id}/vote)
+ */
+export const voteComplaint = async (complaintId) => {
+  const numericId = String(complaintId).replace(/^CF-?/i, '');
+  const response = await api.post(`/api/complaints/${numericId}/vote`);
+  return response.data;
+};
+
+/**
+ * 10. REMOVE UPVOTE (DELETE /api/complaints/{id}/vote)
+ */
+export const removeComplaintVote = async (complaintId) => {
+  const numericId = String(complaintId).replace(/^CF-?/i, '');
+  const response = await api.delete(`/api/complaints/${numericId}/vote`);
+  return response.data;
+};
+
+/**
+ * 11. UPDATE COMPLAINT STATUS (Officer / Admin Only)
+ * Real HTTP PATCH /api/complaints/{id}/status
+ */
+export const updateComplaintStatus = async (complaintId, statusData) => {
+  const numericId = String(complaintId).replace(/^CF-?/i, '');
+  const payload = {
+    status: statusData.status,
+    resolutionNotes: statusData.resolutionNotes || ''
+  };
+  const response = await api.patch(`/api/complaints/${numericId}/status`, payload);
+  return adaptComplaint(response.data);
+};
+
+/**
+ * 12. GET ADMIN METRICS (Officer / Admin Only)
+ * Real HTTP GET /api/admin/metrics
+ */
+export const getAdminMetrics = async () => {
+  const response = await api.get('/api/admin/metrics');
+  return response.data;
+};
+
+/**
+ * 13. CHECK POTENTIAL DUPLICATE GRIEVANCE
+ * Real HTTP GET /api/complaints/check-duplicate
+ */
+export const checkDuplicateComplaint = async ({ category, latitude, longitude, title }) => {
+  const response = await api.get('/api/complaints/check-duplicate', {
+    params: { category, latitude, longitude, title }
+  });
+  return response.data;
+};
+
+
+

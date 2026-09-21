@@ -5,42 +5,48 @@ import com.civicfix.dto.ComplaintResponseDto;
 import com.civicfix.entity.Complaint;
 import com.civicfix.exception.ComplaintNotFoundException;
 import com.civicfix.repository.ComplaintRepository;
+import com.civicfix.entity.Notification;
+import com.civicfix.entity.StatusHistory;
+import com.civicfix.repository.NotificationRepository;
+import com.civicfix.repository.StatusHistoryRepository;
 import com.civicfix.service.ComplaintService;
+import com.civicfix.service.ReputationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ============================================================================
- * CIVICFIX — DAY 33: COMPLAINT SERVICE IMPLEMENTATION
- * Package: com.civicfix.service.impl
- * Class: ComplaintServiceImpl
- *
- * Annotations:
- * @Service -> Marks this class as a Spring-managed Service component containing
- *   core business logic, lifecycle rules, and transaction boundaries.
- *
- * Design Pattern:
- * Uses Constructor Injection (promotes immutability, testability, and clarity).
- * ============================================================================
- */
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
 
     private final ComplaintRepository complaintRepository;
+    private final StatusHistoryRepository statusHistoryRepository;
+    private final NotificationRepository notificationRepository;
+    private final ReputationService reputationService;
+    private final com.civicfix.service.SmartPriorityService smartPriorityService;
 
-    // Constructor Injection (Spring automatically injects ComplaintRepository bean)
-    public ComplaintServiceImpl(ComplaintRepository complaintRepository) {
+    public ComplaintServiceImpl(
+            ComplaintRepository complaintRepository,
+            StatusHistoryRepository statusHistoryRepository,
+            NotificationRepository notificationRepository,
+            ReputationService reputationService,
+            com.civicfix.service.SmartPriorityService smartPriorityService
+    ) {
         this.complaintRepository = complaintRepository;
+        this.statusHistoryRepository = statusHistoryRepository;
+        this.notificationRepository = notificationRepository;
+        this.reputationService = reputationService;
+        this.smartPriorityService = smartPriorityService;
     }
 
     @Override
     @Transactional
-    public ComplaintResponseDto createComplaint(ComplaintRequestDto requestDto) {
+    public ComplaintResponseDto createComplaint(ComplaintRequestDto requestDto, Long citizenId) {
         Complaint complaint = new Complaint();
+        complaint.setCitizenId(citizenId != null ? citizenId : 1L);
         complaint.setTitle(requestDto.getTitle().trim());
         complaint.setDescription(requestDto.getDescription().trim());
         complaint.setCategory(requestDto.getCategory().trim());
@@ -52,21 +58,17 @@ public class ComplaintServiceImpl implements ComplaintService {
         // Business Rule 1: Initial lifecycle status is SUBMITTED
         complaint.setStatus("SUBMITTED");
 
-        // Business Rule 2: Derive introductory priority level from severity score
-        String initialPriority;
-        BigDecimal score;
-        if (requestDto.getSeverity() >= 4) {
-            initialPriority = requestDto.getSeverity() == 5 ? "CRITICAL" : "HIGH";
-            score = BigDecimal.valueOf(80.00);
-        } else if (requestDto.getSeverity() == 3) {
-            initialPriority = "MEDIUM";
-            score = BigDecimal.valueOf(50.00);
-        } else {
-            initialPriority = "LOW";
-            score = BigDecimal.valueOf(25.00);
-        }
-        complaint.setPriorityLevel(initialPriority);
+        // Business Rule 2: Compute dynamic Smart Priority score and level
+        BigDecimal score = smartPriorityService.calculatePriorityScore(
+                requestDto.getSeverity(),
+                0,
+                LocalDateTime.now(),
+                requestDto.getTitle(),
+                requestDto.getDescription()
+        );
+        String priorityLevel = smartPriorityService.calculatePriorityLevel(score);
         complaint.setPriorityScore(score);
+        complaint.setPriorityLevel(priorityLevel);
 
         // Save entity via JPA Repository
         Complaint saved = complaintRepository.save(complaint);
@@ -119,6 +121,92 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaintRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional
+    public ComplaintResponseDto updateComplaintStatus(Long id, com.civicfix.dto.ComplaintStatusUpdateDto statusDto, Long officerId) {
+        Complaint complaint = complaintRepository.findById(id)
+                .orElseThrow(() -> new ComplaintNotFoundException("Cannot update status: Complaint ID " + id + " does not exist."));
+
+        String newStatus = statusDto.getStatus().toUpperCase();
+        complaint.setStatus(newStatus);
+
+        if ("RESOLVED".equals(newStatus)) {
+            complaint.setResolvedAt(LocalDateTime.now());
+        } else if ("IN_PROGRESS".equals(newStatus) || "SUBMITTED".equals(newStatus)) {
+            complaint.setResolvedAt(null);
+        }
+
+        if (statusDto.getResolutionNotes() != null) {
+            complaint.setResolutionNotes(statusDto.getResolutionNotes().trim());
+        }
+
+        if (officerId != null) {
+            complaint.setAssignedOfficerId(officerId);
+        }
+
+        Complaint updated = complaintRepository.save(complaint);
+        return mapToResponseDto(updated);
+    }
+
+    @Override
+    @Transactional
+    public ComplaintResponseDto confirmResolution(Long id, Long citizenId) {
+        Complaint complaint = complaintRepository.findById(id)
+                .orElseThrow(() -> new ComplaintNotFoundException("Complaint ID " + id + " was not found."));
+
+        // Security check: Must be the owner of the complaint
+        if (!complaint.getCitizenId().equals(citizenId)) {
+            throw new SecurityException("Access denied: You can only confirm resolution for complaints you submitted.");
+        }
+
+        // Duplicate action check
+        if (Boolean.TRUE.equals(complaint.getResolutionConfirmed())) {
+            throw new IllegalStateException("Resolution for grievance #" + id + " has already been confirmed.");
+        }
+
+        // Must be in RESOLVED status
+        if (!"RESOLVED".equalsIgnoreCase(complaint.getStatus())) {
+            throw new IllegalStateException("Cannot confirm resolution on complaint #" + id + " because it is currently '" + complaint.getStatus() + "'.");
+        }
+
+        String oldStatus = complaint.getStatus();
+        complaint.setStatus("RESOLUTION_CONFIRMED");
+        complaint.setResolutionConfirmed(true);
+        complaint.setResolutionConfirmedAt(LocalDateTime.now());
+        Complaint updated = complaintRepository.save(complaint);
+
+        // 1. Immutable status history transition
+        StatusHistory history = new StatusHistory(
+                id,
+                citizenId,
+                oldStatus,
+                "RESOLUTION_CONFIRMED",
+                "Citizen verified and confirmed successful resolution of the grievance on-site."
+        );
+        statusHistoryRepository.save(history);
+
+        // 2. Award +5 Reputation points to the citizen (idempotent)
+        reputationService.awardReputation(citizenId, id, ReputationService.POINTS_RESOLUTION_CONFIRMED, "RESOLUTION_CONFIRMED");
+
+        // 3. Notify Citizen
+        notificationRepository.save(new Notification(
+                citizenId,
+                id,
+                "Thank you for confirming resolution for grievance #" + id + "! You earned +5 reputation points."
+        ));
+
+        // 4. Notify Assigned Officer (if present)
+        if (complaint.getAssignedOfficerId() != null) {
+            notificationRepository.save(new Notification(
+                    complaint.getAssignedOfficerId(),
+                    id,
+                    "Citizen confirmed your resolution for grievance #" + id + "! Well done."
+            ));
+        }
+
+        return mapToResponseDto(updated);
+    }
+
     // Helper mapper: Converts JPA Entity to output Response DTO
     private ComplaintResponseDto mapToResponseDto(Complaint entity) {
         ComplaintResponseDto dto = new ComplaintResponseDto();
@@ -136,6 +224,11 @@ public class ComplaintServiceImpl implements ComplaintService {
         dto.setLongitude(entity.getLongitude());
         dto.setCreatedAt(entity.getCreatedAt());
         dto.setUpdatedAt(entity.getUpdatedAt());
+        dto.setResolutionNotes(entity.getResolutionNotes());
+        dto.setResolvedAt(entity.getResolvedAt());
+        dto.setAssignedOfficerId(entity.getAssignedOfficerId());
+        dto.setResolutionConfirmed(entity.getResolutionConfirmed());
+        dto.setResolutionConfirmedAt(entity.getResolutionConfirmedAt());
         return dto;
     }
 }

@@ -75,6 +75,11 @@ CREATE TABLE complaints (
     latitude DECIMAL(10, 8) NULL,   -- Spatial coordinate for geospatial clustering
     longitude DECIMAL(11, 8) NULL,  -- Spatial coordinate for geospatial clustering
     address VARCHAR(255) NOT NULL,
+    assigned_officer_id BIGINT NULL,
+    resolution_notes TEXT NULL,
+    resolved_at TIMESTAMP NULL,
+    resolution_confirmed BOOLEAN NOT NULL DEFAULT FALSE,
+    resolution_confirmed_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -83,12 +88,18 @@ CREATE TABLE complaints (
         FOREIGN KEY (citizen_id) REFERENCES users(id)
         ON DELETE CASCADE,
 
+    -- Foreign Key Constraint (Assigned municipal field officer)
+    CONSTRAINT fk_complaints_officer
+        FOREIGN KEY (assigned_officer_id) REFERENCES users(id)
+        ON DELETE SET NULL,
+
     -- Performance Indexes for search, filtering, and duplicate checking
     INDEX idx_complaint_status (status),
     INDEX idx_complaint_category (category),
     INDEX idx_complaint_severity (severity),
     INDEX idx_complaint_priority (priority_score DESC),
-    INDEX idx_complaint_geo (latitude, longitude)
+    INDEX idx_complaint_geo (latitude, longitude),
+    INDEX idx_complaint_officer (assigned_officer_id)
 ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------------------------

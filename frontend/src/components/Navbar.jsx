@@ -65,6 +65,26 @@ function Navbar() {
                       Track Complaint
                     </NavLink>
                   </li>
+                  {(user?.role === 'ADMIN' || user?.role === 'ROLE_ADMIN') && (
+                    <li>
+                      <NavLink
+                        to="/admin"
+                        className={({ isActive }) => (isActive ? "nav-link active nav-link-admin" : "nav-link nav-link-admin")}
+                      >
+                        ⚡ Admin Console
+                      </NavLink>
+                    </li>
+                  )}
+                  {(user?.role === 'EMPLOYEE' || user?.role === 'ROLE_EMPLOYEE') && (
+                    <li>
+                      <NavLink
+                        to="/employee"
+                        className={({ isActive }) => (isActive ? "nav-link active nav-link-admin" : "nav-link nav-link-admin")}
+                      >
+                        👷 Field Ops
+                      </NavLink>
+                    </li>
+                  )}
                 </>
               )}
 
@@ -110,6 +130,19 @@ function Navbar() {
                     gap: '6px'
                   }}>
                     <span>👤 {user?.name || 'User'}</span>
+                    {user?.reputationScore !== undefined && user?.reputationScore !== null && (
+                      <span style={{
+                        fontSize: '0.75rem',
+                        background: '#fef3c7',
+                        color: '#b45309',
+                        padding: '2px 8px',
+                        borderRadius: '10px',
+                        fontWeight: 700,
+                        border: '1px solid #fde68a'
+                      }} title="Civic Reputation Points">
+                        ⭐ {user.reputationScore}
+                      </span>
+                    )}
                     <span style={{
                       fontSize: '0.7rem',
                       background: 'var(--primary, #2563eb)',

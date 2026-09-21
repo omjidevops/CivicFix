@@ -65,6 +65,21 @@ public class Complaint {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "resolution_notes", columnDefinition = "TEXT")
+    private String resolutionNotes;
+
+    @Column(name = "resolved_at")
+    private LocalDateTime resolvedAt;
+
+    @Column(name = "assigned_officer_id")
+    private Long assignedOfficerId;
+
+    @Column(name = "resolution_confirmed")
+    private Boolean resolutionConfirmed = false;
+
+    @Column(name = "resolution_confirmed_at")
+    private LocalDateTime resolutionConfirmedAt;
+
     // Default No-Arg Constructor (Required by JPA/Hibernate proxy mechanism)
     public Complaint() {}
 
@@ -125,4 +140,19 @@ public class Complaint {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public String getResolutionNotes() { return resolutionNotes; }
+    public void setResolutionNotes(String resolutionNotes) { this.resolutionNotes = resolutionNotes; }
+
+    public LocalDateTime getResolvedAt() { return resolvedAt; }
+    public void setResolvedAt(LocalDateTime resolvedAt) { this.resolvedAt = resolvedAt; }
+
+    public Long getAssignedOfficerId() { return assignedOfficerId; }
+    public void setAssignedOfficerId(Long assignedOfficerId) { this.assignedOfficerId = assignedOfficerId; }
+
+    public Boolean getResolutionConfirmed() { return resolutionConfirmed != null && resolutionConfirmed; }
+    public void setResolutionConfirmed(Boolean resolutionConfirmed) { this.resolutionConfirmed = resolutionConfirmed; }
+
+    public LocalDateTime getResolutionConfirmedAt() { return resolutionConfirmedAt; }
+    public void setResolutionConfirmedAt(LocalDateTime resolutionConfirmedAt) { this.resolutionConfirmedAt = resolutionConfirmedAt; }
 }

@@ -2,12 +2,13 @@ package com.civicfix.service;
 
 import com.civicfix.dto.ComplaintRequestDto;
 import com.civicfix.dto.ComplaintResponseDto;
+import com.civicfix.dto.ComplaintStatusUpdateDto;
 
 import java.util.List;
 
 /**
  * ============================================================================
- * CIVICFIX — DAY 33: COMPLAINT SERVICE INTERFACE
+ * CIVICFIX — DAYS 33 & 45: COMPLAINT SERVICE INTERFACE
  * Package: com.civicfix.service
  * Interface: ComplaintService
  *
@@ -17,13 +18,21 @@ import java.util.List;
  */
 public interface ComplaintService {
 
-    ComplaintResponseDto createComplaint(ComplaintRequestDto requestDto);
+    ComplaintResponseDto createComplaint(ComplaintRequestDto requestDto, Long citizenId);
+
+    default ComplaintResponseDto createComplaint(ComplaintRequestDto requestDto) {
+        return createComplaint(requestDto, 1L);
+    }
 
     List<ComplaintResponseDto> getAllComplaints();
 
     ComplaintResponseDto getComplaintById(Long id);
 
     ComplaintResponseDto updateComplaint(Long id, ComplaintRequestDto requestDto);
+
+    ComplaintResponseDto updateComplaintStatus(Long id, ComplaintStatusUpdateDto statusDto, Long officerId);
+
+    ComplaintResponseDto confirmResolution(Long id, Long citizenId);
 
     void deleteComplaint(Long id);
 }

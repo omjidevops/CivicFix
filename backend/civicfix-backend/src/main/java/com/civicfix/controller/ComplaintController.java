@@ -1,11 +1,20 @@
 package com.civicfix.controller;
 
+import com.civicfix.dto.CommentRequestDto;
+import com.civicfix.dto.CommentResponseDto;
+import com.civicfix.dto.VoteResponseDto;
+import com.civicfix.service.CommentService;
+import com.civicfix.service.VoteService;
 import com.civicfix.dto.ComplaintRequestDto;
 import com.civicfix.dto.ComplaintResponseDto;
 import com.civicfix.service.ComplaintService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.civicfix.dto.ComplaintStatusUpdateDto;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.civicfix.security.CustomUserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -14,17 +23,14 @@ import java.util.List;
 
 /**
  * ============================================================================
- * CIVICFIX — DAYS 31 & 35: COMPLAINT REST CONTROLLER
+ * CIVICFIX — DAYS 31, 35 & 44: COMPLAINT REST CONTROLLER
  * Package: com.civicfix.controller
  * Class: ComplaintController
  *
  * Exposes standard RESTful API endpoints for civic issue lifecycle management:
- * - POST   /api/complaints       -> 201 Created (Lodges new grievance)
- * - GET    /api/complaints       -> 200 OK (Lists all grievances)
- * - GET    /api/complaints/{id}  -> 200 OK (Fetches grievance details)
- * - PUT    /api/complaints/{id}  -> 200 OK (Updates grievance)
- * - DELETE /api/complaints/{id}  -> 204 No Content (Removes grievance)
- * - GET    /api/complaints/test  -> 200 OK (Day 31 practice sample data)
+ * - Grievance CRUD: /api/complaints
+ * - Day 44 Comments: GET/POST /api/complaints/{id}/comments
+ * - Day 44 Upvoting: GET/POST/DELETE /api/complaints/{id}/vote(s)
  * ============================================================================
  */
 @RestController
@@ -32,10 +38,37 @@ import java.util.List;
 public class ComplaintController {
 
     private final ComplaintService complaintService;
+    private final CommentService commentService;
+    private final VoteService voteService;
+    private final com.civicfix.service.DuplicateDetectionService duplicateDetectionService;
 
-    // Constructor Injection of business service layer
-    public ComplaintController(ComplaintService complaintService) {
+    // Constructor Injection of business services
+    public ComplaintController(
+            ComplaintService complaintService,
+            CommentService commentService,
+            VoteService voteService,
+            com.civicfix.service.DuplicateDetectionService duplicateDetectionService
+    ) {
         this.complaintService = complaintService;
+        this.commentService = commentService;
+        this.voteService = voteService;
+        this.duplicateDetectionService = duplicateDetectionService;
+    }
+
+    /**
+     * Check for potential duplicate complaints
+     * GET /api/complaints/check-duplicate
+     */
+    @GetMapping("/check-duplicate")
+    public ResponseEntity<com.civicfix.dto.DuplicateCheckResultDto> checkDuplicate(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) java.math.BigDecimal latitude,
+            @RequestParam(required = false) java.math.BigDecimal longitude,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Long excludeId) {
+        com.civicfix.dto.DuplicateCheckResultDto result = duplicateDetectionService.checkForDuplicate(
+                category, latitude, longitude, title, excludeId);
+        return ResponseEntity.ok(result);
     }
 
     /**
@@ -79,8 +112,13 @@ public class ComplaintController {
      */
     @PostMapping
     public ResponseEntity<ComplaintResponseDto> createComplaint(
-            @Valid @RequestBody ComplaintRequestDto requestDto) {
-        ComplaintResponseDto response = complaintService.createComplaint(requestDto);
+            @Valid @RequestBody ComplaintRequestDto requestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        // Associate complaint securely with authenticated citizen from JWT context
+        Long citizenId = (userDetails != null && userDetails.getUser() != null)
+                ? userDetails.getUser().getId()
+                : 1L;
+        ComplaintResponseDto response = complaintService.createComplaint(requestDto, citizenId);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -129,4 +167,122 @@ public class ComplaintController {
         complaintService.deleteComplaint(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * DAY 45: UPDATE COMPLAINT STATUS (Officer / Admin Only)
+     * PATCH /api/complaints/{id}/status
+     * Status: 200 OK
+     */
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAnyRole('EMPLOYEE', 'ADMIN')")
+    public ResponseEntity<ComplaintResponseDto> updateComplaintStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody ComplaintStatusUpdateDto statusDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long officerId = (userDetails != null && userDetails.getUser() != null)
+                ? userDetails.getUser().getId()
+                : null;
+        ComplaintResponseDto response = complaintService.updateComplaintStatus(id, statusDto, officerId);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * DAY 48: CONFIRM RESOLUTION (Citizen Only)
+     * POST /api/complaints/{id}/confirm-resolution
+     * Status: 200 OK
+     */
+    @PostMapping("/{id}/confirm-resolution")
+    @PreAuthorize("hasRole('CITIZEN')")
+    public ResponseEntity<ComplaintResponseDto> confirmResolution(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long citizenId = userDetails.getUser().getId();
+        ComplaintResponseDto response = complaintService.confirmResolution(id, citizenId);
+        return ResponseEntity.ok(response);
+    }
+
+    // ========================================================================
+    // DAY 44: COMMENTS REST ENDPOINTS
+    // ========================================================================
+
+    /**
+     * READ All Comments for a Complaint
+     * GET /api/complaints/{id}/comments
+     * Status: 200 OK
+     */
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentResponseDto>> getComments(@PathVariable Long id) {
+        List<CommentResponseDto> comments = commentService.getCommentsByComplaint(id);
+        return ResponseEntity.ok(comments);
+    }
+
+    /**
+     * CREATE Comment for a Complaint
+     * POST /api/complaints/{id}/comments
+     * Status: 201 Created
+     */
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<CommentResponseDto> addComment(
+            @PathVariable Long id,
+            @Valid @RequestBody CommentRequestDto requestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = (userDetails != null && userDetails.getUser() != null)
+                ? userDetails.getUser().getId()
+                : 1L;
+        CommentResponseDto response = commentService.addComment(id, userId, requestDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    // ========================================================================
+    // DAY 44: UPVOTES REST ENDPOINTS
+    // ========================================================================
+
+    /**
+     * READ Vote Status for a Complaint
+     * GET /api/complaints/{id}/votes
+     * Status: 200 OK
+     */
+    @GetMapping("/{id}/votes")
+    public ResponseEntity<VoteResponseDto> getVotes(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = (userDetails != null && userDetails.getUser() != null)
+                ? userDetails.getUser().getId()
+                : null;
+        VoteResponseDto response = voteService.getVoteStatus(id, userId);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * CAST Upvote for a Complaint
+     * POST /api/complaints/{id}/vote
+     * Status: 201 Created
+     */
+    @PostMapping("/{id}/vote")
+    public ResponseEntity<VoteResponseDto> castVote(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = (userDetails != null && userDetails.getUser() != null)
+                ? userDetails.getUser().getId()
+                : 1L;
+        VoteResponseDto response = voteService.castVote(id, userId);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    /**
+     * REMOVE Upvote for a Complaint
+     * DELETE /api/complaints/{id}/vote
+     * Status: 200 OK
+     */
+    @DeleteMapping("/{id}/vote")
+    public ResponseEntity<VoteResponseDto> removeVote(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = (userDetails != null && userDetails.getUser() != null)
+                ? userDetails.getUser().getId()
+                : 1L;
+        VoteResponseDto response = voteService.removeVote(id, userId);
+        return ResponseEntity.ok(response);
+    }
 }
+

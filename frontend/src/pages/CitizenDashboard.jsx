@@ -14,6 +14,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getComplaints } from '../services/complaintService.js';
+import { getMyReputation } from '../services/reputationService.js';
 import DashboardStatCard from '../components/DashboardStatCard.jsx';
 import ComplaintList from '../components/ComplaintList.jsx';
 import LoadingState from '../components/LoadingState.jsx';
@@ -21,19 +22,28 @@ import LoadingState from '../components/LoadingState.jsx';
 function CitizenDashboard() {
   // 1. React States for API Lifecycle
   const [complaints, setComplaints] = useState([]);
+  const [reputation, setReputation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [statusFilter, setStatusFilter] = useState("All");
 
   // 2. Fetch function calling the Axios service layer
-  const fetchComplaintsData = async () => {
+  const fetchDashboardData = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      // Real network call via Axios service
-      const data = await getComplaints();
-      setComplaints(data);
+      const [complaintsData, repData] = await Promise.allSettled([
+        getComplaints(),
+        getMyReputation()
+      ]);
+
+      if (complaintsData.status === 'fulfilled') {
+        setComplaints(complaintsData.value);
+      }
+      if (repData.status === 'fulfilled') {
+        setReputation(repData.value);
+      }
     } catch (err) {
       console.error("Dashboard API Error:", err);
       setError("Unable to load complaints. Please verify network connection.");
@@ -44,7 +54,7 @@ function CitizenDashboard() {
 
   // 3. useEffect hook to fetch data when component mounts (on page load)
   useEffect(() => {
-    fetchComplaintsData();
+    fetchDashboardData();
   }, []);
 
   // 4. Dynamically calculate summary metrics from loaded complaints
@@ -61,7 +71,7 @@ function CitizenDashboard() {
           <span className="section-tag">Citizen Portal</span>
           <h1 className="dash-title">Welcome to CivicFix</h1>
           <p className="dash-subtitle">
-            Track and manage your civic complaints.
+            Track and manage your civic complaints and earn reputation rewards.
           </p>
         </div>
 
@@ -76,7 +86,7 @@ function CitizenDashboard() {
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={fetchComplaintsData}
+            onClick={fetchDashboardData}
             title="Reload from API"
           >
             🔄 Refresh
@@ -111,6 +121,40 @@ function CitizenDashboard() {
           icon="✅"
         />
       </div>
+
+      {/* 3. Civic Reputation Card (Day 48) */}
+      {reputation && (
+        <div className="reputation-summary-card">
+          <div className="rep-card-header">
+            <div className="rep-badge-group">
+              <span className="rep-icon">⭐</span>
+              <div>
+                <h3 className="rep-title">Civic Reputation Score</h3>
+                <span className="rep-tier-chip">{reputation.tierTitle}</span>
+              </div>
+            </div>
+            <div className="rep-score-value">
+              <span className="score-number">{reputation.reputationScore}</span>
+              <span className="score-label">Points Earned</span>
+            </div>
+          </div>
+
+          {reputation.recentTransactions && reputation.recentTransactions.length > 0 && (
+            <div className="rep-transactions-box">
+              <h4>Recent Civic Activity</h4>
+              <div className="rep-tx-list">
+                {reputation.recentTransactions.slice(0, 5).map((tx) => (
+                  <div key={tx.id} className={`rep-tx-item ${tx.points >= 0 ? 'tx-positive' : 'tx-negative'}`}>
+                    <span className="tx-points">{tx.points >= 0 ? `+${tx.points}` : tx.points}</span>
+                    <span className="tx-reason">{tx.reason.replace(/_/g, ' ')}</span>
+                    <span className="tx-date">{new Date(tx.createdAt).toLocaleDateString()}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 3. Main Data View (Loading / Error / Complaints List) */}
       {loading && (

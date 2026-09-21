@@ -84,6 +84,20 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Handles 409 Conflict when a citizen attempts to cast a duplicate vote
+     */
+    @ExceptionHandler(DuplicateVoteException.class)
+    public ResponseEntity<ErrorResponseDto> handleDuplicateVote(DuplicateVoteException ex) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                HttpStatus.CONFLICT.value(),
+                "Duplicate Vote",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+
+    /**
      * Handles 401 Unauthorized for bad login credentials
      * CRITICAL SECURITY RULE:
      * Never disclose whether the email existed or the password was wrong!
@@ -123,6 +137,58 @@ public class GlobalExceptionHandler {
                 "Authentication failed: " + ex.getMessage()
         );
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * Handles 400 Bad Request for illegal arguments (e.g. invalid file extension or MIME type)
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponseDto> handleIllegalArgument(IllegalArgumentException ex) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid Request",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles 400 Bad Request for invalid lifecycle states (e.g. confirming a complaint not yet resolved)
+     */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponseDto> handleIllegalState(IllegalStateException ex) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid Operation State",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles 403 Forbidden when a user tries to access/modify a resource they do not own
+     */
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ErrorResponseDto> handleSecurityException(SecurityException ex) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                HttpStatus.FORBIDDEN.value(),
+                "Access Denied",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * Handles 413 Payload Too Large when uploaded file exceeds multipart threshold
+     */
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponseDto> handleMaxSizeException(org.springframework.web.multipart.MaxUploadSizeExceededException ex) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                HttpStatus.PAYLOAD_TOO_LARGE.value(),
+                "File Too Large",
+                "Uploaded file exceeds the maximum permitted size limit of 5MB"
+        );
+        return new ResponseEntity<>(error, HttpStatus.PAYLOAD_TOO_LARGE);
     }
 
     /**

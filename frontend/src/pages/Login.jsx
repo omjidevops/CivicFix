@@ -23,9 +23,15 @@ function Login() {
     setLoading(true);
 
     try {
-      await login(email, password);
-      // Navigate to protected citizen dashboard upon successful authentication
-      navigate('/dashboard');
+      const data = await login(email, password);
+      const role = data?.user?.role;
+      if (role === 'ADMIN' || role === 'ROLE_ADMIN') {
+        navigate('/admin');
+      } else if (role === 'EMPLOYEE' || role === 'ROLE_EMPLOYEE') {
+        navigate('/employee');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.message || 'Invalid email or password.');

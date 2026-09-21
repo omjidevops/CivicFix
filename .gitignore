@@ -18,6 +18,10 @@
 *.war
 *.ear
 
+# Media uploads
+backend/civicfix-backend/uploads/*
+!backend/civicfix-backend/uploads/.gitkeep
+
 # Maven build directory containing all compiled binaries
 target/
 pom.xml.tag

@@ -57,5 +57,17 @@ public class DataInitializer implements CommandLineRunner {
             officer.setReputationScore(50);
             userRepository.save(officer);
         }
+
+        // 3. Seed Demo Citizen if not present
+        if (userRepository.findByEmail("citizen@civicfix.gov").isEmpty()) {
+            User citizen = new User();
+            citizen.setName("Rahul Citizen");
+            citizen.setEmail("citizen@civicfix.gov");
+            citizen.setPasswordHash(passwordEncoder.encode("CitizenSecret123"));
+            citizen.setPhone("9876543210");
+            citizen.setRole(Role.CITIZEN);
+            citizen.setReputationScore(10);
+            userRepository.save(citizen);
+        }
     }
 }
