@@ -10,14 +10,14 @@
 // ============================================================================
 
 import axios from 'axios';
-
 const api = axios.create({
-  baseURL: 'http://localhost:8081',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081',
   headers: {
     'Content-Type': 'application/json'
   },
   timeout: 10000
 });
+
 
 // Request Interceptor: Injects Bearer Token
 api.interceptors.request.use(

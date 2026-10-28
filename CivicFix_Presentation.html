@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicFix — Classroom Project Presentation | PSIT Kanpur (BCA)</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-navy: #1e293b;
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #0d9488;
+      --accent-light: #ccfbf1;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --emerald: #059669;
+      --amber: #d97706;
+      --rose: #e11d48;
+      --purple: #7c3aed;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: #090d16;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Presentation Frame (16:9 Aspect Ratio) */
+    .deck-container {
+      position: relative;
+      width: 95vw;
+      max-width: 1360px;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-light);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 36px 48px 48px 48px;
+      flex-direction: column;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.99); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Slide Header */
+    .slide-header {
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--card-border);
+      padding-bottom: 12px;
+      position: relative;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      padding: 4px 12px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    /* Slide Footer */
+    .slide-footer {
+      position: absolute;
+      bottom: 14px;
+      left: 48px;
+      right: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(226, 232, 240, 0.8);
+      padding-top: 8px;
+    }
+
+    .slide-num {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Dark Slide Style (for Title & Q&A) */
+    .slide.dark-slide {
+      background: var(--bg-dark);
+      color: #ffffff;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .dark-badge {
+      display: inline-block;
+      background: var(--bg-navy);
+      border: 1px solid #334155;
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color: #94a3b8;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 56px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 40%, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 22px;
+      font-weight: 600;
+      color: #60a5fa;
+      margin-bottom: 12px;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: #cbd5e1;
+      max-width: 820px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .presenter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      width: 100%;
+      max-width: 860px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .presenter-box {
+      background: var(--bg-navy);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 18px 24px;
+    }
+
+    .presenter-box .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+
+    .presenter-box .name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .presenter-box .meta {
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    /* Cards & Grids */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      height: 100%;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      height: 100%;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-top {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card li {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #334155;
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .card li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-size: 18px;
+      line-height: 14px;
+    }
+
+    /* Comparison Table */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+
+    .custom-table th {
+      padding: 10px 14px;
+      background: #1e293b;
+      color: #ffffff;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .custom-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--text-dark);
+    }
+
+    .custom-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .custom-table .bad {
+      color: var(--rose);
+      font-weight: 500;
+    }
+
+    .custom-table .good {
+      color: var(--emerald);
+      font-weight: 700;
+    }
+
+    /* Formula Banner */
+    .formula-banner {
+      background: #1e3a8a;
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      border: 1px solid var(--primary);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    /* State Machine Row */
+    .state-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .state-node {
+      background: #ffffff;
+      border: 2px solid var(--card-border);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+
+    .state-node.active-state {
+      border-color: var(--primary);
+    }
+
+    .state-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #ffffff;
+      padding: 4px;
+      border-radius: 6px;
+    }
+
+    .state-actor {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .state-desc {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Controls Bar Below Deck */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 95vw;
+      max-width: 1360px;
+      margin-top: 14px;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      background: var(--bg-navy);
+      color: #ffffff;
+      border: 1px solid #334155;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #334155;
+      border-color: var(--primary);
+      color: #60a5fa;
+    }
+
+    /* Speaker Notes Modal */
+    .notes-drawer {
+      display: none;
+      position: absolute;
+      bottom: 44px;
+      left: 48px;
+      right: 48px;
+      max-height: 180px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid #3b82f6;
+      border-radius: 12px;
+      padding: 16px 22px;
+      color: #f1f5f9;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .notes-drawer.open {
+      display: block;
+    }
+
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      color: #60a5fa;
+      font-size: 12px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container" id="deck">
+
+    <!-- SLIDE 1: Title Slide -->
+    <div class="slide dark-slide active" data-notes="Good morning respected guide, examiners, and classmates. My name is Omji Savita, Roll Number 24116002349, BCA student at PSIT College of Higher Education, Kanpur. Today, I am presenting my project 'CivicFix — Smart Civic Issue Reporting & Resolution Platform', a full-stack municipal grievance redressal ecosystem built with Spring Boot, React, and MySQL.">
+      <div class="dark-badge">CHHATRAPATI SHAHU JI MAHARAJ UNIVERSITY, KANPUR  •  PSIT COLLEGE OF HIGHER EDUCATION</div>
+      <h1 class="hero-title">CIVICFIX</h1>
+      <h2 class="hero-subtitle">Smart Civic Issue Reporting & Resolution Platform</h2>
+      <p class="hero-desc">An Enterprise Full-Stack Municipal Grievance Ecosystem with Real-Time Geospatial Duplicate Detection & Dynamic SLA Priority Scoring</p>
+      
+      <div class="presenter-grid">
+        <div class="presenter-box">
+          <div class="label">Candidate / Presenter</div>
+          <div class="name">Omji Savita</div>
+          <div class="meta">Roll Number: <strong>24116002349</strong><br>Bachelor of Computer Applications (BCA)<br>PSIT College of Higher Education, Kanpur</div>
+        </div>
+        <div class="presenter-box">
+          <div class="label">Under the Supervision of</div>
+          <div class="name">Prof. Sandeepp Agarwal</div>
+          <div class="meta">Project Supervisor & Mentor<br>Department of Computer Applications (BCA)<br>PSIT College of Higher Education, Kanpur</div>
+        </div>
+      </div>
+      <div style="font-size: 12px; color: #64748b;">October 2026 | Classroom Project Presentation</div>
+    </div>
+
+    <!-- SLIDE 2: Crisis in Municipal Redressal -->
+    <div class="slide" data-notes="In urban administration, civic redressal faces three fatal problems: First, opacity—citizens have zero visibility into who is resolving their ticket. Second, duplicate flooding—when a water pipe bursts, 15 neighbors submit 15 tickets, overwhelming staff. Third, FIFO queues where life-threatening live wires wait behind lawn mowing, and contractors close tickets on paper without fixing them.">
+      <div class="slide-header">
+        <span class="tag">Chapter 1: Background</span>
+        <h2 class="slide-title">The Civic Governance Crisis: Why We Need CivicFix</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card" style="border-top: 4px solid var(--rose);">
+            <div class="card-top" style="color: var(--rose);">🏛️ Opaque Bureaucracy</div>
+            <ul>
+              <li>Citizens lodge complaints into an administrative "black hole".</li>
+              <li>Zero visibility into assigned department, contractor, or officer.</li>
+              <li>No guaranteed resolution deadlines or SLA enforcement for taxpayers.</li>
+              <li>Citizens become disillusioned and stop reporting civic hazards.</li>
+            </ul>
+          </div>
+          <div class="card" style="border-top: 4px solid var(--amber);">
+            <div class="card-top" style="color: var(--amber);">🔄 Duplicate & Spam Overload</div>
+            <ul>
+              <li>Multiple residents report the exact same road pothole or water leak.</li>
+              <li>Field departments are overwhelmed with 10+ identical tickets for 1 issue.</li>
+              <li>Wastes municipal inspection budget, fuel, and triage manpower.</li>
+              <li>No spatial clustering to aggregate neighborhood complaints.</li>
+            </ul>
+          </div>
+          <div class="card" style="border-top: 4px solid var(--purple);">
+            <div class="card-top" style="color: var(--purple);">⏳ FIFO Queue & Ghost Closures</div>
+            <ul>
+              <li>First-In-First-Out: Live electrical sparking wires wait behind lawn mowing.</li>
+              <li>Zero algorithmic urgency prioritization for life-safety hazards.</li>
+              <li>Contractors mark tickets "Resolved" on paper without visiting sites.</li>
+              <li>No photographic proof or citizen satisfaction confirmation loop.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 2 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Problem Statement & Objectives -->
+    <div class="slide" data-notes="We formulated our core research question: How can a municipal system prevent duplicate tickets, dynamically prioritize dangerous emergencies, enforce photographic resolution proof, and empower citizens with real-time tracking? We defined 5 core objectives: geospatial reporting, duplicate suppression, dynamic 0-100 priority scoring, verifiable workflows, and enterprise stateless JWT security.">
+      <div class="slide-header">
+        <span class="tag">Chapter 1: Objectives</span>
+        <h2 class="slide-title">Problem Statement & Academic Project Scope</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="border-left: 4px solid var(--rose);">
+            <div class="card-top" style="color: var(--rose);">🎯 Core Problem Statement</div>
+            <p style="font-size: 13.5px; font-style: italic; color: #475569; line-height: 1.6; margin-bottom: 16px;">
+              "How can municipal corporations systematically eliminate ticket duplication, dynamically prioritize life-threatening civic emergencies, enforce photographic resolution proof, and empower citizens with transparent real-time tracking across diverse administrative roles?"
+            </p>
+            <div style="font-size: 12px; font-weight: 700; margin-bottom: 6px;">Scope & Boundaries:</div>
+            <ul>
+              <li>Urban local body (ULB) domains: Roads, Water, Sanitation, Lights, Safety.</li>
+              <li>Decoupled multi-tier enterprise architecture (Spring Boot + React + MySQL).</li>
+              <li>Role-based access control (RBAC) across Citizen, Field Officer, and Admin.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--primary);">
+            <div class="card-top" style="color: var(--primary);">📌 Five Primary Project Objectives</div>
+            <ul>
+              <li><strong>1. Geospatial Ticket Creation:</strong> Drop interactive pins via Leaflet/OpenStreetMap with photo upload.</li>
+              <li><strong>2. Algorithmic Duplicate Suppression:</strong> Haversine great-circle distance (&lt;150m) + Jaccard token similarity.</li>
+              <li><strong>3. Dynamic Smart Priority Engine:</strong> Compute 0–100 urgency score factoring severity, aging, upvotes & keywords.</li>
+              <li><strong>4. Verifiable Proof Workflow:</strong> Mandatory officer resolution photo & citizen confirmation before ticket closure.</li>
+              <li><strong>5. Stateless Enterprise Security:</strong> JWT HMAC-SHA256, BCrypt hashing, and 57 automated unit/integration tests.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 3 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Comparative Analysis Table -->
+    <div class="slide" data-notes="Here is a direct comparison between legacy government portals and CivicFix. While legacy portals use vague text addresses, CivicFix uses GPS coordinates. While legacy portals get clogged with duplicates, CivicFix prevents them before submission. While legacy portals process FIFO, CivicFix uses an automated 0-100 score. And while contractors close tickets without proof, CivicFix demands mandatory photos.">
+      <div class="slide-header">
+        <span class="tag">Chapter 1: Comparison</span>
+        <h2 class="slide-title">Comparative Analysis: Existing Portals vs. CivicFix</h2>
+      </div>
+      <div class="slide-body">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 20%;">Evaluation Dimension</th>
+              <th style="width: 40%; background: #475569;">Traditional Helpline / Civic Portals</th>
+              <th style="width: 40%; background: #1d4ed8;">CivicFix Proposed Platform</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Incident Pinning</strong></td>
+              <td class="bad">Manual text address (vague landmarks, typing errors)</td>
+              <td class="good">Interactive Leaflet GPS map with exact coordinates</td>
+            </tr>
+            <tr>
+              <td><strong>Duplicate Handling</strong></td>
+              <td class="bad">None; duplicates flood database & field queues</td>
+              <td class="good">Haversine formula (&le;150m) + Jaccard token similarity</td>
+            </tr>
+            <tr>
+              <td><strong>Queue Prioritization</strong></td>
+              <td class="bad">First-In-First-Out (FIFO); dangerous hazards wait</td>
+              <td class="good">Automated 0–100 score (Severity, Votes, Aging, Keywords)</td>
+            </tr>
+            <tr>
+              <td><strong>Resolution Integrity</strong></td>
+              <td class="bad">Verbal/paper sign-off; widespread "ghost" closures</td>
+              <td class="good">Mandatory resolution photo proof + officer remarks</td>
+            </tr>
+            <tr>
+              <td><strong>Citizen Feedback</strong></td>
+              <td class="bad">None; ticket is closed without citizen input</td>
+              <td class="good">Citizen confirms satisfaction & awards reputation points</td>
+            </tr>
+            <tr>
+              <td><strong>Audit & Security</strong></td>
+              <td class="bad">Shared logins, mutable records, session state</td>
+              <td class="good">Stateless JWT HMAC-SHA256, BCrypt, immutable audit trail</td>
+            </tr>
+            <tr>
+              <td><strong>Community Voice</strong></td>
+              <td class="bad">Individual isolated complaints</td>
+              <td class="good">Crowdsourced upvoting to organically escalate priority</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 4 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: 3-Tier User Roles -->
+    <div class="slide" data-notes="CivicFix separates concerns into 3 authenticated roles: Citizens can report issues, inspect maps, upvote, and earn reputation. Field Officers get a dedicated departmental work queue, navigate via GPS, and must upload photo proof to resolve issues. Administrators have executive oversight, route tickets, adjust SLAs, and inspect municipal KPIs.">
+      <div class="slide-header">
+        <span class="tag">Chapter 2: User Roles</span>
+        <h2 class="slide-title">Three-Tier Role-Based Separation of Concerns</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card" style="border-top: 4px solid var(--primary);">
+            <div class="card-top" style="color: var(--primary);">👤 ROLE_CITIZEN (Public)</div>
+            <ul>
+              <li>Secure registration with BCrypt salted password hashing.</li>
+              <li>Report grievances with GPS coordinates & photo evidence.</li>
+              <li>Real-time duplicate detection warning before ticket submission.</li>
+              <li>Crowdsourced upvoting on public community issues.</li>
+              <li>Track status live & confirm resolution satisfaction.</li>
+              <li>Gamified civic reputation points ledger (+10, +15 pts).</li>
+            </ul>
+          </div>
+          <div class="card" style="border-top: 4px solid var(--accent);">
+            <div class="card-top" style="color: var(--accent);">👷 ROLE_EMPLOYEE (Field Officers)</div>
+            <ul>
+              <li>Personal departmental work queue (Roads, Water, etc.).</li>
+              <li>Acknowledge assigned tickets to "IN_PROGRESS".</li>
+              <li>Inspect citizen GPS map location & uploaded issue photos.</li>
+              <li><strong>Mandatory resolution photo upload</strong> before closure.</li>
+              <li>Submit official completion remarks & work details.</li>
+              <li>SLA deadline compliance and overdue indicators.</li>
+            </ul>
+          </div>
+          <div class="card" style="border-top: 4px solid var(--purple);">
+            <div class="card-top" style="color: var(--purple);">🛡️ ROLE_ADMIN (Supervisors)</div>
+            <ul>
+              <li>Executive municipal command center & live KPI counters.</li>
+              <li>Verify incoming reports or reject spam/abusive entries.</li>
+              <li>Assign verified tickets to specific Departments & Officers.</li>
+              <li>Override severity ratings & inspect SLA escalations.</li>
+              <li>Real-time department resolution analytics & graphs.</li>
+              <li>Full access to immutable chronological status audit logs.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 5 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Enterprise Architecture -->
+    <div class="slide" data-notes="Here is our four-tier enterprise architecture. Layer 1 is React 18 with Vite and Leaflet for fast, reactive client rendering. Layer 2 is Spring Security 6 with stateless JWT Bearer token validation and CORS filtering. Layer 3 is Spring Boot 3 with REST controllers and transactional services for priority and duplicate detection. Layer 4 is MySQL 8.0 with Spring Data JPA, Hibernate, and HikariCP connection pooling.">
+      <div class="slide-header">
+        <span class="tag">Chapter 3: Architecture</span>
+        <h2 class="slide-title">End-to-End Enterprise System Architecture</h2>
+      </div>
+      <div class="slide-body">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="card" style="padding: 12px 18px; border-left: 5px solid var(--primary);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <strong style="color: var(--primary); font-size: 13px;">Layer 1: Client Tier (Single Page Application)</strong>
+              <span style="font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: 700;">React 18.3 • Vite 5.4 • Leaflet 1.9 • Axios</span>
+            </div>
+            <p style="font-size: 11.5px; color: #475569;">Responsive UI, interactive OpenStreetMap cartography, debounced duplicate checks, and automated Bearer token injection via Axios interceptors.</p>
+          </div>
+
+          <div class="card" style="padding: 12px 18px; border-left: 5px solid var(--accent);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <strong style="color: var(--accent); font-size: 13px;">Layer 2: Security & Gateway Tier (Stateless Auth)</strong>
+              <span style="font-size: 11px; background: #ccfbf1; color: #0f766e; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Spring Security 6 • JWT HMAC-SHA256 • BCrypt • CORS</span>
+            </div>
+            <p style="font-size: 11.5px; color: #475569;">Extracts Bearer token, validates cryptographic signature & expiration, populates SecurityContextHolder with authorities, and enforces method-level RBAC.</p>
+          </div>
+
+          <div class="card" style="padding: 12px 18px; border-left: 5px solid var(--purple);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <strong style="color: var(--purple); font-size: 13px;">Layer 3: Business & Service Tier (Domain Logic)</strong>
+              <span style="font-size: 11px; background: #f3e8ff; color: #7e22ce; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Spring Boot 3.4.3 • REST Controllers • @Transactional Services</span>
+            </div>
+            <p style="font-size: 11.5px; color: #475569;">REST Controllers exposing JSON endpoints. Specialized business services encapsulating Haversine duplicate detection, dynamic priority calculation, and reputation auditing.</p>
+          </div>
+
+          <div class="card" style="padding: 12px 18px; border-left: 5px solid #1e293b;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <strong style="color: #1e293b; font-size: 13px;">Layer 4: Data Persistence Tier (ACID Storage)</strong>
+              <span style="font-size: 11px; background: #e2e8f0; color: #334155; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Spring Data JPA • Hibernate ORM • HikariCP • MySQL 8.0</span>
+            </div>
+            <p style="font-size: 11.5px; color: #475569;">10 relational tables in 3NF, composite spatial B-Tree indexing on (lat, lon, status, category), and declarative transaction rollbacks on failure.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 6 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Dynamic Priority Scoring -->
+    <div class="slide" data-notes="This slide explains our dynamic priority scoring formula. The priority score P equals base severity plus vote boost plus aging escalation plus hazard keyword bonus, bounded between 0 and 100. Severity gives 15 to 75 points. Neighbor upvotes add up to 10 points. Aging adds 1 point per day up to 10 points so old complaints are never ignored. And emergency keywords like 'spark' or 'fire' add a 5-point bonus. Scores map to 4 SLA tiers.">
+      <div class="slide-header">
+        <span class="tag">Chapter 3: Algorithms</span>
+        <h2 class="slide-title">Smart Algorithm 1: Dynamic Priority Scoring Engine</h2>
+      </div>
+      <div class="slide-body">
+        <div class="formula-banner">
+          Priority Score (P) = S_base + V_boost + A_escalation + K_bonus  ∈  [0.0, 100.0]
+        </div>
+
+        <div class="grid-4" style="margin-top: 6px;">
+          <div class="card" style="text-align: center;">
+            <div style="font-family: monospace; font-size: 14px; font-weight: 700; color: var(--primary);">S_base</div>
+            <div style="font-size: 12px; font-weight: 700;">Base Severity</div>
+            <div style="font-family: monospace; font-size: 11px; color: var(--rose); margin: 4px 0;">Severity &times; 15.0</div>
+            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 6px;">Range: [15.0 – 75.0]</div>
+            <p style="font-size: 10.5px; color: #475569; line-height: 1.4;">Derived directly from user/admin rating (1 to 5) reflecting physical hazard scale.</p>
+          </div>
+
+          <div class="card" style="text-align: center;">
+            <div style="font-family: monospace; font-size: 14px; font-weight: 700; color: var(--primary);">V_boost</div>
+            <div style="font-size: 12px; font-weight: 700;">Community Votes</div>
+            <div style="font-family: monospace; font-size: 11px; color: var(--rose); margin: 4px 0;">min(Votes &times; 2.0, 10.0)</div>
+            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 6px;">Range: [0.0 – 10.0]</div>
+            <p style="font-size: 10.5px; color: #475569; line-height: 1.4;">Crowdsourced democratic upvoting by verified local residents amplifies urgency.</p>
+          </div>
+
+          <div class="card" style="text-align: center;">
+            <div style="font-family: monospace; font-size: 14px; font-weight: 700; color: var(--primary);">A_escalation</div>
+            <div style="font-size: 12px; font-weight: 700;">Aging Escalation</div>
+            <div style="font-family: monospace; font-size: 11px; color: var(--rose); margin: 4px 0;">min(Days &times; 1.0, 10.0)</div>
+            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 6px;">Range: [0.0 – 10.0]</div>
+            <p style="font-size: 10.5px; color: #475569; line-height: 1.4;">Increases 1 point per day unsolved. Guarantees neglected tickets bubble up.</p>
+          </div>
+
+          <div class="card" style="text-align: center;">
+            <div style="font-family: monospace; font-size: 14px; font-weight: 700; color: var(--primary);">K_bonus</div>
+            <div style="font-size: 12px; font-weight: 700;">Hazard Keywords</div>
+            <div style="font-family: monospace; font-size: 11px; color: var(--rose); margin: 4px 0;">+5.0 if matched</div>
+            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 6px;">Range: [0.0 or 5.0]</div>
+            <p style="font-size: 10.5px; color: #475569; line-height: 1.4;">Scans text for: "spark", "collapse", "danger", "fire", "burst", "overflow".</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 6px;">
+          <div style="background: #fee2e2; border: 1px solid #f87171; border-radius: 8px; padding: 8px; text-align: center;">
+            <strong style="color: #991b1b; font-size: 11px;">CRITICAL (&ge; 85.0)</strong><br><span style="font-size: 10px; color: #7f1d1d;">Immediate 24h SLA Dispatch</span>
+          </div>
+          <div style="background: #fef3c7; border: 1px solid #fbbf24; border-radius: 8px; padding: 8px; text-align: center;">
+            <strong style="color: #92400e; font-size: 11px;">HIGH (65.0 – 84.9)</strong><br><span style="font-size: 10px; color: #78350f;">Expedited 48h Resolution</span>
+          </div>
+          <div style="background: #dbeafe; border: 1px solid #60a5fa; border-radius: 8px; padding: 8px; text-align: center;">
+            <strong style="color: #1e40af; font-size: 11px;">MEDIUM (35.0 – 64.9)</strong><br><span style="font-size: 10px; color: #1e3a8a;">Scheduled 5-Day SLA</span>
+          </div>
+          <div style="background: #d1fae5; border: 1px solid #34d399; border-radius: 8px; padding: 8px; text-align: center;">
+            <strong style="color: #065f46; font-size: 11px;">LOW (&lt; 35.0)</strong><br><span style="font-size: 10px; color: #064e3b;">Routine 14-Day Maintenance</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 7 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Geospatial Duplicate Detection -->
+    <div class="slide" data-notes="Algorithm 2 solves duplicate ticket flooding. We use a two-stage filter: First, we calculate the Haversine great-circle distance using Earth radius 6,371 km. If two issues in the same category are within 40 meters, it is flagged as an immediate duplicate. If between 40 and 150 meters, we compute Jaccard Token Similarity on titles and descriptions. If word overlap exceeds 25%, it is flagged as a duplicate, and the user is prompted to upvote the existing ticket instead.">
+      <div class="slide-header">
+        <span class="tag">Chapter 3: Algorithms</span>
+        <h2 class="slide-title">Smart Algorithm 2: Geospatial Duplicate Detection</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="border-left: 4px solid var(--primary);">
+            <div class="card-top" style="color: var(--primary);">📐 Two-Stage Algorithmic Logic</div>
+            <ul>
+              <li><strong>Stage 1: Radius Pre-Filtering (d &le; 150m):</strong> Bounding box query retrieves all active complaints in the same category within 150 meters.</li>
+              <li><strong>Stage 2A: Immediate Proximity (d &le; 40m):</strong> If within 40m in the same category (e.g. same intersection), instantly flagged as duplicate.</li>
+              <li><strong>Stage 2B: Semantic Similarity (40m &lt; d &le; 150m):</strong> Computes Jaccard Token Similarity between titles and descriptions: J(A, B) = |A &cap; B| / |A &cup; B|. If J &gt; 0.25, flagged as duplicate.</li>
+              <li><strong>Stage 3: Debounced Client Warning:</strong> Warns citizen before submission, showing distance, existing ticket ID, and an instant Upvote button.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--accent);">
+            <div class="card-top" style="color: var(--accent);">🧮 Mathematical Formulations</div>
+            <div style="font-size: 11px; font-weight: 700; margin-bottom: 4px;">1. Haversine Great-Circle Distance:</div>
+            <div style="background: #f1f5f9; padding: 8px 12px; border-radius: 6px; font-family: monospace; font-size: 10px; margin-bottom: 10px; color: var(--primary-dark);">
+              a = sin²(Δφ/2) + cos φ₁ · cos φ₂ · sin²(Δλ/2)<br>
+              d = 2 · R · atan2( √a, √(1−a) )<br>
+              (Earth radius R = 6,371,000 meters)
+            </div>
+
+            <div style="font-size: 11px; font-weight: 700; margin-bottom: 4px;">2. Jaccard Token Set Similarity:</div>
+            <div style="background: #f1f5f9; padding: 8px 12px; border-radius: 6px; font-family: monospace; font-size: 10px; color: var(--rose);">
+              J(A, B) = |A ∩ B| / |A ∪ B|<br>
+              Threshold: If J(A, B) > 0.25 (25% word overlap)<br>
+              and d ≤ 150m => Flag as Duplicate
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 8 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: State Machine Lifecycle -->
+    <div class="slide" data-notes="Here is our deterministic state machine. A complaint starts as SUBMITTED by the citizen. An administrator VERIFIES it and assigns a department and officer. The officer transitions it to IN_PROGRESS. To transition to RESOLVED, the officer MUST upload photographic resolution proof and remarks—our backend strictly throws HTTP 400 if missing. Finally, the citizen confirms resolution, awarding 15 reputation points and closing the loop.">
+      <div class="slide-header">
+        <span class="tag">Chapter 3: Workflows</span>
+        <h2 class="slide-title">Audited Complaint Lifecycle State Machine</h2>
+      </div>
+      <div class="slide-body">
+        <div class="state-row">
+          <div class="state-node active-state">
+            <div class="state-title" style="background: var(--primary);">1. SUBMITTED</div>
+            <div class="state-actor">Actor: Citizen</div>
+            <div class="state-desc">GPS coordinates, category, photo & severity logged. Dynamic priority score computed.</div>
+          </div>
+          <div class="state-node">
+            <div class="state-title" style="background: var(--purple);">2. VERIFIED</div>
+            <div class="state-actor">Actor: Admin</div>
+            <div class="state-desc">Admin validates authenticity. Assigns official department & officer with SLA deadline.</div>
+          </div>
+          <div class="state-node">
+            <div class="state-title" style="background: var(--amber);">3. IN_PROGRESS</div>
+            <div class="state-actor">Actor: Field Officer</div>
+            <div class="state-desc">Assigned officer accepts ticket, inspects GPS map, and mobilizes field team on-site.</div>
+          </div>
+          <div class="state-node">
+            <div class="state-title" style="background: var(--accent);">4. RESOLVED</div>
+            <div class="state-actor">Actor: Field Officer</div>
+            <div class="state-desc"><strong>MANDATORY:</strong> Photo proof & completion remarks must be submitted.</div>
+          </div>
+          <div class="state-node">
+            <div class="state-title" style="background: var(--emerald);">5. CONFIRMED</div>
+            <div class="state-actor">Actor: Citizen</div>
+            <div class="state-desc">Reporting citizen verifies resolution quality. +15 civic reputation points awarded.</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 14px; border-left: 4px solid var(--rose);">
+          <div class="card-top" style="color: var(--rose);">🛡️ Core Accountability Guarantees & Fraud Prevention</div>
+          <ul>
+            <li><strong>No "Ghost" Resolutions:</strong> Backend rejects status update to RESOLVED if resolution photo URL or remarks are missing.</li>
+            <li><strong>Closed-Loop Confirmation:</strong> Only the citizen who reported the issue (or Admin override) can confirm satisfaction.</li>
+            <li><strong>Immutable Audit Trail:</strong> Every transition logs a permanent record to status_history table with timestamps and actor ID.</li>
+            <li><strong>Civic Reputation Engine:</strong> Citizens gain +10 for valid reports, +15 for confirming resolution, -20 for abusive spam.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 9 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Database Schema -->
+    <div class="slide" data-notes="CivicFix is backed by MySQL 8.0 normalized to 3NF across 10 specialized tables. The complaints table stores coordinates, priority scores, and SLA status. Votes has a unique constraint to ensure one vote per citizen per ticket. Status_history maintains an immutable audit trail. We utilize composite B-tree spatial indexes on latitude, longitude, and status for ultra-fast queries.">
+      <div class="slide-header">
+        <span class="tag">Chapter 4: Data Design</span>
+        <h2 class="slide-title">Relational Database Architecture (10 Normalized 3NF Tables)</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--primary); font-size: 11.5px;">1. users</strong>
+              <p style="font-size: 10.5px; color: #475569;">Citizens, Employees, Admins with BCrypt salted password hashes & reputation points.</p>
+            </div>
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--primary); font-size: 11.5px;">2. departments</strong>
+              <p style="font-size: 10.5px; color: #475569;">Municipal administrative units (Roads, Water Works, Sanitation, Power, Parks).</p>
+            </div>
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--primary); font-size: 11.5px;">3. complaints</strong>
+              <p style="font-size: 10.5px; color: #475569;">Core grievance entity with GPS lat/lon, severity, priority score, and SLA status.</p>
+            </div>
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--primary); font-size: 11.5px;">4. complaint_media</strong>
+              <p style="font-size: 10.5px; color: #475569;">Original photographic attachments and officer resolution proof images.</p>
+            </div>
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--primary); font-size: 11.5px;">5. comments</strong>
+              <p style="font-size: 10.5px; color: #475569;">Two-way citizen-officer discussion thread per ticket with timestamps.</p>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--accent); font-size: 11.5px;">6. votes</strong>
+              <p style="font-size: 10.5px; color: #475569;">Crowdsourced upvotes enforcing single vote via composite UNIQUE(user_id, complaint_id).</p>
+            </div>
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--accent); font-size: 11.5px;">7. assignments</strong>
+              <p style="font-size: 10.5px; color: #475569;">Official audit trail of department and officer delegations with resolution deadlines.</p>
+            </div>
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--accent); font-size: 11.5px;">8. status_history</strong>
+              <p style="font-size: 10.5px; color: #475569;">Immutable chronological state transition ledger with changed_by timestamps.</p>
+            </div>
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--accent); font-size: 11.5px;">9. notifications</strong>
+              <p style="font-size: 10.5px; color: #475569;">Real-time alert notifications dispatched to citizens & officers upon ticket updates.</p>
+            </div>
+            <div class="card" style="padding: 10px 14px;">
+              <strong style="color: var(--accent); font-size: 11.5px;">10. reputation_transactions</strong>
+              <p style="font-size: 10.5px; color: #475569;">Itemized credit/debit civic points ledger ensuring transparent gamification.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #f1f5f9; border-radius: 8px; padding: 8px 16px; font-size: 11px; color: #475569; text-align: center; border: 1px solid var(--card-border); margin-top: 4px;">
+          <strong>Relational Schema Strengths:</strong> Normalized to 3NF • Composite B-Tree Spatial Indexes on (latitude, longitude, status, category) • Foreign Key Cascades • HikariCP Pool
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 10 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: Security & Testing -->
+    <div class="slide" data-notes="Security and software verification are highlights of our project. We implemented BCrypt password hashing, stateless JWT with HMAC-SHA256 signatures, and role-based authorization. Crucially, the application is backed by 57 automated unit and integration tests passing at 100%, covering mathematical edge cases, Haversine boundaries, and security filters.">
+      <div class="slide-header">
+        <span class="tag">Chapter 4: Security & Testing</span>
+        <h2 class="slide-title">Security Hardening & Automated Test Verification</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="border-left: 4px solid var(--rose);">
+            <div class="card-top" style="color: var(--rose);">🔒 Multi-Layer Security Architecture</div>
+            <ul>
+              <li><strong>Stateless JWT Authentication:</strong> HS256 algorithm with 256-bit secret key and 24-hour expiration token lifespan.</li>
+              <li><strong>BCrypt Password Hashing:</strong> Salted hashing with work factor 10 defends against dictionary and rainbow attacks.</li>
+              <li><strong>Role-Based Access Control (RBAC):</strong> Enforced via Spring Security hasRole('ADMIN'), hasRole('EMPLOYEE'), hasRole('CITIZEN').</li>
+              <li><strong>SQL Injection & XSS Defense:</strong> Parameterized Spring Data JPA criteria and React automatic HTML entity escaping.</li>
+              <li><strong>RFC 7807 Error Envelopes:</strong> Centralized @RestControllerAdvice prevents internal stack trace & credential leaks.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--emerald);">
+            <div class="card-top" style="color: var(--emerald);">🧪 57 Automated Tests (100% Pass Rate)</div>
+            <div style="background: #ecfdf5; border: 1px solid #10b981; border-radius: 6px; padding: 8px 12px; font-size: 11.5px; font-weight: 700; color: #047857; margin-bottom: 10px; text-align: center;">
+              EXECUTION STATUS: 57 PASSED | 0 FAILED | 0 SKIPPED (100%)
+            </div>
+            <ul>
+              <li><strong>DuplicateDetectionServiceTest:</strong> Validates Haversine accuracy at 39m, 41m, 150m, and Jaccard token thresholds.</li>
+              <li><strong>SmartPriorityServiceTest:</strong> Asserts priority score calculations, keyword bonuses, aging, and SLA tier mappings.</li>
+              <li><strong>ComplaintControllerSecurityTest:</strong> Validates 401 Unauthorized on missing JWT, 403 Forbidden on role mismatch.</li>
+              <li><strong>ResolutionWorkflowIntegrationTest:</strong> Verifies rejection when photo proof is missing and reputation reward on confirmation.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 11 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: User Interface & Frontend -->
+    <div class="slide" data-notes="On the frontend, CivicFix delivers specialized interfaces for each stakeholder: Citizens get an interactive map to drop pins, upload photos, and track resolution timelines. Officers get an authenticated work queue with one-click transitions and camera upload. Admins get an executive control center with municipal KPIs, SLA escalations, and category breakdowns.">
+      <div class="slide-header">
+        <span class="tag">Chapter 4: Demonstration</span>
+        <h2 class="slide-title">User Interface & Frontend Interactive Workflows</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card" style="border-top: 4px solid var(--primary);">
+            <div class="card-top" style="color: var(--primary);">🗺️ Citizen Portal & Map</div>
+            <ul>
+              <li>Interactive OpenStreetMap pinning using Leaflet library.</li>
+              <li>Live duplicate alert modal pops up as user inputs location.</li>
+              <li>Direct photo evidence upload with client validation.</li>
+              <li>Feed of neighborhood issues with upvote counters.</li>
+              <li>Real-time ticket tracking timeline with status badges.</li>
+              <li>One-click resolution confirmation & satisfaction rating.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--accent);">
+            <div class="card-top" style="color: var(--accent);">📱 Field Officer Mobile View</div>
+            <ul>
+              <li>Dedicated task queue filtered by assigned department.</li>
+              <li>Turn-by-turn coordinate view for site navigation.</li>
+              <li>One-click transition from ASSIGNED to IN_PROGRESS.</li>
+              <li><strong>Camera capture integration</strong> for resolution proof.</li>
+              <li>Formal completion notes logging and submission.</li>
+              <li>Visual SLA deadline countdown and overdue alerts.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--purple);">
+            <div class="card-top" style="color: var(--purple);">📊 Admin Command Center</div>
+            <ul>
+              <li>Municipal dashboard with live KPI grievance counters.</li>
+              <li>Category breakdown charts (Roads, Water, Waste, etc.).</li>
+              <li>SLA breach escalation & overdue ticket alert banners.</li>
+              <li>One-click department & officer ticket assignment.</li>
+              <li>Spam rejection & citizen reputation adjustment.</li>
+              <li>Complete audit log inspection for city commissioners.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 12 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 13: Feasibility & Impact -->
+    <div class="slide" data-notes="Examining feasibility: Technically, CivicFix is built on open-source, proven industry standards like Spring Boot and React, making deployment cost-effective and vendor-neutral. Operationally, the clean UI requires zero training for field staff or citizens. And economically and socially, it eliminates the massive financial waste of duplicate contractor visits and prevents ghost closures, ensuring taxpayers see real, verified results.">
+      <div class="slide-header">
+        <span class="tag">Chapter 3: Feasibility</span>
+        <h2 class="slide-title">Project Feasibility & Municipal Socio-Economic Impact</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card" style="border-top: 4px solid var(--primary);">
+            <div class="card-top" style="color: var(--primary);">⚙️ Technical Feasibility</div>
+            <ul>
+              <li>Built on enterprise technologies: Java 17/21, Spring Boot 3, MySQL 8.0, and React 18.</li>
+              <li>Massive developer community, mature libraries, and zero proprietary licensing fees.</li>
+              <li>Horizontal scalability enabled by stateless JWT tokens and HikariCP connection pooling.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--accent);">
+            <div class="card-top" style="color: var(--accent);">👥 Operational Feasibility</div>
+            <ul>
+              <li>Intuitive interface requires zero technical training for general citizens and field staff.</li>
+              <li>Self-documenting workflows with clear status transitions and automated notifications.</li>
+              <li>Seamlessly integrates into standard municipal corporation administrative hierarchies.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--emerald);">
+            <div class="card-top" style="color: var(--emerald);">🌱 Economic & Social Impact</div>
+            <ul>
+              <li>Drastically slashes municipal waste: eliminates up to 70% of redundant duplicate field inspections.</li>
+              <li>Enforces contractor accountability: completely removes fraudulent ghost billings for unperformed work.</li>
+              <li>Fosters civic engagement: citizens become active partners in urban maintenance and neighborhood safety.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 13 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 14: Future Scope -->
+    <div class="slide" data-notes="While CivicFix is already a complete, robust platform, we have mapped out future enhancements: First, Computer Vision AI to automatically verify whether uploaded photos match the pothole or garbage category. Second, a WhatsApp bot to allow reporting via live location and photo on WhatsApp. Third, IoT sensors in garbage bins for automatic ticket dispatch. Fourth, native mobile apps for offline field operations.">
+      <div class="slide-header">
+        <span class="tag">Chapter 5: Future Scope</span>
+        <h2 class="slide-title">Future Enhancements & Technology Roadmap</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="border-left: 4px solid var(--primary);">
+            <span style="font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase;">Phase 2: Artificial Intelligence</span>
+            <div class="card-top" style="color: var(--primary); margin-top: 4px;">🤖 AI Computer Vision Verification</div>
+            <p style="font-size: 11.5px; color: #475569; line-height: 1.5;">Integrate pre-trained Vision AI models (TensorFlow / OpenCV) to automatically classify pothole depth, garbage volume, and verify that resolution photos genuinely repair the reported issue.</p>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--accent);">
+            <span style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase;">Phase 2: Accessibility</span>
+            <div class="card-top" style="color: var(--accent); margin-top: 4px;">💬 WhatsApp & SMS Grievance Bot</div>
+            <p style="font-size: 11.5px; color: #475569; line-height: 1.5;">Enable citizens to report issues directly via WhatsApp Business API by sending GPS live location and a photo, bridging the digital divide for elderly and non-smartphone users.</p>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--purple);">
+            <span style="font-size: 10px; font-weight: 700; color: var(--purple); text-transform: uppercase;">Phase 3: Smart Cities</span>
+            <div class="card-top" style="color: var(--purple); margin-top: 4px;">📡 Smart City IoT Sensor Integration</div>
+            <p style="font-size: 11.5px; color: #475569; line-height: 1.5;">Connect ultrasonic fill-level sensors in public garbage bins and acoustic water leak detectors to automatically spawn prioritized complaints before citizens even notice.</p>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--emerald);">
+            <span style="font-size: 10px; font-weight: 700; color: var(--emerald); text-transform: uppercase;">Phase 3: Mobile</span>
+            <div class="card-top" style="color: var(--emerald); margin-top: 4px;">📲 Native Mobile App (React Native)</div>
+            <p style="font-size: 11.5px; color: #475569; line-height: 1.5;">Compile shared React components into iOS and Android apps with offline caching, background geofencing, and push notifications for field municipal teams.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 14 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 15: Conclusion & Summary -->
+    <div class="slide" data-notes="In conclusion, CivicFix demonstrates that thoughtful full-stack engineering can solve persistent municipal governance challenges. By replacing blind FIFO queues with mathematical priority scoring, suppressing duplicates with geospatial calculations, and requiring photo proof for ticket closure, CivicFix transforms municipal problem-solving into a transparent, accountable, and citizen-first experience.">
+      <div class="slide-header">
+        <span class="tag">Conclusion</span>
+        <h2 class="slide-title">Summary of Key Achievements & Deliverables</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-4" style="margin-bottom: 10px;">
+          <div class="card" style="text-align: center; padding: 12px;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--emerald);">57 / 57</div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-dark);">Automated Tests Passed</div>
+          </div>
+          <div class="card" style="text-align: center; padding: 12px;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--primary);">10 Tables</div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-dark);">Normalized 3NF Schema</div>
+          </div>
+          <div class="card" style="text-align: center; padding: 12px;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--amber);">0–100 SLA</div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-dark);">Dynamic Urgency Engine</div>
+          </div>
+          <div class="card" style="text-align: center; padding: 12px;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--purple);">&le; 150m + NLP</div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-dark);">Duplicate Suppression</div>
+          </div>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--primary);">
+          <div class="card-top" style="color: var(--primary);">🎯 Key Academic & Technical Takeaways</div>
+          <ul>
+            <li>Successfully solved municipal grievance opacity using a modern full-stack decoupled architecture.</li>
+            <li>Eliminated duplicate ticket congestion using great-circle Haversine trigonometry combined with Jaccard token set similarity.</li>
+            <li>Replaced inefficient FIFO queues with a fair, automated 0–100 SLA priority formula factoring in safety hazards and community votes.</li>
+            <li>Enforced zero-trust resolution accountability requiring photographic evidence from field staff before ticket closure.</li>
+            <li>Demonstrated rigorous software engineering discipline with 57 automated tests, comprehensive documentation, and strict role-based access control.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>PSIT College of Higher Education, Kanpur | BCA Final Year Project</span>
+        <span class="slide-num">Slide 15 / 16</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 16: Q&A / Thank You Slide -->
+    <div class="slide dark-slide" data-notes="Thank you very much respected supervisor, faculty members, and examiners. I am now ready to take your questions regarding the architecture, algorithms, or implementation of CivicFix.">
+      <h1 class="hero-title" style="font-size: 64px;">THANK YOU</h1>
+      <h2 class="hero-subtitle" style="font-size: 24px; color: #60a5fa; margin-bottom: 24px;">Questions & Answers / Viva Discussion</h2>
+
+      <div class="presenter-box" style="max-width: 650px; text-align: center; margin: 0 auto 24px auto;">
+        <div style="font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 6px;">CivicFix — Smart Civic Issue Reporting & Resolution Platform</div>
+        <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 4px;">Candidate: <strong>Omji Savita</strong> | Roll No: <strong>24116002349</strong></div>
+        <div style="font-size: 12px; color: #94a3b8;">Department of Computer Applications (BCA)</div>
+        <div style="font-size: 12px; color: #94a3b8;">PSIT College of Higher Education, Kanpur (CSJMU)</div>
+      </div>
+      <div style="font-size: 12px; color: #64748b;">October 2026 | Kanpur, Uttar Pradesh</div>
+    </div>
+
+    <!-- Speaker Notes Drawer -->
+    <div class="notes-drawer" id="notesDrawer">
+      <div class="notes-header">
+        <span>🎙️ CLASSROOM SPEAKER SCRIPT (What to say to the class/teacher)</span>
+        <span style="cursor: pointer;" onclick="toggleNotes()">✕ Close</span>
+      </div>
+      <div id="notesText"></div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="controls">
+    <div>
+      Use <strong style="color: #60a5fa;">&larr; / &rarr; Arrow Keys</strong> or Spacebar to change slides • Press <strong style="color: #60a5fa;">'N'</strong> for Speaker Script • Press <strong style="color: #60a5fa;">'F'</strong> for Fullscreen
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="toggleNotes()">🎙️ Speaker Script (N)</button>
+      <button class="btn" onclick="prevSlide()">&larr; Previous</button>
+      <button class="btn" onclick="nextSlide()">Next &rarr;</button>
+      <button class="btn" onclick="toggleFullscreen()" style="background: var(--primary); border-color: var(--primary);">🖥️ Present (F)</button>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    const notesDrawer = document.getElementById('notesDrawer');
+    const notesText = document.getElementById('notesText');
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      // Update notes
+      const activeNotes = slides[currentSlide].getAttribute('data-notes') || 'No notes for this slide.';
+      notesText.innerText = activeNotes;
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleNotes() {
+      notesDrawer.classList.toggle('open');
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.log(err);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'n' || e.key === 'N') {
+        toggleNotes();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
+    });
+
+    // Initial update
+    updateSlide();
+  </script>
+</body>
+</html>

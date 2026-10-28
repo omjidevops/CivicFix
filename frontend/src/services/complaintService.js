@@ -68,7 +68,7 @@ const initialComplaints = [
     submittedDate: "2026-09-14",
     description: "Drainage canal blocked with silt and plastic waste. Risk of waterlogging during rain.",
     upvotes: 22,
-    verified: false
+    verified: true
   },
   {
     id: "CF-1006",
